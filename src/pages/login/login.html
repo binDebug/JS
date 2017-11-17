@@ -1,0 +1,52 @@
+<!--
+  Generated template for the Login page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar no-border>
+    <ion-title>Jobs App</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list no-lines>
+
+    <ion-item class="call heading-one" text-wrap><h1>Hello! Welcome back.</h1></ion-item>
+    <ion-item class="call heading-two" text-wrap>Sign into your account below: </ion-item>
+
+
+  <ion-item margin-bottom>
+    <ion-input type="text" name ="email" placeholder="Username" [(ngModel)]="email" floating></ion-input>
+  </ion-item>
+
+  <ion-item margin-bottom>
+    <ion-input type="password" name="password" placeholder="Password" [(ngModel)]="password" floating></ion-input>
+  </ion-item>
+  <button ion-button block color="secondary" margin-top (click)="login()" ><strong>Sign In</strong></button>
+   <!-- <button ion-button block clear margin-top ><span class="line-through">&nbsp;Or continue with&nbsp;</span></button> -->
+</ion-list>
+
+
+<!-- <ion-grid>
+<ion-row>
+<ion-col>
+<ion-img width="50" height="50" src="assets/img/f.png"></ion-img>
+</ion-col>
+<ion-col>
+<ion-img width="50" height="50" src="assets/img/google.png"></ion-img>
+</ion-col>
+<ion-col>
+<ion-img width="50" height="50" src="assets/img/f.png"></ion-img>
+</ion-col>
+
+</ion-row>
+</ion-grid> -->
+
+
+ <button ion-button block clear  (click)="goToRegister()" >Don't have an account? <strong>Sign up.</strong></button>
+</ion-content>

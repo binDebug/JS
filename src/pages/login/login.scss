@@ -1,0 +1,86 @@
+
+@import url('https://fonts.googleapis.com/css?family=Lobster');
+page-login {
+    div.item-inner,
+    ion-list.list.list-ios,
+    ion-item.item-block.item-ios,
+    .toolbar-background.toolbar-background-ios{
+       
+        background: transparent !important;
+       
+
+    }
+     ion-navbar.toolbar{
+        border:none !important
+    }
+.toolbar-title.toolbar-title-ios{
+font-family:"Lobster";
+font-size: 2.8em;
+ color:#ff4081;
+}
+ 
+
+
+  .list.list-ios{
+      margin-top:15%;
+      ion-input{
+                 border: 1px solid #969FAA;
+                 
+          
+          div.input-cover,
+           div.input-cover.activated{
+               border: 1px solid #969FAA;
+               background: #f0f7c6;
+               border-radius:0.3em
+           }
+           
+            input{
+                height:1.5em;
+                background: transparent;
+                padding-left: 1em;
+            }
+      }
+  }
+
+ion-item.call{
+    text-align: center;
+    background: transparent;
+    
+}
+ion-item.call.heading-two{
+        color: #969FAA;
+        div.input-wrapper{
+                  ion-label.label.label-ios{
+            padding-top:0px;
+            padding-bottom:0px !important;
+        }
+        }
+      
+    }
+
+ion-grid{
+    padding:0;
+}
+ion-col{
+    border: 1px solid #969FAA;
+    height: 100%;
+    border-radius:0.3em;
+    padding: 8px;
+   text-align:center;
+}
+
+ion-col:nth-child(1){
+    margin-left: 0px;
+}
+ion-col:nth-child(3){
+    margin-right: 0px;
+}
+
+span.line-through:after,
+span.line-through:before{
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
+    text-decoration:line-through;
+    color: #969FAA;
+}
+
+}
