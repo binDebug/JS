@@ -1,0 +1,47 @@
+ 
+ <!--Featured Jobs Slide Start-->
+ <ion-slides class="mainpage" pager>
+    <ion-slide  *ngFor = "let item of jobList | featured: args" (click)="openJob(featured)" >
+      <!-- <ion-slide  *ngFor = "let item of jobList" (click)="openJob(item)" > -->
+    <img src="{{item.bannerImgURL}}"/>
+    <ion-item class="featured-job">
+   <ion-avatar item-left>
+     <img src="{{item.imgURL}}">
+   </ion-avatar>
+   <h2>{{item.jobTitle}}</h2>
+   <p>{{item.company}}</p>
+ </ion-item>
+       </ion-slide>
+     </ion-slides> 
+
+
+<!--Featured Jobs slider ends-->
+<!--Jobs List Starts -->
+ <ion-list *ngFor="let job of jobList" (click)='openJob(job)'>
+       <ion-item text-wrap>
+     <h2>{{job.jobTitle}}</h2>
+          <p>Posted on <strong>January 14, 2017</strong></p>
+         <ion-badge [ngClass]='{"seagreen": job.jobType === "Full Time", "salmon": job.jobType === "Contractor","sunset": job.jobType === "Remote"}' item-right>{{job.jobType}}</ion-badge>
+      </ion-item>
+      <ion-item>
+
+      <ion-avatar item-left>
+          <img src = "{{job.imgURL}}">
+          </ion-avatar>
+         <ion-grid>
+          <ion-row>
+             <ion-col width-50>
+                 <h2>COMPANY</h2>
+                <p>{{job.company}}</p>
+              </ion-col>
+              <ion-col width-50>
+                  <h2>LOCATION</h2>
+                <p>{{job.jobLocation}}</p>
+              </ion-col>
+             </ion-row>
+          </ion-grid>
+         </ion-item>
+
+    </ion-list>
+<!--Jobs List Ends -->
+    

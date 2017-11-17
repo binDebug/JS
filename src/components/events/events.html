@@ -1,0 +1,21 @@
+<ion-grid>
+  <ion-row align-items-stretch *ngFor="let eventVM of eventVMList" >
+    <ion-col col-6 ion-self-stretch *ngFor="let event of eventVM.events">
+        <ion-card>
+        <ion-card-content>
+            <img src="{{event.imageUrl}}" />
+            <ion-title>{{event.name}}</ion-title>
+            
+            <span>
+                {{event.date}} {{event.duration}} day(s)
+            </span>
+            <br>
+            <span>{{event.location.city}}, {{event.location.state}} {{event.location.country}}</span>
+            <br>
+            <span>Seats available: {{event.capacity - event.attendance}}</span>
+        </ion-card-content>
+
+        </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-grid>

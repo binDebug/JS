@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-
+import {HeaderComponent} from '../../components/header/header';
+import { JobsComponent } from '../../components/jobs/jobs';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'

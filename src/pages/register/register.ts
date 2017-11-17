@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
 import {AngularFireAuth} from 'angularfire2/auth';
+//import {AngularFireList} from 'angularfire2/database';
 import { TabsPage } from "../tabs/tabs";
+import { LoginPage } from "../login/login";
+import {InviteesProvider} from '../../providers/invitees';
+import {UsersProvider} from '../../providers/users';
+
+
 /**
  * Generated class for the RegisterPage page.
  *
@@ -23,13 +29,15 @@ export class RegisterPage {
   constructor(public navCtrl: NavController,
      public navParams: NavParams,
      private toastCtrl: ToastController,
-     private afAuth: AngularFireAuth) {
+     private afAuth: AngularFireAuth,
+     private invitees: InviteesProvider,
+     private users: UsersProvider) {
   }
 
     register() {
 
-    //let res = this.invitees.getInvitee(this.email);
-      //  if (res ) {
+    this.invitees.getInvitee(this.email).snapshotChanges().subscribe(res => {
+       if (res && (res.length == 1)) {
           this.afAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
           .then(res => {
 
@@ -48,12 +56,12 @@ export class RegisterPage {
 
             this.showError(err.message);
           })
-        //}
-        //else {
-         // this.showError('You need an invitation to register.');
-        //}
+        }
+        else {
+         this.showError('You need an invitation to register.');
+        }
       
-
+      });
   }
 
   showError(message: string) {
@@ -66,19 +74,21 @@ export class RegisterPage {
   }
 
   addUser(email: any) {
+    if(this.userAdded == false) {
     let id: number = 0;
 
-    // let res = this.users.getLastUser();
-    //     if(res ) {
-    //       id = +res[0].$key + 1;
-    //       console.log(id);
-    //     }
-
-    //     if(this.userAdded == false) {
-    //       this.users.addUser(email, id);
-    //       this.userAdded = true;
-    //     }
+      this.users.getLastUser().snapshotChanges().subscribe(data=> {
+        if(data && (data.length == 1)) {
+          id = +data[0].key + 1;
+          
+        }
+        this.users.addUser(email, id);
+        this.userAdded = true;
+      });
+    }
   }
 
-
+  login() {
+    this.navCtrl.setRoot(LoginPage);
+  }
 }

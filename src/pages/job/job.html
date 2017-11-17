@@ -1,0 +1,82 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Job Details</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+    <ion-badge [ngClass]='{"seagreen": job.jobType === "Full Time", "salmon": job.jobType === "Contractor","sunset": job.jobType === "Remote"}' >{{job.jobType}}</ion-badge>
+    <button ion-button clear icon-only item-right (click)="favorite(); active = !active"> <ion-icon name="star"></ion-icon></button>
+    </ion-item>
+       <ion-item>
+     <h2>{{job.jobTitle}}</h2>
+          <p>Posted on <strong>January 14, 2017</strong></p>
+
+      </ion-item>
+      <ion-item>
+      <ion-avatar item-left>
+          <img src = "{{job.imgURL}}">
+          </ion-avatar>
+         <ion-grid>
+          <ion-row>
+             <ion-col width-50>
+                 <h2>COMPANY</h2>
+                <p>{{job.company}}</p>
+              </ion-col>
+              <ion-col width-50>
+                  <h2>LOCATION</h2>
+                <p>{{job.jobLocation}}</p>
+              </ion-col>
+             </ion-row>
+          </ion-grid>
+         </ion-item>
+         <ion-item text-wrap>
+           <ion-badge color="awesome-blue" *ngFor = "let tag of job.tags">{{tag}}</ion-badge>
+           
+         </ion-item>
+
+    </ion-list>
+    <ion-item text-wrap>
+
+       <span [innerHTML]="job.description">
+       </span>
+
+
+     <br>
+     <br>
+     <h2>REQUIREMENTS</h2>
+
+
+      <ul>
+        <li *ngFor = "let requirement of job.requirements" ><span>{{requirement}}</span></li>
+        
+      </ul>
+
+     <h2>BENEFITS</h2>
+     <ul *ngIf="expand">
+       <li *ngFor =" let benefit of job.benefits" ><span>{{benefit}}</span></li>
+       
+     </ul>
+     <ion-list padding>
+       <button ion-button block outline (click)="expand = !expand">
+       Read&nbsp;
+       <span *ngIf ="!expand"> More</span>
+       <span *ngIf ="expand"> Less</span>
+       </button>
+
+     </ion-list>
+     <ion-item text-wrap>Are you feeling excited about this position and {{job.company}}?</ion-item>
+
+     <ion-list padding>
+
+       <button ion-button block color="secondary" (click)="emailEmployer()">Apply for this Job</button>
+     </ion-list>
+
+    </ion-item>
+</ion-content>

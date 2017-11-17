@@ -9,14 +9,31 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
+import { MenuPage} from '../pages/menu/menu';
+import { EventPage } from '../pages/event/event';
+import { JobPage } from '../pages/job/job';
+
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import {FIREBASE_CONFIG} from './app.firebase.config';
 import {AngularFireModule} from 'angularfire2';
-import {AngularFireAuthModule} from 'angularfire2/auth';
+import {AngularFireAuthModule, AngularFireAuth} from 'angularfire2/auth';
+import {AngularFireDatabaseModule, AngularFireDatabase} from 'angularfire2/database';
 
+
+import {HeaderComponent } from '../components/header/header';
+import {EventsComponent} from '../components/events/events';
+import {JobsComponent } from '../components/jobs/jobs';
+import {LoaderComponent} from '../components/loader/loader';
+
+import {UsersProvider} from '../providers/users';
+import {InviteesProvider} from '../providers/invitees';
+import {JobsProvider} from '../providers/jobs';
+import {EventsProvider} from '../providers/events';
+
+import { FeaturedPipe} from '../pipes/featured';
 
 @NgModule({
   declarations: [
@@ -26,13 +43,22 @@ import {AngularFireAuthModule} from 'angularfire2/auth';
     HomePage,
     TabsPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    EventPage,
+    MenuPage,
+    JobPage,
+    HeaderComponent,
+    EventsComponent,
+    JobsComponent,
+    LoaderComponent,
+    FeaturedPipe
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -41,13 +67,21 @@ import {AngularFireAuthModule} from 'angularfire2/auth';
     ContactPage,
     HomePage,
     TabsPage,
+    MenuPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    EventPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    UsersProvider,
+    InviteesProvider,
+    EventsProvider,
+    JobsProvider,
+    AngularFireAuth,
+    AngularFireDatabase
   ]
 })
 export class AppModule {}

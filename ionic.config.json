@@ -2,5 +2,7 @@
   "name": "JobSearch",
   "app_id": "2b261f4e",
   "type": "ionic-angular",
-  "integrations": {}
+  "integrations": {
+    "cordova": {}
+  }
 }

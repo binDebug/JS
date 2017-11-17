@@ -1,4 +1,4 @@
-// http://ionicframework.com/docs/theming/
+// http://ionicframework.com/docs/v2/theming/
 
 
 // App Global Sass
@@ -14,3 +14,142 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+@import url('https://fonts.googleapis.com/css?family=Varela+Round');
+.ion-page{
+  font-family: 'Varela Round' !important;
+}
+ion-fab{
+    position: absolute ;
+    bottom:3% ;
+    right: 4%;
+}
+div.item-inner{
+    border-bottom: none !important;
+}
+ion-navbar.toolbar{
+  border-bottom : 3px solid white;
+
+
+}
+
+ion-avatar>img{
+    width: 60px !important;
+    height: 60px !important;
+
+}
+
+.tabs-ios .tab-button{
+  color: #444;
+  font-size: .9em;
+}
+.tab-button[aria-selected=true]{
+    border-bottom: 2px solid #387ef5;
+
+}
+ion-list{
+  font-family: inherit;
+  margin-bottom: 0 !important;
+}
+ion-slides.mainpage{
+    height: 220px;
+    .swiper-container{
+        // position: relative;
+         background:#f3f3f3;
+         padding-left: 0px;
+         padding-right: 10px;
+         .swiper-wrapper{
+           position: relative;
+           left: 3%;
+
+           .swiper-slide{
+
+              margin-right: 1px;
+              margin-left: 1px;
+              width: 97% !important;
+
+           }
+         }
+
+    }
+
+    .swiper-pagination{
+        position: absolute;
+        bottom:0 !important;
+
+    }
+
+}
+
+
+
+ion-col{
+  padding:0;
+  margin: 5px 5px 5px 0;
+}
+.header-ios .toolbar-background-ios, .footer-ios .toolbar-background-ios{
+    border:none;
+}
+.toolbar-background-ios,
+.tabs-ios .tabbar{
+    background: #fff;
+}
+.badge-ios-awesome-blue{
+  color: #1bb3fe;
+}
+ul{
+  padding-left: 1em;
+  color: map-get($colors, dark-awesome-blue);
+  span{
+    color: #444;
+  }
+  }
+textarea{
+  resize: none;
+  width: 100%;
+  height: 6em;
+
+}
+div.input-cover{
+border: 1px solid #ccc;
+
+}
+ion-item.item-input{
+  margin: 5px 0 5px 0;
+}
+  button.back-button{
+    color:#444;
+    -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+  }
+  ion-item.featured-job.item.item-block.item-ios{
+    background: transparent;
+    position: absolute;
+    color: #fff;
+    z-index:10;
+    bottom: 16px !important;
+    p{
+      color: inherit;
+    }
+  }
+
+  
+  .seagreen{
+    background: map-get($colors, seagreen) !important;
+  }
+  .salmon{
+    background: map-get($colors, salmon) !important;
+  }
+  .awesome-blue{
+    background: map-get($colors, awesome-blue) !important;
+  }
+  .sunset{
+     background: map-get($colors, sunset) !important;
+  }
+
+  [name="ios-notifications-oultine"] {
+    font-size: 1.6em !important;
+  }
+  

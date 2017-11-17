@@ -1,0 +1,33 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Menu</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="closeModal()">
+            <ion-icon name ="ios-close-circle-outline" color="dark" >
+            </ion-icon>
+         </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    
+    <ion-list no-lines>
+        <ion-item text-center (click)="profile()">
+            Profile
+        </ion-item>
+        <ion-item text-center (click)="goToChat()">
+            Chat
+        </ion-item>
+        <ion-item text-center>
+            Terms and Conditions
+        </ion-item>
+        <ion-item text-center (click)="logOut()">
+            Logout
+        </ion-item>
+    </ion-list>
+
+</ion-content>
