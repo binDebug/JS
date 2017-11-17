@@ -38,7 +38,7 @@ export class LoginPage {
       this.email,
       this.password
     ).then(res => {
-        console.log('res', res);
+        
       let userData = {
         email: res.email,
         picture: res.photoURL,
