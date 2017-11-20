@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { RegisterPage } from "../register/register";
 
-import {AngularFireAuth} from 'angularfire2/auth';
 import { TabsPage } from "../tabs/tabs";
+import { AuthProvider } from '../../providers/auth';
 
 /**
  * Generated class for the LoginPage page.
@@ -25,7 +25,7 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController,
       public navParams: NavParams,
-      private afAuth: AngularFireAuth,
+      private afAuth: AuthProvider,
       private toastCtrl: ToastController) {
   }
 
@@ -34,10 +34,8 @@ export class LoginPage {
   }
 
   login() {
-     this.afAuth.auth.signInWithEmailAndPassword(
-      this.email,
-      this.password
-    ).then(res => {
+    this.afAuth.signIn(this.email, this.password)
+     .then(res => {
         
       let userData = {
         email: res.email,

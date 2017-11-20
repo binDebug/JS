@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
-import {AngularFireAuth} from 'angularfire2/auth';
-//import {AngularFireList} from 'angularfire2/database';
 import { TabsPage } from "../tabs/tabs";
 import { LoginPage } from "../login/login";
 import {InviteesProvider} from '../../providers/invitees';
 import {UsersProvider} from '../../providers/users';
+import { AuthProvider } from '../../providers/auth';
 
 
 /**
@@ -29,7 +28,7 @@ export class RegisterPage {
   constructor(public navCtrl: NavController,
      public navParams: NavParams,
      private toastCtrl: ToastController,
-     private afAuth: AngularFireAuth,
+     private afAuth: AuthProvider,
      private invitees: InviteesProvider,
      private users: UsersProvider) {
   }
@@ -38,7 +37,7 @@ export class RegisterPage {
 
     this.invitees.getInvitee(this.email).snapshotChanges().subscribe(res => {
        if (res && (res.length == 1)) {
-          this.afAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
+         this.afAuth.signUp(this.email, this.password)
           .then(res => {
 
             let userData = {

@@ -12,6 +12,7 @@ import { RegisterPage } from '../pages/register/register';
 import { MenuPage} from '../pages/menu/menu';
 import { EventPage } from '../pages/event/event';
 import { JobPage } from '../pages/job/job';
+import { ProfilePage } from '../pages/profile/profile';
 
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -32,8 +33,15 @@ import {UsersProvider} from '../providers/users';
 import {InviteesProvider} from '../providers/invitees';
 import {JobsProvider} from '../providers/jobs';
 import {EventsProvider} from '../providers/events';
+import {AuthProvider} from '../providers/auth';
+import {FBStorageProvider} from '../providers/storage';
+
 
 import { FeaturedPipe} from '../pipes/featured';
+
+import { FileChooser } from '@ionic-native/file-chooser';
+import { FilePath } from '@ionic-native/file-path';
+import { File } from '@ionic-native/file';
 
 @NgModule({
   declarations: [
@@ -47,6 +55,7 @@ import { FeaturedPipe} from '../pipes/featured';
     EventPage,
     MenuPage,
     JobPage,
+    ProfilePage,
     HeaderComponent,
     EventsComponent,
     JobsComponent,
@@ -70,7 +79,8 @@ import { FeaturedPipe} from '../pipes/featured';
     MenuPage,
     LoginPage,
     RegisterPage,
-    EventPage
+    EventPage,
+    ProfilePage
   ],
   providers: [
     StatusBar,
@@ -80,8 +90,13 @@ import { FeaturedPipe} from '../pipes/featured';
     InviteesProvider,
     EventsProvider,
     JobsProvider,
+    AuthProvider,
+    FBStorageProvider,
     AngularFireAuth,
-    AngularFireDatabase
+    AngularFireDatabase,
+    FileChooser,
+    FilePath,
+    File
   ]
 })
 export class AppModule {}
