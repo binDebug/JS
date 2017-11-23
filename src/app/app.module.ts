@@ -4,16 +4,17 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
+import { FavoritesPage } from '../pages/favorites/favorites';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { MenuPage} from '../pages/menu/menu';
-import { EventPage } from '../pages/event/event';
+import { EventsPage } from '../pages/events/events';
 import { JobPage } from '../pages/job/job';
 import { ProfilePage } from '../pages/profile/profile';
-
+import { FavoriteJobsPage } from '../pages/favorite-jobs/favorite-jobs';
+import { FavoriteEventsPage } from '../pages/favorite-events/favorite-events';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -48,15 +49,17 @@ import { EmailComposer } from '@ionic-native/email-composer';
   declarations: [
     MyApp,
     AboutPage,
-    ContactPage,
+    FavoritesPage,
     HomePage,
     TabsPage,
     LoginPage,
     RegisterPage,
-    EventPage,
+    EventsPage,
     MenuPage,
     JobPage,
     ProfilePage,
+    FavoriteJobsPage,
+    FavoriteEventsPage,
     HeaderComponent,
     EventsComponent,
     JobsComponent,
@@ -74,15 +77,17 @@ import { EmailComposer } from '@ionic-native/email-composer';
   entryComponents: [
     MyApp,
     AboutPage,
-    ContactPage,
+    FavoritesPage,
     HomePage,
     TabsPage,
     MenuPage,
     LoginPage,
     RegisterPage,
-    EventPage,
+    EventsPage,
     ProfilePage, 
-    JobPage
+    JobPage,
+    FavoriteJobsPage,
+    FavoriteEventsPage
   ],
   providers: [
     StatusBar,

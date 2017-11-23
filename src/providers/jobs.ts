@@ -23,7 +23,7 @@ loaderHide() {
 this.loaderState = false;
 }
 
-getFirebaseJobs() {
+getJobs() {
   return this.afDatabase.list("/jobs")
 }
 

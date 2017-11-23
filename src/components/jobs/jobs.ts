@@ -25,7 +25,7 @@ export class JobsComponent {
     
     this.jobsService.loaderShow();
 
-    this.jobsService.getFirebaseJobs().valueChanges()
+    this.jobsService.getJobs().valueChanges()
         .subscribe(data => {
           this.jobList = data;
           

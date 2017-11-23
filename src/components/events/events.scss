@@ -10,14 +10,42 @@ events-feed {
     }
 
     .card-content {
-        padding: 5px !important;
+        padding: 0 !important;
         height: 100% !important;
+        border-top-left-radius: 5px !important;
+        border-top-right-radius: 5px !important;
+
+        .event-name {
+            font-size: 17px;
+            font-weight: 700px;
+            max-width: 50%;
+            overflow: hidden;
+        }
+
+        .capacity {
+            float: right;
+            width: 36px;
+            text-align: center;
+            border: solid 2px white;
+            border-radius: 50%;
+            padding: 5px;
+        }
 
         .toolbar-title {
             color:  white !important;
             text-align: left;
         }
+
+        .event-text {
+            padding: 8px !important;
+        }
+
+        .price {
+            float: right;
+            padding: 2px;
+            border: solid 1px white;
+            border-radius: 3px;
+        }
+
     }
-
-
 }

@@ -4,15 +4,27 @@
         <ion-card>
         <ion-card-content>
             <img src="{{event.imageUrl}}" />
-            <ion-title>{{event.name}}</ion-title>
             
-            <span>
-                {{event.date}} {{event.duration}} day(s)
-            </span>
-            <br>
-            <span>{{event.location.city}}, {{event.location.state}} {{event.location.country}}</span>
-            <br>
-            <span>Seats available: {{event.capacity - event.attendance}}</span>
+            <div class="event-text" >
+                <div>
+                    <span class="event-name">{{event.name}}</span>
+                    <span class="capacity">{{event.capacity - event.attendance}}</span>
+                </div>
+                <div>{{event.location.city}}, {{event.location.state}}</div>
+                <div *ngIf="event.description.length > 30">
+                    {{event.description.substring(0,50)}}...
+                </div>
+                <div *ngIf="event.description.length <= 30">
+                    {{event.description.substring(0,50)}}
+                </div>
+                <div>
+                    <span>
+                        {{event.date}} 
+                    </span>
+                    <span *ngIf="event.price === 0" class="price">Free</span>
+                    <span *ngIf="event.price > 0" class="price">${{event.price}}</span>
+                </div>
+            </div>
         </ion-card-content>
 
         </ion-card>
