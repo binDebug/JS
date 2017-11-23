@@ -38,9 +38,10 @@ export class ProfilePage implements OnInit {
         this.users.getUser(this.uid).valueChanges()
           .subscribe(res => {
             console.log('res', res);
-            if(res && (res.length > 0))
-              this.resumeUrl = JSON.parse(res[0]).resumeUrl;
-              
+            if(res && (res.length > 0)) {
+              let result : any[] = res;
+              this.resumeUrl = result[0].resumeUrl;
+            }
           });
       }
     }

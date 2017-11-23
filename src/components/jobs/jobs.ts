@@ -28,7 +28,7 @@ export class JobsComponent {
     this.jobsService.getFirebaseJobs().valueChanges()
         .subscribe(data => {
           this.jobList = data;
-          console.log('this.jobList', this.jobList);
+          
         });
       
    
@@ -40,7 +40,6 @@ export class JobsComponent {
    jobsData: selectedJob
  }
 
- console.log('dataObj', dataObj, selectedJob);
   this.navCtrl.push(JobPage,dataObj)
  
 }

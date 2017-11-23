@@ -13,6 +13,7 @@ export class JobPage implements OnInit {
   public job:any;
   userData: any;
   uid: string = null;
+  email: string = null;
   resumeUrl: string = '';
   isFavorite: boolean = false;
   isApplied: boolean = false;
@@ -32,10 +33,14 @@ export class JobPage implements OnInit {
     this.userData = window.localStorage.getItem('userData');
     if(this.userData) {
       this.uid = JSON.parse(this.userData).id;
+      this.email = JSON.parse(this.userData).email;
       this.usersList.getUser(this.uid).valueChanges()
         .subscribe(res => {
-          if(res && (res.length > 0))
-            this.resumeUrl = JSON.parse(res[0]).resumeUrl;
+          
+          if(res && (res.length > 0)) {
+            let result : any[] = res;
+            this.resumeUrl = result[0].resumeUrl;
+          }
         });
 
         this.jobList.isJobFavorited(this.uid, this.job.id)
@@ -56,24 +61,31 @@ export class JobPage implements OnInit {
 
   apply() {
     if(!this.isApplied) {
-      this.jobList.applyJob(this.uid, this.job.id);
-      this.isApplied = true;
+      if(!this.resumeUrl)
+        this.showError('Upload resume to apply to this job.');
+      else {
+          this.jobList.applyJob(this.uid, this.job.id);
+          this.emailEmployer();
+          this.isApplied = true;
+      }
     }
     else {
       this.jobList.unApplyJob(this.uid + '_' + this.job.id);
       this.isApplied = false;
     }
-    //this.emailEmployer('');
+    
   }
 
-  emailEmployer(employerEmail:string) {
+  emailEmployer() {
 
     let emailOpts = {
-    to: 'fitzm@gmail.com',
+    to: 'shilpaprabhun@gmail.com',
     cc: 'another@email.com',
     bcc: ['john@doe.com', 'jane@doe.com'],
-    subject: 'Application for xyz job opening',
-    body: 'Please attach a copy of your resume and cover letter',
+    subject: 'Application for job opening: ' + this.job.jobTitle,
+    body: 'Sir, I would like to apply for a job at your company. <br/>' 
+          + ' Please view my <a href="' +  this.resumeUrl +'"> resume </a> here: ' 
+          + this.resumeUrl,
     isHtml: true
   };
 
