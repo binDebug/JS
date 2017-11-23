@@ -9,19 +9,21 @@ export class UsersProvider {
      
  }
 
-  getLastUser(): AngularFireList<any[]> {
-    return this.afDatabase.list("users", ref => ref.orderByKey().limitToLast(1));
+  getUser(uid: string) {
+    return this.afDatabase.list("users", res => res.orderByKey().equalTo(uid) );
   }
 
-  addUser(email: string, id: number) {
+  addUser(email: string, uid: string) {
       
       var user = {
           email: email
       };
-this.afDatabase.list("users").set(id.toString(), user)
-    .then(function (res: any) {
+
+      
+      this.afDatabase.list("users").set(uid, user)
+        .then(function (res: any) {
+        });
         
-    });
     
   }
 }

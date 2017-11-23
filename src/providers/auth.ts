@@ -8,15 +8,18 @@ export class AuthProvider {
      
  }
 signUp(email: string, password: string) : Promise<any> {
-    return this.afAuth.auth.signInWithEmailAndPassword(
+    return this.afAuth.auth.createUserWithEmailAndPassword(
         email,
         password
       );
 }
 
 signIn(email: string, password: string) : Promise<any>{
-    return  this.afAuth.auth.createUserWithEmailAndPassword(email, password);
+    
+    return  this.afAuth.auth.signInWithEmailAndPassword(email, password);
 }
 
-
+public signOut() {
+    this.afAuth.auth.signOut();
+}
 }

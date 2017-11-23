@@ -48,7 +48,7 @@ export class RegisterPage {
             window.localStorage.setItem('userData', JSON.stringify(userData));
 
             this.userAdded = false;
-            this.addUser(this.email);
+            this.addUser(this.email, res.uid);
 
             this.navCtrl.setRoot(TabsPage);
           }).catch(err => {
@@ -72,18 +72,14 @@ export class RegisterPage {
     toast.present();
   }
 
-  addUser(email: any) {
+  addUser(email: string, uid: string) {
     if(this.userAdded == false) {
     let id: number = 0;
 
-      this.users.getLastUser().snapshotChanges().subscribe(data=> {
-        if(data && (data.length == 1)) {
-          id = +data[0].key + 1;
-          
-        }
-        this.users.addUser(email, id);
+
+        this.users.addUser(email, uid);
         this.userAdded = true;
-      });
+
     }
   }
 

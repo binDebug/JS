@@ -21,22 +21,26 @@ export class JobsComponent {
     public jobsService: JobsProvider,
     public navCtrl: NavController
   ) {
+
     
     this.jobsService.loaderShow();
 
     this.jobsService.getFirebaseJobs().valueChanges()
         .subscribe(data => {
           this.jobList = data;
+          console.log('this.jobList', this.jobList);
         });
       
    
   }
   
-  openJob(selectedJob){
+  openJob(selectedJob: any){
  
  let dataObj =  {
    jobsData: selectedJob
  }
+
+ console.log('dataObj', dataObj, selectedJob);
   this.navCtrl.push(JobPage,dataObj)
  
 }

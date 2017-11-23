@@ -36,11 +36,11 @@ export class LoginPage {
   login() {
     this.afAuth.signIn(this.email, this.password)
      .then(res => {
-        
+      console.log('res', res);
       let userData = {
         email: res.email,
         picture: res.photoURL,
-        uid: res.uid
+        id: res.uid
       }
       window.localStorage.setItem('userData', JSON.stringify(userData))
       this.navCtrl.setRoot(TabsPage)

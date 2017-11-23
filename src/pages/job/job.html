@@ -12,7 +12,11 @@
   <ion-list>
     <ion-item>
     <ion-badge [ngClass]='{"seagreen": job.jobType === "Full Time", "salmon": job.jobType === "Contractor","sunset": job.jobType === "Remote"}' >{{job.jobType}}</ion-badge>
-    <button ion-button clear icon-only item-right (click)="favorite(); active = !active"> <ion-icon name="star"></ion-icon></button>
+     
+    <button ion-button clear icon-only item-right (click)="favorite(); active = !active"> 
+      <ion-icon name="star" *ngIf="isFavorite === true"></ion-icon>
+      <ion-icon name="star-outline" *ngIf="isFavorite === false"></ion-icon>
+    </button>
     </ion-item>
        <ion-item>
      <h2>{{job.jobTitle}}</h2>
@@ -36,8 +40,8 @@
              </ion-row>
           </ion-grid>
          </ion-item>
-         <ion-item text-wrap>
-           <ion-badge color="awesome-blue" *ngFor = "let tag of job.tags">{{tag}}</ion-badge>
+         <ion-item text-wrap *ngIf="job.tags">
+           <ion-badge color="awesome-blue" *ngFor = "let tag of job.tags" >{{tag}}</ion-badge>
            
          </ion-item>
 
@@ -50,11 +54,11 @@
 
      <br>
      <br>
-     <h2>REQUIREMENTS</h2>
+     <h2 *ngIf="job.requirements">REQUIREMENTS</h2>
 
 
-      <ul>
-        <li *ngFor = "let requirement of job.requirements" ><span>{{requirement}}</span></li>
+      <ul *ngIf="job.requirements">
+        <li *ngFor = "let requirement of job.requirements"  ><span>{{requirement}}</span></li>
         
       </ul>
 
@@ -75,7 +79,8 @@
 
      <ion-list padding>
 
-       <button ion-button block color="secondary" (click)="emailEmployer()">Apply for this Job</button>
+       <button ion-button block color="secondary" (click)="apply()" *ngIf="isApplied === false">Apply for this Job</button>
+       <button ion-button block color="secondary" (click)="apply()" *ngIf="isApplied === true">Withdraw application</button>
      </ion-list>
 
     </ion-item>

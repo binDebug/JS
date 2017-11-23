@@ -42,6 +42,7 @@ import { FeaturedPipe} from '../pipes/featured';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { FilePath } from '@ionic-native/file-path';
 import { File } from '@ionic-native/file';
+import { EmailComposer } from '@ionic-native/email-composer';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { File } from '@ionic-native/file';
     LoginPage,
     RegisterPage,
     EventPage,
-    ProfilePage
+    ProfilePage, 
+    JobPage
   ],
   providers: [
     StatusBar,
@@ -96,7 +98,8 @@ import { File } from '@ionic-native/file';
     AngularFireDatabase,
     FileChooser,
     FilePath,
-    File
+    File,
+    EmailComposer
   ]
 })
 export class AppModule {}

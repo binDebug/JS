@@ -1,7 +1,7 @@
  
  <!--Featured Jobs Slide Start-->
  <ion-slides class="mainpage" pager>
-    <ion-slide  *ngFor = "let item of jobList | featured: args" (click)="openJob(featured)" >
+    <ion-slide  *ngFor = "let item of jobList | featured: args" (click)="openJob(item)" >
       <!-- <ion-slide  *ngFor = "let item of jobList" (click)="openJob(item)" > -->
     <img src="{{item.bannerImgURL}}"/>
     <ion-item class="featured-job">
@@ -17,7 +17,7 @@
 
 <!--Featured Jobs slider ends-->
 <!--Jobs List Starts -->
- <ion-list *ngFor="let job of jobList" (click)='openJob(job)'>
+ <ion-list *ngFor="let job of jobList" (click)="openJob(job)">
        <ion-item text-wrap>
      <h2>{{job.jobTitle}}</h2>
           <p>Posted on <strong>January 14, 2017</strong></p>
