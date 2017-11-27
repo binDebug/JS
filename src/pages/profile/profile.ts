@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ToastController, ViewController } from 'ionic-angular';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { FilePath } from '@ionic-native/file-path';
 
@@ -17,6 +17,7 @@ export class ProfilePage implements OnInit {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
+    public viewCtrl: ViewController,
     private fileChooser: FileChooser,
     private toastCtrl: ToastController,
     private storage: FBStorageProvider,
@@ -46,6 +47,10 @@ export class ProfilePage implements OnInit {
       }
     }
 
+    closeModal() {
+      this.viewCtrl.dismiss()
+    }
+  
     uploadResume() {
       
       

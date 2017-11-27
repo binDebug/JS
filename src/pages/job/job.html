@@ -13,7 +13,7 @@
     <ion-item>
     <ion-badge [ngClass]='{"seagreen": job.jobType === "Full Time", "salmon": job.jobType === "Contractor","sunset": job.jobType === "Remote"}' >{{job.jobType}}</ion-badge>
      
-    <button ion-button clear icon-only item-right (click)="favorite(); active = !active"> 
+    <button ion-button clear icon-only item-right (click)="favorite()"> 
       <ion-icon name="star" *ngIf="isFavorite === true"></ion-icon>
       <ion-icon name="star-outline" *ngIf="isFavorite === false"></ion-icon>
     </button>

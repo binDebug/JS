@@ -55,8 +55,6 @@ export class JobPage implements OnInit {
                 this.isFavorite = true;
           });
     }
-    
-
   }
 
   apply() {

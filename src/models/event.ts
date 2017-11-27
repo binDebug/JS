@@ -4,7 +4,7 @@ export class event {
     duration: number;
     featured: boolean;
     date: Date;
-    id: number;
+    id: string;
     imageUrl: string;
     name: string;
     time: string;

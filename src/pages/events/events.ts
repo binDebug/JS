@@ -5,8 +5,8 @@ import { EventsProvider } from '../../providers/events';
 import {EventsComponent} from '../../components/events/events';
 
 @Component({
-  selector: 'page-event',
-  templateUrl: 'event.html'
+  selector: 'page-events',
+  templateUrl: 'events.html'
 })
 export class EventsPage {
 

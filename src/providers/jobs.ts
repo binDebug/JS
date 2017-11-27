@@ -5,74 +5,71 @@ import { DateTime } from 'ionic-angular/components/datetime/datetime';
 
 @Injectable()
 export class JobsProvider {
- public jobs: any;
- public loaderState:boolean;
+  public jobs: any;
+  public loaderState:boolean;
+  
   constructor(private afDatabase: AngularFireDatabase) {
-    
-
- this.loaderState = true
- 
+    this.loaderState = true
   }
 
- 
-loaderShow() {
-this.loaderState = true;
-}
+  loaderShow() {
+  this.loaderState = true;
+  }
 
-loaderHide() {
-this.loaderState = false;
-}
+  loaderHide() {
+  this.loaderState = false;
+  }
 
-getJobs() {
-  return this.afDatabase.list("/jobs")
-}
+  getJobs() {
+    return this.afDatabase.list("/jobs")
+  }
 
-isJobFavorited(uid: string, jobid: string) {
-  let key: string = uid + '_' + jobid;
-  return this.afDatabase.list("/favoritedjobs", res => res.orderByKey().equalTo(key));
-}
+  isJobFavorited(uid: string, jobid: string) {
+    let key: string = uid + '_' + jobid;
+    return this.afDatabase.list("/favoritedjobs", res => res.orderByKey().equalTo(key));
+  }
 
-favoriteJob(uid: string, jobid: string) {
-  let item = {
-    date : Date.now(),
-    uid: uid,
-    jobid: jobid
-  };
-  let key: string = uid + '_' + jobid;
-  
-  return this.afDatabase.list("/favoritedjobs")
-    .set(key, item);
-}
+  favoriteJob(uid: string, jobid: string) {
+    let item = {
+      date : Date.now(),
+      uid: uid,
+      jobid: jobid
+    };
+    let key: string = uid + '_' + jobid;
+    
+    return this.afDatabase.list("/favoritedjobs")
+      .set(key, item);
+  }
 
-unfavoriteJob(key: string) {
-  console.log('key', key);
-  return this.afDatabase.list("/favoritedjobs").remove(key);
-}
+  unfavoriteJob(key: string) {
+    console.log('key', key);
+    return this.afDatabase.list("/favoritedjobs").remove(key);
+  }
 
-getFavoritedJobs(uid: string) {
-  return this.afDatabase.list("/favoritedjobs", res => res.orderByChild("uid").equalTo(uid));
-}
+  getFavoritedJobs(uid: string) {
+    return this.afDatabase.list("/favoritedjobs", res => res.orderByChild("uid").equalTo(uid));
+  }
 
-isJobApplied(uid: string, jobid: string) {
-  let key: string = uid + '_' + jobid;
-  return this.afDatabase.list("/appliedjobs", res => res.orderByKey().equalTo(key));
-}
+  isJobApplied(uid: string, jobid: string) {
+    let key: string = uid + '_' + jobid;
+    return this.afDatabase.list("/appliedjobs", res => res.orderByKey().equalTo(key));
+  }
 
-getAppliedJobs(uid: string) {
-  return this.afDatabase.list("/appliedjobs", res => res.orderByChild("uid").equalTo(uid));
-}
+  getAppliedJobs(uid: string) {
+    return this.afDatabase.list("/appliedjobs", res => res.orderByChild("uid").equalTo(uid));
+  }
 
-applyJob(uid: string, jobid: string) {
-  let item = {
-    date : Date.now(),
-    uid: uid,
-    jobid: jobid
-  };
-  let key: string = uid + '_' + jobid;
-  
-  return this.afDatabase.list("/appliedjobs")
-    .set(key, item);
-}
+  applyJob(uid: string, jobid: string) {
+    let item = {
+      date : Date.now(),
+      uid: uid,
+      jobid: jobid
+    };
+    let key: string = uid + '_' + jobid;
+    
+    return this.afDatabase.list("/appliedjobs")
+      .set(key, item);
+  }
 
   unApplyJob(key: string) {
     return this.afDatabase.list("/appliedjobs").remove(key);

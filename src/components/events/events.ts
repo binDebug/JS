@@ -8,6 +8,7 @@ import { event } from "../../models/event";
 import { eventVM } from "../../models/eventVM";
 import { AngularFireList } from 'angularfire2/database/interfaces';
 import { Observable } from 'rxjs/Observable';
+import { EventPage } from '../../pages/event/event';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class EventsComponent {
     
     this.eventsService.loaderShow();
 
-     (this.eventsService.getFirebaseEvents().valueChanges() as Observable< event[]>)
+     (this.eventsService.getEvents().valueChanges() as Observable< event[]>)
       .subscribe(data => {
         
           this.eventList = data;
@@ -38,6 +39,13 @@ export class EventsComponent {
           this.eventsService.loaderHide();
       });
           
+  }
+
+  openEvent(event: Event) {
+    var eventObj = {
+      eventData: event
+    };
+    this.navCtrl.push(EventPage, eventObj);
   }
   
    transform() {

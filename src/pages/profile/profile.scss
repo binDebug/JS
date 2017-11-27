@@ -4,4 +4,8 @@ page-profile {
         width: 50%;
         height: 50%;
     }
+    button.back-button {
+        -webkit-transform: none !important; 
+         transform: none !important; 
+    }
 }

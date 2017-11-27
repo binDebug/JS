@@ -11,6 +11,7 @@ import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { MenuPage} from '../pages/menu/menu';
 import { EventsPage } from '../pages/events/events';
+import { EventPage } from '../pages/event/event';
 import { JobPage } from '../pages/job/job';
 import { ProfilePage } from '../pages/profile/profile';
 import { FavoriteJobsPage } from '../pages/favorite-jobs/favorite-jobs';
@@ -45,6 +46,8 @@ import { FilePath } from '@ionic-native/file-path';
 import { File } from '@ionic-native/file';
 import { EmailComposer } from '@ionic-native/email-composer';
 
+import { PayPal } from '@ionic-native/paypal';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -55,6 +58,7 @@ import { EmailComposer } from '@ionic-native/email-composer';
     LoginPage,
     RegisterPage,
     EventsPage,
+    EventPage,
     MenuPage,
     JobPage,
     ProfilePage,
@@ -84,6 +88,7 @@ import { EmailComposer } from '@ionic-native/email-composer';
     LoginPage,
     RegisterPage,
     EventsPage,
+    EventPage,
     ProfilePage, 
     JobPage,
     FavoriteJobsPage,
@@ -104,7 +109,8 @@ import { EmailComposer } from '@ionic-native/email-composer';
     FileChooser,
     FilePath,
     File,
-    EmailComposer
+    EmailComposer,
+    PayPal
   ]
 })
 export class AppModule {}

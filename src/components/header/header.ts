@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 import { MenuPage } from '../../pages/menu/menu';
 
@@ -13,7 +13,7 @@ import { MenuPage } from '../../pages/menu/menu';
   templateUrl: 'header.html'
 })
 export class HeaderComponent {
-
+  @Input() title : string; 
   text: string;
 
   constructor(public modalCtrl: ModalController) {
