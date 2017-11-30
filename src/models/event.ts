@@ -9,6 +9,7 @@ export class event {
     name: string;
     time: string;
     place: location;
+    price: number;
     description: string;
     capacity: number;
     attendance: number;

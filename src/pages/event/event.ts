@@ -46,22 +46,17 @@ export class EventPage implements OnInit {
     if(!this.isRegistered) {
 
       if(this.event.price > 0) {
-      console.log('1');
-
       this.payPal.init({
         PayPalEnvironmentSandbox: 'AQI7H5SuJV8ydsaIMsrkRHAsTkzbTZu1dbiurDpLVJC0twun0Ky6aj7Jmmc4eBu8-YXSnL6olRpdIwPH',
         PayPalEnvironmentProduction: ''
       }).then(() => {
-        console.log('2');
         // Environments: PayPalEnvironmentNoNetwork, PayPalEnvironmentSandbox, PayPalEnvironmentProduction
         this.payPal.prepareToRender('PayPalEnvironmentSandbox', new PayPalConfiguration({
           // Only needed if you get an "Internal Service Error" after PayPal login!
           //payPalShippingAddressOption: 2 // PayPalShippingAddressOptionPayPal
         })).then(() => {
-          console.log('3');
-          let payment = new PayPalPayment(this.event.price, 'USD', 'Description', 'sale');
+          let payment = new PayPalPayment(this.event.price.toString(), 'USD', 'Description', 'sale');
           this.payPal.renderSinglePaymentUI(payment).then(() => {
-            console.log('4');
             this.eventList.applyEvent(this.uid, this.event.id)
             .then(() => {
               this.showError("You have successfully registered for the event.");
@@ -87,15 +82,15 @@ export class EventPage implements OnInit {
             //   }
             // }
           }, () => {
-            console.log('5');
+            this.showError("Payment unsuccessful. Try again");
             // Error or render dialog closed without being successful
           });
         }, () => {
-          console.log('6');
+          this.showError("Payment unsuccessful. Try again");
           // Error in configuration
         });
       }, () => {
-        console.log('7');
+        this.showError("Payment unsuccessful. Try again");
         // Error in initialization, maybe PayPal isn't supported or something else
       });
     }

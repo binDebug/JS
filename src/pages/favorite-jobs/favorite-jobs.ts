@@ -2,13 +2,7 @@ import { OnInit, Component } from '@angular/core';
 import {  NavController, NavParams, ToastController } from 'ionic-angular';
 import { JobsProvider } from '../../providers/jobs';
 import { JobPage } from '../job/job';
-
-/**
- * Generated class for the FavoriteJobsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {HeaderComponent} from '../../components/header/header';
 
 
 @Component({
@@ -19,9 +13,11 @@ export class FavoriteJobsPage implements OnInit{
 
   allJobs: any[] = null;
   favJobs: any[] = [];
+  appliedJobs: any[] = [];
   favJobRefs: any[] = null;
   retrievedAllJobs: boolean = false;
   retrievedFavJobs: boolean = false;
+  retrievedAppliedJobs: boolean = false;
   uid: string;
   userData: any;
 
@@ -32,6 +28,7 @@ export class FavoriteJobsPage implements OnInit{
   }
 
   ngOnInit() {
+    
     this.userData = window.localStorage.getItem('userData');
     if(this.userData) {
       this.uid = JSON.parse(this.userData).id;
@@ -50,16 +47,27 @@ export class FavoriteJobsPage implements OnInit{
           this.processJobs();
         },
         err => this.showError(err.message));
+
+      this.jobList.getAppliedJobs(this.uid).valueChanges()
+        .subscribe(data => {
+          this.retrievedAppliedJobs = true;
+          this.appliedJobs = data;
+          this.processJobs();
+        },
+          err => this.showError(err.message));
     }
   }
 
   private processJobs() {
-    if(this.retrievedAllJobs && this.retrievedFavJobs) {
+    if(this.retrievedAllJobs && this.retrievedFavJobs && this.retrievedAppliedJobs) {
       if(this.favJobRefs) {
         for(let jobRef of this.favJobRefs) {
           let job = this.allJobs.find(p => p.id === jobRef.jobid);
+          let appliedJob = this.appliedJobs.find(p => p.jobid === jobRef.jobid)
           if(job) {
-            job.appliedOn = jobRef.date;
+            job.favedOn = jobRef.date;
+            if(appliedJob)
+              job.appliedOn = appliedJob.date;
             this.favJobs.push(job);
           }
         }
@@ -75,5 +83,14 @@ export class FavoriteJobsPage implements OnInit{
         });
     toast.present();
   }
-
+  openJob(selectedJob: any){
+    
+    let dataObj =  {
+      jobsData: selectedJob
+    }
+   
+     this.navCtrl.push(JobPage,dataObj)
+    
+   }
+   
 }

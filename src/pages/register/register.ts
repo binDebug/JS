@@ -40,13 +40,6 @@ export class RegisterPage {
          this.afAuth.signUp(this.email, this.password)
           .then(res => {
 
-            let userData = {
-              email: res.email,
-              picture: res.photoURL,
-              id: res.uid
-            }
-            window.localStorage.setItem('userData', JSON.stringify(userData));
-
             this.userAdded = false;
             this.addUser(this.email, res.uid);
 

@@ -1,4 +1,26 @@
-<ion-tabs>
-    <ion-tab  [root]="tab1" tabTitle="Jobs"></ion-tab>
-    <ion-tab  [root]="tab2" tabTitle="Events"></ion-tab>
-</ion-tabs>
+<ion-header>
+        <header-component title="{{title}}">
+        </header-component>
+      </ion-header>
+      
+<ion-content>
+     <ion-item class="top-header">
+         <ion-grid>
+             <ion-row>
+                 <ion-col>
+<button ion-button (click)="showContent()" value="Jobs" class="button-left"
+    [ngClass]="{'unselected': showJobs===false}">Jobs</button>
+</ion-col>
+<ion-col>
+<button ion-button (click)="showContent()" value="Events" class="button-right"
+[ngClass]="{'unselected': showJobs===true}">Events</button>
+</ion-col>
+</ion-row>
+</ion-grid>
+
+<page-favorite-jobs *ngIf="showJobs"></page-favorite-jobs>
+<page-favorite-events *ngIf="!showJobs"  ></page-favorite-events>
+     </ion-item>
+
+        
+</ion-content>

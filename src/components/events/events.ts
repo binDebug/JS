@@ -18,7 +18,6 @@ import { EventPage } from '../../pages/event/event';
 export class EventsComponent {
 
   text: string;
-  // eventList: AngularFireList<event>[];
   eventList: event[];
   eventVMList: eventVM[];
   args:any =  {featured:true};

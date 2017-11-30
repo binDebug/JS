@@ -26,4 +26,19 @@ export class UsersProvider {
         
     
   }
+
+  updateEmail (id: string, email: string) {
+    return this.afDatabase.list("users").update(id, {email: email});
+  }
+
+
+  updatePhone(id :string, phone: string) {
+    return this.afDatabase.list("users").update(id, {phone: phone});
+  }
+
+  updateZip(id :string, zip: string) {
+    return this.afDatabase.list("users").update(id, {zip: zip});
+  }
 }
+
+

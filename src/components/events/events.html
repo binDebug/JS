@@ -6,17 +6,24 @@
             <img src="{{event.imageUrl}}" />
             
             <div class="event-text" >
-                <div>
-                    <span class="event-name">{{event.name}}</span>
-                    <span class="capacity">{{event.capacity - event.attendance}}</span>
-                </div>
-                <div>{{event.location.city}}, {{event.location.state}}</div>
-                <div *ngIf="event.description.length > 30">
+                <ion-grid>
+<ion-row>
+                    <ion-col col-9 class="event-name">{{event.name}}</ion-col>
+                    <ion-col col-3 >
+                        <span class="capacity">{{event.capacity - event.attendance}}</span>
+                    </ion-col>
+                </ion-row>
+                
+                </ion-grid>
+                
+                    <div>{{event.location.city}}, {{event.location.state}}</div>
+                <div *ngIf="event.description.length > 30" class="description">
                     {{event.description.substring(0,50)}}...
                 </div>
-                <div *ngIf="event.description.length <= 30">
+                <div *ngIf="event.description.length <= 30" class="description">
                     {{event.description.substring(0,50)}}
                 </div>
+                <br>
                 <div>
                     <span>
                         {{event.date}} 
@@ -24,6 +31,7 @@
                     <span *ngIf="event.price === 0" class="price">Free</span>
                     <span *ngIf="event.price > 0" class="price">${{event.price}}</span>
                 </div>
+            
             </div>
         </ion-card-content>
 

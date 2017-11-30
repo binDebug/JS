@@ -1,8 +1,32 @@
 page-menu {
-img{
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    border: 4px solid black;
-}
+    // img{
+    //     width: 120px;
+    //     height: 120px;
+    //     border-radius: 50%;
+    //     border: 4px solid black;
+    // }
+
+    img {
+        border-radius: 50%;
+        width: 50%;
+        height: 50%;
+    }
+    button.back-button {
+        -webkit-transform: none !important; 
+         transform: none !important; 
+    }
+
+    .hyper-link {
+        color: #3232ff;
+        font-size: 12px;
+    }
+
+    .view-profile {
+        color: lightgray;
+        font-size: 12px;
+    }
+
+    .sign-out {
+        color:red !important;
+    }
 }

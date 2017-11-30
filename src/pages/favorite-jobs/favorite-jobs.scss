@@ -1,5 +1,32 @@
 page-favorite-jobs {
-    ion-content {
-        margin-top: 50px;
-    }
+        padding: 5px;
+        
+    
+        ion-list {
+            margin: 5px !important;
+            border-radius: 8px;
+            border: 1px solid lightgray;
+            top: -10px;
+
+            ion-avatar {
+                margin-left:39%;
+            }
+
+            h1, p {
+                text-align: center;
+            }
+
+            ion-col {
+                font-size: 14px;
+            }
+
+        }
+        .bottom-part {
+            background-color: #f7fcfc;
+        }
+
+        .label-title {
+            color: darkgray;
+        }
+   
 }

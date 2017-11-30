@@ -1,3 +1,41 @@
-page-contact {
+page-favorites {
+    .top-header {
+        padding-left: 2px;
+        ion-label {
+            margin: 3px !important;
+        }
+    }
 
+ion-grid {
+    padding: 0 !important;
+    ion-row {
+        padding: 0 !important;
+        
+        ion-col {
+        padding: 0 !important;
+
+    }
+}
+}
+
+
+    .button-left {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        margin-right: 0 !important;
+        float:right;
+    }
+
+    .button-right {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+        margin-left: -3px !important;
+
+    }
+
+    .unselected {
+        background-color: white;
+        color: #387ef5;
+        border: 1px solid #387ef5;
+    }
 }

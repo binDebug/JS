@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, ToastController, ViewController } from 'ionic-angular';
-import { FileChooser } from '@ionic-native/file-chooser';
-import { FilePath } from '@ionic-native/file-path';
-
-import { FBStorageProvider } from '../../providers/storage';
 import { UsersProvider } from '../../providers/users';
-import { File } from '@ionic-native/file';
+import { AuthProvider } from '../../providers/auth';
+
 
 @Component({
   selector: 'page-profile',
@@ -18,88 +15,94 @@ export class ProfilePage implements OnInit {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public viewCtrl: ViewController,
-    private fileChooser: FileChooser,
     private toastCtrl: ToastController,
-    private storage: FBStorageProvider,
     private users: UsersProvider,
-    private filePath: FilePath,
-    private file: File
+    private auth: AuthProvider
     ) {
     }
     userData: any;
     uid: string = null;
     resumeUrl: string = '';
+    currentUser: any;
+    isNameEditing = false;
+    isEmailEditing = false;
+    isPhoneEditing = false;
+    isZipEditing = false;
+    name: string = '';
+    email: string = '';
+    phone: string = '';
+    zip: string = '';
 
     ngOnInit() {
       this.userData = window.localStorage.getItem('userData');
-      console.log('this.userData', this.userData);
+      
       if(this.userData) {
         this.uid = JSON.parse(this.userData).id;
-        console.log('uid', this.uid);
         this.users.getUser(this.uid).valueChanges()
           .subscribe(res => {
-            console.log('res', res);
             if(res && (res.length > 0)) {
               let result : any[] = res;
               this.resumeUrl = result[0].resumeUrl;
+              this.phone = result[0].phone;
             }
           });
-      }
+          this.currentUser = this.auth.getUser();
+      
+          if(this.currentUser.displayName)
+          this.name = this.currentUser.displayName.trim();
+          
+          if(this.currentUser.email)
+          this.email = this.currentUser.email.trim();
+          
+       }
+    }
+
+    saveName() {
+      this.auth.updateName(this.name.trim())
+      .then(data => {this.isNameEditing = false;})
+      .catch(err => this.showError(err.message)) ;
+      
+      
+    }
+
+    saveEmail() {
+      
+      this.auth.updateEmail(this.email.trim())
+      .then(data => {
+        this.currentUser = this.auth.getUser();
+        this.email = this.currentUser.email.trim();
+        this.users.updateEmail(this.uid, this.email)
+        .then(() => this.isEmailEditing = false)
+        .catch(err => this.showError(err.message));
+      })
+      .catch(err => {
+        this.showError(err.message);
+        this.email = this.currentUser.email.trim();
+        this.isEmailEditing = false;
+      }) ;
+      
+      
+    }
+
+    savePhone() {
+      this.users.updatePhone(this.uid, this.phone.trim())
+      .then(data => { this.isPhoneEditing = false;})
+      .catch(err => this.showError(err.message)) ;
+      
+    }
+
+    saveZip() {
+      this.users.updateZip(this.uid, this.zip.trim())
+      .then(data => { this.isZipEditing = false;})
+      .catch(err => this.showError(err.message)) ;
+      
     }
 
     closeModal() {
       this.viewCtrl.dismiss()
     }
   
-    uploadResume() {
-      
-      
-      this.fileChooser.open()
-      .then(uri =>  {
-        this.filePath.resolveNativePath(uri)
-        .then(filePath => {
-          this.file.resolveLocalFilesystemUrl(filePath)
-          .then(resFile => {
-            
-            let continueUpload: boolean = false;
-
-            let filePath: string = this.getFilePath(resFile.nativeURL);
-            let fileName: string = this.getFileName(resFile.nativeURL);
-            let fileExt: string = this.getFileExt(resFile.nativeURL);
-     
-            let uploadFileName: string = '';
-            console.log('userData', this.userData);
-          
-            if(this.uid) {
-              continueUpload = true;
-              uploadFileName = this.uid + '.pdf' ;
-            }
-            
-            if(continueUpload == true) {
-              if(fileExt.toLowerCase() == 'pdf') {  
-                this.file.readAsArrayBuffer(filePath,  fileName).then(
-                  (data) => {
-                    var blob = new Blob([data], {
-                      type: 'application/pdf'
-                  });
-
-                  this.storage.uploadFile(blob, uploadFileName, this.uid);
-                  })
-                .catch(e => this.showError(e.message));
-              }
-              else {
-                this.showError('Invalid resume file');
-              }
-            }
-            else {
-              this.showError("File cannot be uploaded at this time. Please relogin.");
-            }
-          });
-          });
-          })
-        .catch(err => this.showError(err.message));
-        }
-
+  
     showError(message: string) {
       let toast = this.toastCtrl.create({
             message: message,
@@ -109,31 +112,5 @@ export class ProfilePage implements OnInit {
       toast.present();
     }
 
-    getFilePath(path: string){
-      let fileName: string;
-
-      let index = path.lastIndexOf('/');
-      fileName = path.substring(0, index+1);
-
-      return fileName
-    }
-
-    getFileName(path: string){
-      let fileName: string;
-
-      let index = path.lastIndexOf('/');
-      fileName = path.substring(index+1);
-
-      return fileName
-    }
-  
-    getFileExt(path: string){
-      let fileName: string;
-
-      let index = path.lastIndexOf('.');
-      fileName = path.substring(index+1);
-
-      return fileName
-    }
-
+   
 }    

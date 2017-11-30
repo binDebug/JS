@@ -1,6 +1,6 @@
 <ion-header>
         <ion-navbar>
-                <ion-title>Sam Peters</ion-title>
+                <ion-title>Profile</ion-title>
                 <ion-buttons end>
                     <button ion-button icon-only (click)="closeModal()">
                     <ion-icon name ="ios-close-circle-outline" color="dark" >
@@ -13,14 +13,48 @@
 
 <ion-content padding>
     
-    <ion-item class text-center>
-        <img src="assets/img/user.jpeg" />
-    </ion-item>
+    <ion-list>
+        <ion-list-header>
+            Contact Information
+        </ion-list-header>
+        <ion-item >
+            <span *ngIf="(isNameEditing === false) && (name === '')" (click)="isNameEditing = !isNameEditing"
+            class="place-holder">Display Name</span>
+            <span *ngIf="(isNameEditing === false) && (name !== '')" (click)="isNameEditing = !isNameEditing">{{name}}</span>
+            <ion-input  type="text" *ngIf="isNameEditing === true" [(ngModel)]="name" (ionBlur)="saveName()"> </ion-input>
+            <ion-icon name="checkmark-circle" *ngIf="(isNameEditing === false) && (name !== '')" 
+                class="correct" item-end></ion-icon>
+            <ion-icon name="close-circle" *ngIf="(isNameEditing === false) && (name === '')" 
+                class="incorrect" item-end></ion-icon>
+        </ion-item>
+         <ion-item>
+                <span *ngIf="(isEmailEditing === false) && (email === '')" (click)="isEmailEditing = !isEmailEditing"
+                class="place-holder">Email</span>
+                <span *ngIf="(isEmailEditing === false) && (email !== '')" (click)="isEmailEditing = !isEmailEditing">{{email}}</span>
+                <ion-input type="email" *ngIf="isEmailEditing === true" [(ngModel)]="email" (ionBlur)="saveEmail()"> </ion-input>
+                <ion-icon name="checkmark-circle" *ngIf="(isEmailEditing === false) && (email !== '')" 
+                class="correct" item-end></ion-icon>
+            <ion-icon name="close-circle" *ngIf="(isEmailEditing === false) && (email === '')" 
+                class="incorrect" item-end></ion-icon>
+        </ion-item>
+        <ion-item>
+                <span *ngIf="(isPhoneEditing === false) && (!phone || (phone === ''))" (click)="isPhoneEditing = !isPhoneEditing"
+                class="place-holder">Phone</span>
+                <span *ngIf="(isPhoneEditing === false) && phone &&  (phone !== '')" (click)="isPhoneEditing = !isPhoneEditing">{{phone}}</span>
+                <ion-input type="number" *ngIf="isPhoneEditing === true" [(ngModel)]="phone" (ionBlur)="savePhone()"> </ion-input>
+                <ion-icon name="checkmark-circle" *ngIf="(isPhoneEditing === false) && phone && (phone !== '')" 
+                class="correct" item-end></ion-icon>
+            <ion-icon name="close-circle" *ngIf="(isPhoneEditing === false) && ((!phone) || (phone === ''))" 
+                class="incorrect" item-end></ion-icon>
+        </ion-item>
 
-    <!-- <ion-item *ngIf="resumeUrl" text-center>
-        <a href="{{resumeUrl}}" ion-button>Resume</a>
-    </ion-item> -->
-    <ion-item text-center>
-        <button ion-button id="uploadResume" (click)="uploadResume()">Upload Resume</button>
-    </ion-item>
+        <ion-item>
+                <span *ngIf="(isZipEditing === false) && (!zip || (zip === ''))" (click)="isZipEditing = !isZipEditing"
+                class="place-holder">Zip</span>
+                <span *ngIf="(isZipEditing === false) && zip &&  (zip !== '')" (click)="isZipEditing = !isZipEditing">{{zip}}</span>
+                <ion-input type="text" *ngIf="isZipEditing === true" [(ngModel)]="zip" (ionBlur)="saveZip()"> </ion-input>
+                
+        </ion-item>
+        
+    </ion-list>
 </ion-content>

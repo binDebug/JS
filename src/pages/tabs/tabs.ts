@@ -1,19 +1,53 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { FavoritesPage } from '../favorites/favorites';
 import { HomePage } from '../home/home';
 import { EventsPage } from '../events/events';
 
+import { AuthProvider } from '../../providers/auth';
+import { NavController } from 'ionic-angular';
+import { LoginPage } from '../login/login';
+
+
 @Component({
   templateUrl: 'tabs.html'
 })
-export class TabsPage {
+export class TabsPage implements OnInit {
 
   tab1Root = HomePage;
   tab2Root = EventsPage;
   tab3Root = FavoritesPage;
 
-  constructor() {
+  userData: any;
+  uid: string;
+  constructor(public navCtrl: NavController,
+              private auth: AuthProvider) {
 
+  }
+
+  ngOnInit() {
+    
+  }
+
+  ionViewCanEnter() {
+    let user: any = null;
+    this.userData = window.localStorage.getItem('userData');
+    
+    for(let i = 0; i < window.localStorage.length; i++) {
+      if(window.localStorage.key(i).startsWith('firebase:authUser')) {
+          user = window.localStorage.getItem(window.localStorage.key(i));
+          break;
+      }
+    }
+    if(this.userData) {
+      this.uid = JSON.parse(this.userData).id;
+    }
+    
+    if(this.uid && user)
+      return true;
+    else {
+      this.navCtrl.setRoot(LoginPage);
+      return true;
+    }
   }
 }

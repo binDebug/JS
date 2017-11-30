@@ -1,36 +1,37 @@
-<ion-header>
-   
-  <ion-navbar>
-    <ion-title>Favorite Jobs</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-<ion-content>
-    <ion-list *ngFor="let job of favJobs" (click)="openJob(job)">
-        <ion-item text-wrap>
-      <h2>{{job.jobTitle}}</h2>
-           <p>Applied on <strong>{{job.appliedOn | date}}</strong></p>
-          <ion-badge [ngClass]='{"seagreen": job.jobType === "Full Time", "salmon": job.jobType === "Contractor","sunset": job.jobType === "Remote"}' item-right>{{job.jobType}}</ion-badge>
+<ion-list *ngFor="let job of favJobs" (click)="openJob(job)">
+      <ion-item>
+        <span item-left *ngIf="job.appliedOn">
+          APPLIED ON {{job.appliedOn | date}}
+        </span>
+        <span item-left *ngIf="!job.appliedOn">
+            NOT APPLIED
+          </span>
+      </ion-item>
+      <ion-item>
+          <ion-avatar >
+              <img src = "{{job.imgURL}}">
+              </ion-avatar>
+      </ion-item>
+        <ion-item text-wrap >
+      <h1>{{job.jobTitle}}</h1>
+           <p>{{job.jobLocation}}</p>
+          
        </ion-item>
-       <ion-item>
- 
-       <ion-avatar item-left>
-           <img src = "{{job.imgURL}}">
-           </ion-avatar>
-          <ion-grid>
-           <ion-row>
-              <ion-col width-50>
-                  <h2>COMPANY</h2>
-                 <p>{{job.company}}</p>
-               </ion-col>
-               <ion-col width-50>
-                   <h2>LOCATION</h2>
-                 <p>{{job.jobLocation}}</p>
-               </ion-col>
-              </ion-row>
-           </ion-grid>
+       <ion-item class="bottom-part">
+ <ion-grid>
+       <ion-row>
+         <ion-col class="label-title" col-3>Benefits</ion-col>
+         <ion-col text-wrap>{{job.benefits}}</ion-col>  
+         
+         
+        </ion-row>
+        <ion-row>
+        <ion-col class="label-title" col-3>Type</ion-col>
+        <ion-col>{{job.jobType}}</ion-col>  
+      </ion-row>
+         
+
+        </ion-grid>
           </ion-item>
  
     </ion-list>
-</ion-content>

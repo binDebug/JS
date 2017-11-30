@@ -1,11 +1,18 @@
 page-profile {
-    img {
-        border-radius: 50%;
-        width: 50%;
-        height: 50%;
-    }
     button.back-button {
         -webkit-transform: none !important; 
          transform: none !important; 
+    }
+
+    .place-holder {
+        color: #778899;
+    }
+
+    .correct {
+        color: #5fce39;
+    }
+
+    .incorrect {
+        color: red;
     }
 }

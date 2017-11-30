@@ -1,7 +1,7 @@
 <ion-header>
 
     <ion-navbar>
-        <ion-title>Menu</ion-title>
+        <ion-title>Profile</ion-title>
         <ion-buttons end>
             <button ion-button icon-only (click)="closeModal()">
             <ion-icon name ="ios-close-circle-outline" color="dark" >
@@ -14,20 +14,51 @@
 
 
 <ion-content padding>
+    <ion-list>
+            <ion-item class text-center>
+                <img src="assets/img/user.jpeg" />
+                <br>
+                <span class="hyper-link">Change Profile Photo</span>
+            </ion-item>
     
-    <ion-list no-lines>
-        <ion-item text-center (click)="profile()">
-            Profile
-        </ion-item>
-        <ion-item text-center (click)="goToChat()">
+        </ion-list>
+        
+        <ion-list lines>
+                <ion-item (click)="profile()">
+                    <ion-icon name="person" item-start></ion-icon>
+                    <span *ngIf="currentUser && currentUser.displayName" > {{currentUser.displayName}}</span>
+                    <br>
+                    <span class="view-profile">View your profile</span>
+                </ion-item>
+                <ion-item id="uploadResume" (click)="uploadResume()">
+                    <ion-icon name="document" item-start></ion-icon>
+                    Upload Resume
+                    <ion-icon name="arrow-forward" item-end></ion-icon>
+                </ion-item>
+                <ion-item (click)="changePassword()">
+                        <ion-icon name="lock" item-start></ion-icon>
+                        Change Password
+                    </ion-item>
+            </ion-list>
+
+            
+    <ion-list >
+            
+                    <ion-item>
+                        <ion-icon name="briefcase" item-start></ion-icon>
+                        Applied Jobs
+                    </ion-item>
+            
+        <ion-item (click)="chat()">
+            <ion-icon name="chatboxes" item-start></ion-icon>
             Chat
         </ion-item>
-        <ion-item text-center>
-            Terms and Conditions
-        </ion-item>
-        <ion-item text-center (click)="logOut()">
-            Logout
-        </ion-item>
+        
+        
     </ion-list>
-
+<ion-list>
+        <ion-item  text-center (click)="logOut()" class="sign-out">
+                Sign Out
+            </ion-item>
+</ion-list>
 </ion-content>
