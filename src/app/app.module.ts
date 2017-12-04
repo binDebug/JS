@@ -14,8 +14,9 @@ import { EventsPage } from '../pages/events/events';
 import { EventPage } from '../pages/event/event';
 import { JobPage } from '../pages/job/job';
 import { ProfilePage } from '../pages/profile/profile';
-import { FavoriteJobsPage } from '../pages/favorite-jobs/favorite-jobs';
-import { FavoriteEventsPage } from '../pages/favorite-events/favorite-events';
+import { AppliedPage } from '../pages/applied/applied';
+import { FavoriteJobs } from '../components/favorite-jobs/favorite-jobs';
+import { FavoriteEvents } from '../components/favorite-events/favorite-events';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -30,6 +31,7 @@ import {HeaderComponent } from '../components/header/header';
 import {EventsComponent} from '../components/events/events';
 import {JobsComponent } from '../components/jobs/jobs';
 import {LoaderComponent} from '../components/loader/loader';
+import {AppliedJobsComponent} from '../components/applied-jobs/applied-jobs';
 
 import {UsersProvider} from '../providers/users';
 import {InviteesProvider} from '../providers/invitees';
@@ -37,7 +39,7 @@ import {JobsProvider} from '../providers/jobs';
 import {EventsProvider} from '../providers/events';
 import {AuthProvider} from '../providers/auth';
 import {FBStorageProvider} from '../providers/storage';
-
+import {UtilProvider} from '../providers/utils';
 
 import { FeaturedPipe} from '../pipes/featured';
 
@@ -62,12 +64,14 @@ import { PayPal } from '@ionic-native/paypal';
     MenuPage,
     JobPage,
     ProfilePage,
-    FavoriteJobsPage,
-    FavoriteEventsPage,
+    AppliedPage,
+    FavoriteJobs,
+    FavoriteEvents,
     HeaderComponent,
     EventsComponent,
     JobsComponent,
     LoaderComponent,
+    AppliedJobsComponent,
     FeaturedPipe
   ],
   imports: [
@@ -91,8 +95,8 @@ import { PayPal } from '@ionic-native/paypal';
     EventPage,
     ProfilePage, 
     JobPage,
-    FavoriteJobsPage,
-    FavoriteEventsPage
+    AppliedPage
+    
   ],
   providers: [
     StatusBar,
@@ -104,6 +108,7 @@ import { PayPal } from '@ionic-native/paypal';
     JobsProvider,
     AuthProvider,
     FBStorageProvider,
+    UtilProvider,
     AngularFireAuth,
     AngularFireDatabase,
     FileChooser,

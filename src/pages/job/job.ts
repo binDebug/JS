@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams,ToastController } from 'ionic-angular';
+import { NavController, NavParams,ToastController, Events } from 'ionic-angular';
 import { JobsProvider } from '../../providers/jobs';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { UsersProvider } from '../../providers/users';
@@ -23,6 +23,7 @@ export class JobPage implements OnInit {
     public navParams: NavParams,
     public jobList:JobsProvider, 
     public toastCtrl: ToastController,
+    private events: Events,
     private eComposer: EmailComposer,
     private usersList: UsersProvider,
     ) {
@@ -52,7 +53,7 @@ export class JobPage implements OnInit {
           this.jobList.isJobApplied(this.uid, this.job.id)
           .valueChanges().subscribe(res => {
               if(res && (res.length === 1))
-                this.isFavorite = true;
+                this.isApplied = true;
           });
     }
   }
@@ -65,11 +66,13 @@ export class JobPage implements OnInit {
           this.jobList.applyJob(this.uid, this.job.id);
           this.emailEmployer();
           this.isApplied = true;
+          this.events.publish('job:applied');
       }
     }
     else {
       this.jobList.unApplyJob(this.uid + '_' + this.job.id);
       this.isApplied = false;
+      this.events.publish('job:unapplied');
     }
     
   }
@@ -93,12 +96,18 @@ export class JobPage implements OnInit {
   favorite(){
       if(this.isFavorite === false) {
         this.jobList.favoriteJob(this.uid, this.job.id)
-        .then(data => { this.isFavorite = true; })
+        .then(data => { 
+            this.isFavorite = true;
+            this.events.publish('job:favorited');
+         })
         .catch(err => this.showError(err.message));
       }
       else {
         this.jobList.unfavoriteJob(this.uid + '_' + this.job.id)
-        .then(data => { this.isFavorite = false;})
+        .then(data => { 
+            this.isFavorite = false;
+            this.events.publish('job:unfavorited');
+          })
         .catch(err => this.showError(err.message));
       }
   }

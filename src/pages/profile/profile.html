@@ -18,43 +18,121 @@
             Contact Information
         </ion-list-header>
         <ion-item >
-            <span *ngIf="(isNameEditing === false) && (name === '')" (click)="isNameEditing = !isNameEditing"
-            class="place-holder">Display Name</span>
-            <span *ngIf="(isNameEditing === false) && (name !== '')" (click)="isNameEditing = !isNameEditing">{{name}}</span>
-            <ion-input  type="text" *ngIf="isNameEditing === true" [(ngModel)]="name" (ionBlur)="saveName()"> </ion-input>
-            <ion-icon name="checkmark-circle" *ngIf="(isNameEditing === false) && (name !== '')" 
+            <ion-input  type="text" placeholder="Display Name" [(ngModel)]="name" (ionBlur)="saveName()"> </ion-input>
+            <ion-icon name="checkmark-circle" *ngIf="name !== ''" 
                 class="correct" item-end></ion-icon>
-            <ion-icon name="close-circle" *ngIf="(isNameEditing === false) && (name === '')" 
+            <ion-icon name="close-circle" *ngIf="name === ''" 
                 class="incorrect" item-end></ion-icon>
         </ion-item>
          <ion-item>
-                <span *ngIf="(isEmailEditing === false) && (email === '')" (click)="isEmailEditing = !isEmailEditing"
-                class="place-holder">Email</span>
-                <span *ngIf="(isEmailEditing === false) && (email !== '')" (click)="isEmailEditing = !isEmailEditing">{{email}}</span>
-                <ion-input type="email" *ngIf="isEmailEditing === true" [(ngModel)]="email" (ionBlur)="saveEmail()"> </ion-input>
-                <ion-icon name="checkmark-circle" *ngIf="(isEmailEditing === false) && (email !== '')" 
+                <ion-input type="email" placeholder="Email" [(ngModel)]="email" (ionBlur)="saveEmail()"> </ion-input>
+                <ion-icon name="checkmark-circle" *ngIf="email !== ''" 
                 class="correct" item-end></ion-icon>
-            <ion-icon name="close-circle" *ngIf="(isEmailEditing === false) && (email === '')" 
+            <ion-icon name="close-circle" *ngIf="email === ''" 
                 class="incorrect" item-end></ion-icon>
         </ion-item>
         <ion-item>
-                <span *ngIf="(isPhoneEditing === false) && (!phone || (phone === ''))" (click)="isPhoneEditing = !isPhoneEditing"
-                class="place-holder">Phone</span>
-                <span *ngIf="(isPhoneEditing === false) && phone &&  (phone !== '')" (click)="isPhoneEditing = !isPhoneEditing">{{phone}}</span>
-                <ion-input type="number" *ngIf="isPhoneEditing === true" [(ngModel)]="phone" (ionBlur)="savePhone()"> </ion-input>
-                <ion-icon name="checkmark-circle" *ngIf="(isPhoneEditing === false) && phone && (phone !== '')" 
+                <ion-input type="number" placeholder="Phone" [(ngModel)]="phone" (ionBlur)="savePhone()"> </ion-input>
+                <ion-icon name="checkmark-circle" *ngIf="phone && (phone !== '')" 
                 class="correct" item-end></ion-icon>
-            <ion-icon name="close-circle" *ngIf="(isPhoneEditing === false) && ((!phone) || (phone === ''))" 
+            <ion-icon name="close-circle" *ngIf="(!phone) || (phone === '')" 
                 class="incorrect" item-end></ion-icon>
         </ion-item>
 
         <ion-item>
-                <span *ngIf="(isZipEditing === false) && (!zip || (zip === ''))" (click)="isZipEditing = !isZipEditing"
-                class="place-holder">Zip</span>
-                <span *ngIf="(isZipEditing === false) && zip &&  (zip !== '')" (click)="isZipEditing = !isZipEditing">{{zip}}</span>
-                <ion-input type="text" *ngIf="isZipEditing === true" [(ngModel)]="zip" (ionBlur)="saveZip()"> </ion-input>
+                <ion-input type="text" placeholder="Zip" [(ngModel)]="zip" (ionBlur)="saveZip()"> </ion-input>
                 
         </ion-item>
+
+        <ion-item>
+            <ion-label>Country</ion-label>
+            <ion-select [(ngModel)]="countryId" *ngIf="countryList"
+                (ionChange)="selectCountry()" >
+                    <ion-option *ngFor="let item of countryList"
+                    value="{{item.id}}">{{item.name}}</ion-option>
+            </ion-select>
+            
+        </ion-item>
+
+        <ion-list-header>
+            Experience
+        </ion-list-header>
+
+<ion-item>
+    <ion-input type="text" [(ngModel)]="title" (ionBlur)="saveTitle()" placeholder="Title"> </ion-input>
+    
+</ion-item>
+
+<ion-item>
+        <ion-label>Industry</ion-label>
+        <ion-select [(ngModel)]="industryId" *ngIf="industryList"
+            (ionChange)="selectIndustry()" >
+                <ion-option *ngFor="let item of industryList"
+                value="{{item.id}}">{{item.name}}</ion-option>
+        </ion-select>
         
+      
+
+    </ion-item>
+    <ion-item>
+            <ion-label>Experience</ion-label>
+            <ion-select [(ngModel)]="experienceId" *ngIf="experienceList"
+                (ionChange)="selectExperience()" >
+                    <ion-option *ngFor="let item of experienceList"
+                    value="{{item.id}}">{{item.name}}</ion-option>
+            </ion-select>
+            
+        </ion-item>
+
+        <ion-item>
+                <ion-label>Education</ion-label>
+                <ion-select [(ngModel)]="educationId" *ngIf="educationList"
+                    (ionChange)="selectEducation()" >
+                        <ion-option *ngFor="let item of educationList"
+                        value="{{item.id}}">{{item.name}}</ion-option>
+                </ion-select>
+                
+            </ion-item>
+        <ion-list-header>
+            Job Preference
+        </ion-list-header>
+
+        <ion-item>
+                <ion-label>Desired Salary</ion-label>
+                <ion-select [(ngModel)]="salaryId" *ngIf="salaryList"
+                    (ionChange)="selectSalary()" >
+                        <ion-option *ngFor="let item of salaryList"
+                        value="{{item.id}}">{{item.name}}</ion-option>
+                </ion-select>
+                
+            </ion-item>
+
+            <ion-item>
+                <ion-label>I am willing to relocate</ion-label>
+                <ion-toggle [(ngModel)]="relocate" (ionChange)="saveRelocate()"></ion-toggle>
+            </ion-item>
+
+            
+            <ion-item>
+                    <ion-label>Add me to resume database</ion-label>
+                    <ion-toggle [(ngModel)]="resume" (ionChange)="saveResume()"></ion-toggle>
+                </ion-item>
+                <ion-list-header>
+                        Social
+                    </ion-list-header>
+              
+        <ion-item>
+                <ion-input type="text" placeholder="LinkedIn URL" [(ngModel)]="linkedInUrl" (ionBlur)="saveLinkedIn()"> </ion-input>
+                
+        </ion-item>      
+
+        <ion-item>
+                <ion-input type="text" placeholder="Twitter URL" [(ngModel)]="twitterUrl" (ionBlur)="saveTwitter()"> </ion-input>
+                
+        </ion-item>      
+        <ion-item>
+                <ion-input type="text" placeholder="Facebook URL" [(ngModel)]="facebookUrl" (ionBlur)="saveFacebook()"> </ion-input>
+                
+        </ion-item>      
     </ion-list>
 </ion-content>

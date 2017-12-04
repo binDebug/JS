@@ -1,16 +1,30 @@
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
+import { AngularFireDatabase } from 'angularfire2/database';
 
-/*
-  Generated class for the Utils provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
 @Injectable()
-export class Utils {
+export class UtilProvider {
 
-  constructor() {
+    constructor(private afDatabase: AngularFireDatabase) {
+    }
+
+    public countriesList() {
+      return this.afDatabase.list("countries");
+    }
+
+    public educationList() {
+      return this.afDatabase.list("education");
+    }
+
+    public experienceList() {
+      return this.afDatabase.list("experience");
+    }
+
+    public industryList() {
+      return this.afDatabase.list("industries");
+    }
+
+    public salaryList() {
+      return this.afDatabase.list("salary");
     }
 
 }

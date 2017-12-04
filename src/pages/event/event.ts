@@ -1,5 +1,5 @@
 import { OnInit, Component } from '@angular/core';
-import {  NavController, NavParams, ToastController } from 'ionic-angular';
+import {  NavController, NavParams, ToastController, Events } from 'ionic-angular';
 import { EventsProvider } from '../../providers/events';
 import { event } from '../../models/event';
 import { PayPal, PayPalPayment, PayPalConfiguration} from '@ionic-native/paypal';
@@ -19,6 +19,7 @@ export class EventPage implements OnInit {
               public navParams: NavParams,
               public eventList:EventsProvider, 
               public toastCtrl: ToastController,
+              private events:Events,
               private payPal: PayPal) {
     this.event = this.navParams.get('eventData');
   }
@@ -107,12 +108,18 @@ export class EventPage implements OnInit {
   favorite() {
     if(this.isFavorite === false) {
       this.eventList.favoriteEvent(this.uid, this.event.id)
-      .then(data => { this.isFavorite = true; })
+      .then(data => { 
+        this.isFavorite = true;
+        this.events.publish('event:favoriteEvent');
+       })
       .catch(err => this.showError(err.message));
     }
     else {
       this.eventList.unfavoriteEvent(this.uid + '_' + this.event.id)
-      .then(data => { this.isFavorite = false;})
+      .then(data => { 
+        this.isFavorite = false;
+        this.events.publish('event:unfavoriteEvent');
+      })
       .catch(err => this.showError(err.message));
     }
   }

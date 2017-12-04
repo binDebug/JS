@@ -1,16 +1,16 @@
-import { Input, OnInit, Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { OnInit, Component } from '@angular/core';
+import { Events, NavController, ToastController } from 'ionic-angular';
 import { event } from '../../models/event';
 import { eventVM } from '../../models/eventVM';
 import { EventsProvider } from '../../providers/events';
 import { Observable } from 'rxjs/Observable';
-import { EventPage } from '../event/event';
+import { EventPage } from '../../pages/event/event';
 
 @Component({
-  selector: 'page-favorite-events',
+  selector: 'favorite-events-feed',
   templateUrl: 'favorite-events.html',
 })
-export class FavoriteEventsPage implements OnInit {
+export class FavoriteEvents implements OnInit {
 
   text: string;
   uid: string;
@@ -26,13 +26,15 @@ export class FavoriteEventsPage implements OnInit {
   constructor(
    
     public eventsService: EventsProvider,
-    public navCtrl: NavController
+    public navCtrl: NavController,
+    private events: Events,
+    private toastCtrl: ToastController
   ) {
-    
+      this.events.subscribe('event:favoriteEvent', () => this.getFavEvents());
+      this.events.subscribe('event:unfavoriteEvent', () => this.getFavEvents());    
   }
 
   ngOnInit() {
-    
     (this.eventsService.getEvents().valueChanges() as Observable< event[]>)
     .subscribe(data => {
         this.isEventsLoaded = true;
@@ -43,16 +45,31 @@ export class FavoriteEventsPage implements OnInit {
     this.userData = window.localStorage.getItem('userData');
     if(this.userData) {
       this.uid = JSON.parse(this.userData).id;
+      this.getFavEvents();
+    }   
+
+  }
+
+  private getFavEvents() {
+    this.eventVMList = [];
     this.eventsService.getFavoritedEvents(this.uid).valueChanges()
     .subscribe(data => {
         this.isFavEventsLoaded = true;
         this.favEventList = data;
         this.transform();
-      });
-    }   
+      },
+      err => this.showError(err.message));
   }
 
-  
+  private showError(message: string) {
+    let toast = this.toastCtrl.create({
+          message: message,
+          duration: 3000,
+          position: 'bottom'
+        });
+    toast.present();
+  }
+
   openEvent(event: Event) {
     var eventObj = {
       eventData: event
@@ -65,7 +82,7 @@ export class FavoriteEventsPage implements OnInit {
      if(this.eventList && this.favEventList) {
        let vm : eventVM;
     
-       this.favEventList.forEach((item: event, index: number) => {
+       this.favEventList.forEach((item: any, index: number) => {
          let event = this.eventList.find(p => p.id === item.eventid);
          if( (index % 2) === 0) {
              

@@ -7,6 +7,7 @@ import { EventsPage } from '../events/events';
 import { AuthProvider } from '../../providers/auth';
 import { NavController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
+import { AppliedPage } from '../applied/applied';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class TabsPage implements OnInit {
   tab1Root = HomePage;
   tab2Root = EventsPage;
   tab3Root = FavoritesPage;
+  tab4Root = AppliedPage;
 
   userData: any;
   uid: string;

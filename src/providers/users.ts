@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { AngularFireList } from 'angularfire2/database';
 
 @Injectable()
 export class UsersProvider {
@@ -36,9 +35,53 @@ export class UsersProvider {
     return this.afDatabase.list("users").update(id, {phone: phone});
   }
 
+  updateLinkedIn(id :string, linkedIn: string) {
+    return this.afDatabase.list("users").update(id, {linkedIn: linkedIn});
+  }
+
+  updateTwitter(id :string, twitter: string) {
+    return this.afDatabase.list("users").update(id, {twitter: twitter});
+  }
+
+  updateFacebook(id :string, facebook: string) {
+    return this.afDatabase.list("users").update(id, {facebook: facebook});
+  }
+
+  updateTitle(id :string, title: string) {
+    return this.afDatabase.list("users").update(id, {title: title});
+  }
+
   updateZip(id :string, zip: string) {
     return this.afDatabase.list("users").update(id, {zip: zip});
   }
+
+  updateCountry(id: string, countryId: string) {
+    return this.afDatabase.list("users").update(id, {country: countryId});
+  }
+
+  updateExperience(id: string, experienceId: string) {
+    return this.afDatabase.list("users").update(id, {experience: experienceId});
+  }
+
+  updateEducation(id: string, educationId: string) {
+    return this.afDatabase.list("users").update(id, {education: educationId});
+  }
+
+  updateIndustry(id: string, industryId: string) {
+    return this.afDatabase.list("users").update(id, {industry: industryId});
+  }
+
+  updateSalary(id: string, salaryId: string) {
+    return this.afDatabase.list("users").update(id, {salary: salaryId});
+  }
+
+  saveRelocate(id: string, relocate: boolean) {
+    return this.afDatabase.list("users").update(id, {relocate: relocate});
+  } 
+
+  saveResume(id: string, resume: boolean) {
+    return this.afDatabase.list("users").update(id, {resume: resume});
+  } 
 }
 
 
