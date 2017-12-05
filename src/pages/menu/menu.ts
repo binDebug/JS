@@ -7,6 +7,7 @@ import { FileChooser } from '@ionic-native/file-chooser';
 import { FBStorageProvider } from '../../providers/storage';
 import { FilePath } from '@ionic-native/file-path';
 import { File } from '@ionic-native/file';
+import { ChangePasswordPage } from '../change-password/change-password';
 
 @Component({
   selector: 'page-menu',
@@ -36,7 +37,11 @@ ionViewDidLoad() {
 }
 
   closeModal() {
-    this.viewCtrl.dismiss()
+    this.viewCtrl.dismiss();
+  }
+
+  changePassword() {
+    this.navCtrl.push(ChangePasswordPage);
   }
 
   logOut() {

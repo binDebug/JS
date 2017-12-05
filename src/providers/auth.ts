@@ -28,6 +28,7 @@ export class AuthProvider {
 }
 
 signIn(email: string, password: string) {
+    
     let promise = new Promise((resolve, reject) => {
     this.afAuth.auth.signInWithEmailAndPassword(email, password)
     .then(res => {
@@ -42,6 +43,26 @@ signIn(email: string, password: string) {
       })
       .catch(err => reject(err));
     });
+    return promise;
+}
+
+changePassword(email: string, oldPassword: string, newPassword: string) {
+    console.log(email, oldPassword, newPassword);
+    let promise = new Promise((resolve, reject) => {
+        console.log('1');
+        this.signIn(email, oldPassword)
+        .then(data => {
+            console.log('2', data);
+            this.afAuth.auth.currentUser.updatePassword(newPassword)
+            .then(data => resolve(data))
+            .catch(err => reject(err));
+        })
+        .catch(err => {
+            err.code = 'incorrect password';
+            reject(err);
+        });
+    });
+
     return promise;
 }
 

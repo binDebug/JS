@@ -15,6 +15,7 @@ import { EventPage } from '../pages/event/event';
 import { JobPage } from '../pages/job/job';
 import { ProfilePage } from '../pages/profile/profile';
 import { AppliedPage } from '../pages/applied/applied';
+import { ChangePasswordPage } from '../pages/change-password/change-password';
 import { FavoriteJobs } from '../components/favorite-jobs/favorite-jobs';
 import { FavoriteEvents } from '../components/favorite-events/favorite-events';
 
@@ -65,6 +66,7 @@ import { PayPal } from '@ionic-native/paypal';
     JobPage,
     ProfilePage,
     AppliedPage,
+    ChangePasswordPage,
     FavoriteJobs,
     FavoriteEvents,
     HeaderComponent,
@@ -95,7 +97,8 @@ import { PayPal } from '@ionic-native/paypal';
     EventPage,
     ProfilePage, 
     JobPage,
-    AppliedPage
+    AppliedPage,
+    ChangePasswordPage
     
   ],
   providers: [
