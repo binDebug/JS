@@ -1,0 +1,36 @@
+<ion-header>
+  
+      <ion-navbar>
+          
+          <ion-buttons end>
+              <button ion-button icon-only (click)="closeModal()">
+              <ion-icon name ="ios-close-circle-outline" color="dark" >
+              </ion-icon>
+           </button>
+          </ion-buttons>
+      </ion-navbar>
+  
+  </ion-header>
+  
+<ion-content padding>
+<ion-item>
+  <h1 text-wrap text-center>
+  Hiring Managers Prefer Candidates With References
+</h1>
+</ion-item>
+
+<ion-item>
+  <ion-label text-wrap text-center class="place-holder">
+    Enter the email of a former co-worker, manager, teacher, etc. 
+    <ion-icon name="information-circle"></ion-icon>
+  </ion-label>
+</ion-item>
+
+<ion-item>
+  <ion-label>To: </ion-label>
+  <ion-input type="text" [(ngModel)]="references"></ion-input>
+</ion-item>
+<ion-item item-center>
+  <button ion-button (click)="save()" class="submit">Submit</button>
+</ion-item>
+</ion-content>

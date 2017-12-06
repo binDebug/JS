@@ -82,6 +82,14 @@ export class UsersProvider {
   saveResume(id: string, resume: boolean) {
     return this.afDatabase.list("users").update(id, {resume: resume});
   } 
+
+  saveJobNotificationSettings(id: string, allowJobNotification: boolean) {
+    return this.afDatabase.list("users").update(id, {allowJobNotification: allowJobNotification});
+  } 
+
+  saveReferences(id: string, references: string) {
+    return this.afDatabase.list("users").update(id, {references: references});
+  }
 }
 
 

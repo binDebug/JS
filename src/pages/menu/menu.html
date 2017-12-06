@@ -44,9 +44,16 @@
             
     <ion-list >
             
-                    <ion-item>
-                        <ion-icon name="briefcase" item-start></ion-icon>
-                        Applied Jobs
+        <ion-item (click)="references()">
+            <ion-icon name="people" item-start></ion-icon>
+            References
+            <ion-icon name="arrow-forward" item-end></ion-icon>
+        </ion-item>
+
+                    <ion-item (click)="notifications()">
+                        <ion-icon name="notifications" item-start></ion-icon>
+                        Notifications
+                        <ion-icon name="arrow-forward" item-end></ion-icon>
                     </ion-item>
             
         <ion-item (click)="chat()">

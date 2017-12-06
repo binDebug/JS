@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+          <ion-title>Notifications</ion-title>
+          <ion-buttons end>
+              <button ion-button icon-only (click)="closeModal()">
+              <ion-icon name ="ios-close-circle-outline" color="dark" >
+              </ion-icon>
+           </button>
+          </ion-buttons>
+      </ion-navbar>
+  
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Allow job notifications</ion-label>
+      <ion-toggle item-right [(ngModel)]="notifications"
+        (ionChange)="save()"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label text-wrap class="place-holder">
+        Turn on to receive notifications when your application is viewed, or when new jobs become available.
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

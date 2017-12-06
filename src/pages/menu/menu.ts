@@ -8,6 +8,8 @@ import { FBStorageProvider } from '../../providers/storage';
 import { FilePath } from '@ionic-native/file-path';
 import { File } from '@ionic-native/file';
 import { ChangePasswordPage } from '../change-password/change-password';
+import { NotificationsSettingsPage } from '../notifications-settings/notifications-settings';
+import { ReferencesPage } from '../references/references';
 
 @Component({
   selector: 'page-menu',
@@ -54,6 +56,13 @@ ionViewDidLoad() {
     
   }
 
+  notifications() {
+    this.navCtrl.push(NotificationsSettingsPage);
+  }
+
+  references() {
+    this.navCtrl.push(ReferencesPage);
+  }
 
   showError(message: string) {
     let toast = this.toastCtrl.create({

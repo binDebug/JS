@@ -204,7 +204,7 @@ export class ProfilePage implements OnInit {
     }
 
     closeModal() {
-      this.viewCtrl.dismiss()
+      this.viewCtrl.dismiss();
     }
   
   

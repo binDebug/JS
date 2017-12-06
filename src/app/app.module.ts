@@ -16,8 +16,8 @@ import { JobPage } from '../pages/job/job';
 import { ProfilePage } from '../pages/profile/profile';
 import { AppliedPage } from '../pages/applied/applied';
 import { ChangePasswordPage } from '../pages/change-password/change-password';
-import { FavoriteJobs } from '../components/favorite-jobs/favorite-jobs';
-import { FavoriteEvents } from '../components/favorite-events/favorite-events';
+import { NotificationsSettingsPage } from '../pages/notifications-settings/notifications-settings';
+import { ReferencesPage } from '../pages/references/references';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -33,6 +33,8 @@ import {EventsComponent} from '../components/events/events';
 import {JobsComponent } from '../components/jobs/jobs';
 import {LoaderComponent} from '../components/loader/loader';
 import {AppliedJobsComponent} from '../components/applied-jobs/applied-jobs';
+import { FavoriteJobs } from '../components/favorite-jobs/favorite-jobs';
+import { FavoriteEvents } from '../components/favorite-events/favorite-events';
 
 import {UsersProvider} from '../providers/users';
 import {InviteesProvider} from '../providers/invitees';
@@ -67,6 +69,8 @@ import { PayPal } from '@ionic-native/paypal';
     ProfilePage,
     AppliedPage,
     ChangePasswordPage,
+    NotificationsSettingsPage,
+    ReferencesPage,
     FavoriteJobs,
     FavoriteEvents,
     HeaderComponent,
@@ -98,7 +102,9 @@ import { PayPal } from '@ionic-native/paypal';
     ProfilePage, 
     JobPage,
     AppliedPage,
-    ChangePasswordPage
+    ChangePasswordPage,
+    NotificationsSettingsPage,
+    ReferencesPage
     
   ],
   providers: [

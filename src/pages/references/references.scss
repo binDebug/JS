@@ -1,0 +1,21 @@
+page-references {
+    .place-holder {
+        font-size: 14px;
+        color: darkgrey;
+        
+    }
+
+    .submit {
+        width: 80%;
+        left: 10%;
+        border-radius: 25px;
+        background: green;
+        color: white;
+        font-size: 28px !important;
+        padding: 25px !important;
+    }
+
+    .back-button {
+        display: none !important;
+    }
+}
