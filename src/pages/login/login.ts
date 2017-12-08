@@ -4,6 +4,7 @@ import { RegisterPage } from "../register/register";
 
 import { TabsPage } from "../tabs/tabs";
 import { AuthProvider } from '../../providers/auth';
+import { Events } from 'ionic-angular/util/events';
 
 /**
  * Generated class for the LoginPage page.
@@ -28,7 +29,8 @@ export class LoginPage{
   constructor(public navCtrl: NavController,
       public navParams: NavParams,
       private afAuth: AuthProvider,
-      private toastCtrl: ToastController) {
+      private toastCtrl: ToastController,
+      private events: Events) {
   }
 
 
@@ -63,7 +65,8 @@ ionViewCanEnter() {
     
     this.afAuth.signIn(this.email, this.password)
      .then(res => {
-      this.navCtrl.setRoot(TabsPage)
+      this.navCtrl.setRoot(TabsPage);
+      this.events.publish('login');
     }).catch(err => {
 
       let toast = this.toastCtrl.create({

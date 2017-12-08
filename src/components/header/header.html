@@ -8,9 +8,14 @@
 </ion-buttons>
     <ion-title>{{title}}</ion-title>
     <ion-buttons end>
-    <button ion-button icon-only>
-      <ion-icon color="dark" name="ios-notifications-outline"></ion-icon>
+    <button ion-button icon-only (click)="showNotifications()">
+      <ion-icon color="dark" name="notifications-outline" *ngIf="unreadNotificationCount === 0"></ion-icon>
+      <ion-icon color="danger" name="notifications-outline" *ngIf="unreadNotificationCount > 0"></ion-icon>
+      
      </button>
+     <!-- <span *ngIf="unreadNotificationCount > 0" class="count" style="color: white;
+      background-color: red; padding:2px; font-size: 2px; position: relative; left: -10px;
+      border-radius: 50%;">{{unreadNotificationCount}}</span>   -->
      <button ion-button icon-only>
       <ion-icon color="dark" name="ios-mail-outline"></ion-icon>
      </button>

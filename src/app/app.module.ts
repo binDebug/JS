@@ -21,6 +21,8 @@ import { ReferencesPage } from '../pages/references/references';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { FCM } from '@ionic-native/fcm';
+import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 
 import {FIREBASE_CONFIG} from './app.firebase.config';
 import {AngularFireModule} from 'angularfire2';
@@ -35,6 +37,7 @@ import {LoaderComponent} from '../components/loader/loader';
 import {AppliedJobsComponent} from '../components/applied-jobs/applied-jobs';
 import { FavoriteJobs } from '../components/favorite-jobs/favorite-jobs';
 import { FavoriteEvents } from '../components/favorite-events/favorite-events';
+import {NotificationsComponent} from '../components/notifications/notifications';
 
 import {UsersProvider} from '../providers/users';
 import {InviteesProvider} from '../providers/invitees';
@@ -43,6 +46,9 @@ import {EventsProvider} from '../providers/events';
 import {AuthProvider} from '../providers/auth';
 import {FBStorageProvider} from '../providers/storage';
 import {UtilProvider} from '../providers/utils';
+import {FCMTokensProvider} from '../providers/fcmtokens';
+import {NotificationssProvider} from '../providers/notifications';
+
 
 import { FeaturedPipe} from '../pipes/featured';
 
@@ -78,6 +84,7 @@ import { PayPal } from '@ionic-native/paypal';
     JobsComponent,
     LoaderComponent,
     AppliedJobsComponent,
+    NotificationsComponent,
     FeaturedPipe
   ],
   imports: [
@@ -86,6 +93,7 @@ import { PayPal } from '@ionic-native/paypal';
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     AngularFireAuthModule,
     AngularFireDatabaseModule
+    
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -104,7 +112,8 @@ import { PayPal } from '@ionic-native/paypal';
     AppliedPage,
     ChangePasswordPage,
     NotificationsSettingsPage,
-    ReferencesPage
+    ReferencesPage,
+    NotificationsComponent
     
   ],
   providers: [
@@ -118,13 +127,17 @@ import { PayPal } from '@ionic-native/paypal';
     AuthProvider,
     FBStorageProvider,
     UtilProvider,
+    FCMTokensProvider,
+    NotificationssProvider,
     AngularFireAuth,
     AngularFireDatabase,
     FileChooser,
     FilePath,
     File,
     EmailComposer,
-    PayPal
+    PayPal,
+    FCM,
+    UniqueDeviceID
   ]
 })
 export class AppModule {}

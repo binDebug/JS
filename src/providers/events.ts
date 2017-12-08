@@ -21,6 +21,11 @@ export class EventsProvider {
         return this.afDatabase.list("events");
     }
 
+
+    getEvent(eventid: string) {
+        return this.afDatabase.list("events", res => res.orderByKey().equalTo(eventid));
+    }
+
     isEventFavorited(uid: string, eventid: string) {
         let key: string = uid + '_' + eventid;
         return this.afDatabase.list("/favoritedevents", res => res.orderByKey().equalTo(key));

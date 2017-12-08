@@ -10,6 +10,7 @@ import { File } from '@ionic-native/file';
 import { ChangePasswordPage } from '../change-password/change-password';
 import { NotificationsSettingsPage } from '../notifications-settings/notifications-settings';
 import { ReferencesPage } from '../references/references';
+import { Events } from 'ionic-angular/util/events';
 
 @Component({
   selector: 'page-menu',
@@ -28,6 +29,7 @@ export class MenuPage implements OnInit {
       private fileChooser: FileChooser,
       private storage: FBStorageProvider,
       private filePath: FilePath,
+      private events: Events,
       private file: File) {}
 
   ngOnInit() {
@@ -49,7 +51,9 @@ ionViewDidLoad() {
   logOut() {
     this.auth.signOut()
       .then(data => {
+        
         window.localStorage.removeItem('userData');
+        this.events.publish('logout');
         this.navCtrl.setRoot(LoginPage);
       })
       .catch(err => this.showError(err.message));

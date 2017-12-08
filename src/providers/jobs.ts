@@ -24,6 +24,11 @@ export class JobsProvider {
     return this.afDatabase.list("/jobs")
   }
 
+
+  getJob(jobid: string) {
+    return this.afDatabase.list("/jobs", res => res.orderByKey().equalTo(jobid));
+  }
+
   isJobFavorited(uid: string, jobid: string) {
     let key: string = uid + '_' + jobid;
     return this.afDatabase.list("/favoritedjobs", res => res.orderByKey().equalTo(key));

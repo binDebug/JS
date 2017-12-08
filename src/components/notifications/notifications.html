@@ -1,0 +1,27 @@
+<ion-header>
+    <ion-navbar>
+            <ion-title>Notifications</ion-title>
+            <ion-buttons end>
+                <button ion-button icon-only (click)="closeModal()">
+                <ion-icon name ="ios-close-circle-outline" color="dark" >
+                </ion-icon>
+             </button>
+            </ion-buttons>
+        </ion-navbar>
+    
+</ion-header>
+
+<ion-content >
+  <ion-list *ngIf="notifsList">
+    <ion-card *ngFor="let item of notifsList" padding>
+        <ion-card-header>{{item.title}}</ion-card-header>
+
+        <ion-card-content>{{item.body}}</ion-card-content>
+<div style="float:right">
+<button ion-button (click)="dismiss(item)" >Dismiss</button>
+<button ion-button (click)="navigate(item)">Open Item</button>
+</div>
+    </ion-card>
+  </ion-list>
+
+</ion-content>
