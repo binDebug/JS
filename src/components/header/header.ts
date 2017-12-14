@@ -87,5 +87,9 @@ export class HeaderComponent implements OnInit {
     modal.present();
   }
 
+public presentMenu() {
+  let modal = this.modalCtrl.create(MenuPage);
+  modal.present();
+}
 
 }

@@ -3,14 +3,14 @@ import { NavController, NavParams, ViewController, ToastController } from 'ionic
 import { ProfilePage } from '../profile/profile';
 import { LoginPage } from '../login/login';
 import { AuthProvider } from '../../providers/auth';
-import { FileChooser } from '@ionic-native/file-chooser';
-import { FBStorageProvider } from '../../providers/storage';
-import { FilePath } from '@ionic-native/file-path';
-import { File } from '@ionic-native/file';
+
 import { ChangePasswordPage } from '../change-password/change-password';
 import { NotificationsSettingsPage } from '../notifications-settings/notifications-settings';
 import { ReferencesPage } from '../references/references';
-import { Events } from 'ionic-angular/util/events';
+import { Events } from 'ionic-angular';
+import { ResumeComponent } from '../../components/resume/resume';
+import { ModalController } from 'ionic-angular/components/modal/modal-controller';
+
 
 @Component({
   selector: 'page-menu',
@@ -26,11 +26,9 @@ export class MenuPage implements OnInit {
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
       private toastCtrl: ToastController,
       private auth: AuthProvider,
-      private fileChooser: FileChooser,
-      private storage: FBStorageProvider,
-      private filePath: FilePath,
       private events: Events,
-      private file: File) {}
+      private modalCtrl: ModalController
+      ) {}
 
   ngOnInit() {
     this.currentUser = this.auth.getUser();
@@ -86,77 +84,7 @@ ionViewDidLoad() {
   }
 
   uploadResume() {
-    
-    
-    this.fileChooser.open()
-    .then(uri =>  {
-      this.filePath.resolveNativePath(uri)
-      .then(filePath => {
-        this.file.resolveLocalFilesystemUrl(filePath)
-        .then(resFile => {
-          
-          let continueUpload: boolean = false;
-
-          let filePath: string = this.getFilePath(resFile.nativeURL);
-          let fileName: string = this.getFileName(resFile.nativeURL);
-          let fileExt: string = this.getFileExt(resFile.nativeURL);
-   
-          let uploadFileName: string = '';
-          
-          if(this.uid) {
-            continueUpload = true;
-            uploadFileName = this.uid + '.pdf' ;
-          }
-          
-          if(continueUpload == true) {
-            if(fileExt.toLowerCase() == 'pdf') {  
-              this.file.readAsArrayBuffer(filePath,  fileName).then(
-                (data) => {
-                  var blob = new Blob([data], {
-                    type: 'application/pdf'
-                });
-
-                this.storage.uploadFile(blob, uploadFileName, this.uid);
-                })
-              .catch(e => this.showError(e.message));
-            }
-            else {
-              this.showError('Invalid resume file');
-            }
-          }
-          else {
-            this.showError("File cannot be uploaded at this time. Please relogin.");
-          }
-        });
-        });
-        })
-      .catch(err => this.showError(err.message));
-      }
-      getFilePath(path: string){
-        let fileName: string;
-  
-        let index = path.lastIndexOf('/');
-        fileName = path.substring(0, index+1);
-  
-        return fileName
-      }
-  
-      getFileName(path: string){
-        let fileName: string;
-  
-        let index = path.lastIndexOf('/');
-        fileName = path.substring(index+1);
-  
-        return fileName
-      }
-    
-      getFileExt(path: string){
-        let fileName: string;
-  
-        let index = path.lastIndexOf('.');
-        fileName = path.substring(index+1);
-  
-        return fileName
-      }
-  
+    let modal = this.modalCtrl.create(ResumeComponent);
+    modal.present();
+  }
 }

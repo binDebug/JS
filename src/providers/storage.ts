@@ -15,7 +15,7 @@ export class FBStorageProvider {
    //  initializeApp(FIREBASE_CONFIG);
  }
 
-    uploadFile(blob: any, filename: string, uid: string ) : any  {
+ uploadResume(blob: any, filename: string, uid: string ) : any  {
         let storageRef = storage().ref();
         console.log('upload file', filename, uid);
         

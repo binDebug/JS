@@ -1,0 +1,22 @@
+{
+	"ProjectName": "JS",
+	"ProjectPath": "c:\\binDebug\\Work\\Code Canyon\\JS",
+	"SourceDir": "src",
+	"DistributionDir": "www",
+	"BuildCommand": "ionic-app-scripts serve",
+	"StartCommand": "ionic serve",
+	"InitializationTime": "2017-12-11-14-55-58",
+	"LastConfigurationTime": "2017-12-11-14-57-45",
+	"LastNPMInstallTime": "",
+	"FrontendLastBuildTime": "",
+	"LastPublishTime": "",
+	"BackendFormat": "yml",
+	"BackendLastBuildTime": "",
+	"BackendLastUpdateTime": "",
+	"BackendLastUpdateSuccessful": false,
+	"BackendProjectID": "",
+	"BackendProjectName": "",
+	"BackendProjectConsoleUrl": "",
+	"BackendProjectCreationTime": "",
+	"BackendProjectLastUpdatedTime": ""
+}
