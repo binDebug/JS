@@ -74,20 +74,23 @@ export class ResumeComponent implements OnInit {
           }
           
           if(continueUpload == true) {
-            if(fileExt.toLowerCase() == 'pdf') {  
+            if(fileExt.toLowerCase() === 'pdf') {  
               this.file.readAsArrayBuffer(filePath,  fileName).then(
                 (data) => {
                   var blob = new Blob([data], {
                     type: 'application/pdf'
                 });
 
-                this.storage.uploadResume( uploadFileName, 'application/pdf', blob)
+                this.storage.uploadFile( uploadFileName, 'application/pdf', blob)
                 .then(data => {
                     
                     if(data) {
                       let url : string = <string>data;
                     this.users.saveResumeUrl(this.uid, url)
-                    .then(data => this.showError("Resume uploaded successfully"))
+                    .then(data => {
+                      this.resumeUrl = url;
+                      this.showError("Resume uploaded successfully");
+                    })
                     .catch(err => this.showError(err.message));
                     }
                 })
@@ -96,7 +99,7 @@ export class ResumeComponent implements OnInit {
               .catch(e => this.showError(e.message));
             }
             else {
-              this.showError('Invalid resum9e file');
+              this.showError('Invalid resume file');
             }
           }
           else {

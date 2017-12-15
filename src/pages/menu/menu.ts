@@ -10,6 +10,11 @@ import { ReferencesPage } from '../references/references';
 import { Events } from 'ionic-angular';
 import { ResumeComponent } from '../../components/resume/resume';
 import { ModalController } from 'ionic-angular/components/modal/modal-controller';
+import { FileChooser } from '@ionic-native/file-chooser';
+import { FilePath } from '@ionic-native/file-path';
+import { File } from '@ionic-native/file';
+import { UsersProvider } from '../../providers/users';
+import { AWSStorageProvider } from '../../providers/awsStorage';
 
 
 @Component({
@@ -22,20 +27,41 @@ export class MenuPage implements OnInit {
   uid: string = null;
   resumeUrl: string = '';
   currentUser: any;
+  pictureUrl: string = null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
       private toastCtrl: ToastController,
       private auth: AuthProvider,
       private events: Events,
-      private modalCtrl: ModalController
+      private modalCtrl: ModalController,
+      private fileChooser: FileChooser,
+      private storage: AWSStorageProvider,
+      private filePath: FilePath,
+      private file: File,
+      private users: UsersProvider,
       ) {}
 
   ngOnInit() {
     this.currentUser = this.auth.getUser();
+    this.userData = window.localStorage.getItem('userData');
+    
+    if(this.userData) {
+      this.uid = JSON.parse(this.userData).id;
+      this.users.getUser(this.uid).valueChanges()
+      .subscribe(data => {
+        let result : any[] = data;
+        if(result && (result.length > 0)) {
+          this.pictureUrl = result[0].pictureUrl;
+        }
+      },
+      err => this.showError(err.nessage));
+      
+    }
   }
 
 ionViewDidLoad() {
   this.currentUser = this.auth.getUser();
+
 }
 
   closeModal() {
@@ -87,4 +113,93 @@ ionViewDidLoad() {
     let modal = this.modalCtrl.create(ResumeComponent);
     modal.present();
   }
+
+  picture() {
+    this.fileChooser.open()
+    .then(uri =>  {
+      this.filePath.resolveNativePath(uri)
+      .then(filePath => {
+        this.file.resolveLocalFilesystemUrl(filePath)
+        .then(resFile => {
+          
+          let continueUpload: boolean = false;
+
+          let filePath: string = this.getFilePath(resFile.nativeURL);
+          let fileName: string = this.getFileName(resFile.nativeURL);
+          let fileExt: string = this.getFileExt(resFile.nativeURL);
+   
+          let uploadFileName: string = '';
+          
+          
+          if(this.uid) {
+            continueUpload = true;
+            uploadFileName = this.uid + '.' + fileExt ;
+          }
+          
+          if(continueUpload == true) {
+            if((fileExt.toLowerCase() === 'jpg') || (fileExt.toLowerCase() === 'png') || (fileExt.toLowerCase() === 'gif')) {  
+              this.file.readAsArrayBuffer(filePath,  fileName).then(
+                (data) => {
+                  var blob = new Blob([data], {
+                    type: 'image/' + fileExt
+                });
+
+                this.storage.uploadFile( uploadFileName, 'image/' + fileExt, blob)
+                .then(data => {
+                    
+                    if(data) {
+                      let url : string = <string>data;
+                    this.users.savePicture(this.uid, url)
+                    .then(data => {
+                      this.pictureUrl = url + "?random=" + Math.random().toString();
+                      console.log('this.pictureUrl', this.pictureUrl);
+                      this.showError("Picture uploaded successfully");
+                    })
+                    .catch(err => this.showError(err.message));
+                    }
+                })
+                .catch(err => this.showError(err.message));
+                })
+              .catch(e => this.showError(e.message));
+            }
+            else {
+              this.showError('Invalid profile picture');
+            }
+            }
+          else {
+            this.showError("File cannot be uploaded at this time. Please relogin.");
+          }
+        });
+        });
+        })
+      .catch(err => this.showError(err.message));
+      }
+      
+      getFilePath(path: string){
+        let fileName: string;
+  
+        let index = path.lastIndexOf('/');
+        fileName = path.substring(0, index+1);
+  
+        return fileName;
+      }
+  
+      getFileName(path: string){
+        let fileName: string;
+  
+        let index = path.lastIndexOf('/');
+        fileName = path.substring(index+1);
+  
+        return fileName
+      }
+    
+      getFileExt(path: string){
+        let fileName: string;
+  
+        let index = path.lastIndexOf('.');
+        fileName = path.substring(index+1);
+  
+        return fileName
+      }
+
 }

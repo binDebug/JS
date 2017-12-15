@@ -83,6 +83,10 @@ export class UsersProvider {
     return this.afDatabase.list("users").update(id, {resumeUrl: url});
   }
 
+  savePicture(id: string, url: string) {
+    return this.afDatabase.list("users").update(id, {pictureUrl: url});
+  }
+
   saveResume(id: string, resume: boolean) {
     return this.afDatabase.list("users").update(id, {resume: resume});
   } 

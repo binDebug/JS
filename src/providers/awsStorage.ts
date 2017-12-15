@@ -18,7 +18,7 @@ export class AWSStorageProvider {
 
     }
 
-    uploadResume(fileName: string, fileType: string, body: any)  {
+    uploadFile(fileName: string, fileType: string, body: any)  {
         let promise = new Promise((resolve, reject) => {
         this.settings.aws().valueChanges()
         .subscribe(data => {
@@ -28,19 +28,23 @@ export class AWSStorageProvider {
             this.access_id = result[0].AccessKeyID;
             this.secret = result[0].SecretAccessKey;
             this.resumeBucket = result[0].resumeBucket;
+            this.profileBucket = result[0].profileBucket;
             this.region = result[0].region;
             
             this.configureAWS();
                   
             var s3 = new AWS.S3();
-
+            
             var params = {
-                Bucket: this.resumeBucket,
+                Bucket: this.profileBucket,
                 Key: fileName,
                 Body: body,
                 ACL: 'public-read',
                 ContentType: fileType
             };
+
+            if(fileType === 'application/pdf')
+                params.Bucket = this.resumeBucket;
 
             s3.putObject(params, function (err, res) {
                 if (err) {

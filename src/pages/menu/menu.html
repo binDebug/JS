@@ -15,10 +15,14 @@
 
 <ion-content padding>
     <ion-list>
-            <ion-item class text-center>
-                <img src="assets/img/user.jpeg" />
+            <ion-item class text-center *ngIf="pictureUrl">
+                <img src="{{pictureUrl}}" />
                 <br>
-                <span class="hyper-link">Change Profile Photo</span>
+                <span class="hyper-link" (click)="picture()">Change Profile Photo</span>
+            </ion-item>
+    
+            <ion-item class text-center *ngIf="!pictureUrl">
+                <span class="hyper-link" (click)="picture()">Upload Profile Photo</span>
             </ion-item>
     
         </ion-list>
