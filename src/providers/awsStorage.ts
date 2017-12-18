@@ -43,9 +43,11 @@ export class AWSStorageProvider {
                 ContentType: fileType
             };
 
-            if(fileType === 'application/pdf')
+            if(fileType === 'application/pdf') {
                 params.Bucket = this.resumeBucket;
-
+                
+            }
+            
             s3.putObject(params, function (err, res) {
                 if (err) {
                     

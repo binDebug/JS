@@ -18,13 +18,28 @@
             <ion-item class text-center *ngIf="pictureUrl">
                 <img src="{{pictureUrl}}" />
                 <br>
-                <span class="hyper-link" (click)="picture()">Change Profile Photo</span>
+                <span class="hyper-link" (click)="isUploading = true">Change Profile Photo</span>
             </ion-item>
     
             <ion-item class text-center *ngIf="!pictureUrl">
-                <span class="hyper-link" (click)="picture()">Upload Profile Photo</span>
+                <span class="hyper-link" (click)="isUploading = true">Upload Profile Photo</span>
             </ion-item>
-    
+    <ion-item *ngIf="isUploading === true">
+        <div text-center class="profile-picture-buttons">
+        <button ion-button (click)="shoot()">
+            <ion-icon name="camera"></ion-icon>
+            Click
+        </button>
+        <button ion-button (click)="picture()">
+                <ion-icon name="image"></ion-icon>
+            Upload
+        </button>
+        <button ion-button (click)="isUploading = false">
+                <ion-icon name="close"></ion-icon>
+            Cancel
+        </button>
+        </div>
+    </ion-item>
         </ion-list>
         
         <ion-list lines>

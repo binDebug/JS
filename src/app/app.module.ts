@@ -59,6 +59,7 @@ import { FilePath } from '@ionic-native/file-path';
 import { File } from '@ionic-native/file';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { Camera } from '@ionic-native/camera';
 
 import { PayPal } from '@ionic-native/paypal';
 
@@ -145,6 +146,7 @@ import { PayPal } from '@ionic-native/paypal';
     PayPal,
     FCM,
     InAppBrowser,
+    Camera,
     UniqueDeviceID
   ]
 })

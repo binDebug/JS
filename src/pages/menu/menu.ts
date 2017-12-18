@@ -15,12 +15,14 @@ import { FilePath } from '@ionic-native/file-path';
 import { File } from '@ionic-native/file';
 import { UsersProvider } from '../../providers/users';
 import { AWSStorageProvider } from '../../providers/awsStorage';
-
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 @Component({
   selector: 'page-menu',
   templateUrl: 'menu.html'
 })
+
+
 export class MenuPage implements OnInit {
 
   userData: any;
@@ -28,6 +30,14 @@ export class MenuPage implements OnInit {
   resumeUrl: string = '';
   currentUser: any;
   pictureUrl: string = null;
+  isUploading: boolean = false;
+  options: CameraOptions = {
+    quality: 100,
+    destinationType: this.camera.DestinationType.DATA_URL,
+    encodingType: this.camera.EncodingType.JPEG,
+    mediaType: this.camera.MediaType.PICTURE,
+    correctOrientation: true
+  }
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
       private toastCtrl: ToastController,
@@ -39,6 +49,7 @@ export class MenuPage implements OnInit {
       private filePath: FilePath,
       private file: File,
       private users: UsersProvider,
+      private camera: Camera
       ) {}
 
   ngOnInit() {
@@ -114,6 +125,46 @@ ionViewDidLoad() {
     modal.present();
   }
 
+  shoot() {
+
+    this.camera.getPicture(this.options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64:
+      this.isUploading = false;
+      let base64Image = 'data:image/jpeg;base64,' + imageData;
+  //    console.log('imageData', imageData);
+
+  var binary_string =  window.atob(imageData);
+  var len = binary_string.length;
+  var bytes = new Uint8Array( len );
+  for (var i = 0; i < len; i++)        {
+      bytes[i] = binary_string.charCodeAt(i);
+  }
+  let data = bytes.buffer;
+  
+      this.storage.uploadFile(this.uid + '.jpeg', 'image/jpeg', data)
+      .then(data => {
+        if(data) {
+          let url : string = <string>data;
+        this.users.savePicture(this.uid, url)
+        .then(data => {
+          this.pictureUrl = url + "?random=" + Math.random().toString();
+          console.log('this.pictureUrl', this.pictureUrl);
+          this.showError("Picture uploaded successfully");
+        })
+        .catch(err => {
+          this.showError(err.message);
+        });
+        }
+      })
+      .catch(err => {
+        this.showError(err.message);
+      });
+     }, (err) => {
+        this.showError(err.message);
+     });
+  }
+
   picture() {
     this.fileChooser.open()
     .then(uri =>  {
@@ -146,7 +197,8 @@ ionViewDidLoad() {
 
                 this.storage.uploadFile( uploadFileName, 'image/' + fileExt, blob)
                 .then(data => {
-                    
+                    this.isUploading = false;
+                  
                     if(data) {
                       let url : string = <string>data;
                     this.users.savePicture(this.uid, url)
@@ -155,12 +207,18 @@ ionViewDidLoad() {
                       console.log('this.pictureUrl', this.pictureUrl);
                       this.showError("Picture uploaded successfully");
                     })
-                    .catch(err => this.showError(err.message));
+                    .catch(err => {
+                      this.showError(err.message);
+                    });
                     }
                 })
-                .catch(err => this.showError(err.message));
+                .catch(err => {
+                  this.showError(err.message);
+                });
                 })
-              .catch(e => this.showError(e.message));
+              .catch(e => {
+                this.showError(e.message);
+              });
             }
             else {
               this.showError('Invalid profile picture');
@@ -172,7 +230,9 @@ ionViewDidLoad() {
         });
         });
         })
-      .catch(err => this.showError(err.message));
+      .catch(err => {
+        this.showError(err.message);
+      });
       }
       
       getFilePath(path: string){
