@@ -63,16 +63,22 @@ export class JobPage implements OnInit {
       if(!this.resumeUrl)
         this.showError('Upload resume to apply to this job.');
       else {
-          this.jobList.applyJob(this.uid, this.job.id);
+          this.jobList.applyJob(this.uid, this.job.id)
+          .then(data => {
           this.emailEmployer();
           this.isApplied = true;
           this.events.publish('job:applied');
+        })
+        .catch(err => this.showError(err.message));
       }
     }
     else {
-      this.jobList.unApplyJob(this.uid + '_' + this.job.id);
+      this.jobList.unApplyJob(this.uid + '_' + this.job.id)
+      .then(data => {
       this.isApplied = false;
       this.events.publish('job:unapplied');
+    })
+    .catch(err => this.showError(err.message));
     }
     
   }

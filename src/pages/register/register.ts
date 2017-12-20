@@ -1,20 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { TabsPage } from "../tabs/tabs";
-import { LoginPage } from "../login/login";
+//import { LoginPage } from "../login/login";
 import {InviteesProvider} from '../../providers/invitees';
 import {UsersProvider} from '../../providers/users';
 import { AuthProvider } from '../../providers/auth';
+import { ViewController } from 'ionic-angular/navigation/view-controller';
 
 
-/**
- * Generated class for the RegisterPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-//@IonicPage()
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html',
@@ -27,10 +20,15 @@ export class RegisterPage {
 
   constructor(public navCtrl: NavController,
      public navParams: NavParams,
+     private viewCtrl: ViewController,
      private toastCtrl: ToastController,
      private afAuth: AuthProvider,
      private invitees: InviteesProvider,
      private users: UsersProvider) {
+  }
+
+  closeModal() {
+    this.viewCtrl.dismiss();
   }
 
     register() {
@@ -41,7 +39,7 @@ export class RegisterPage {
           .then(res => {
 
             this.userAdded = false;
-            this.addUser(this.email, res.uid);
+            this.addUser(this.email.toLowerCase(), res.uid);
 
             this.navCtrl.setRoot(TabsPage);
           }).catch(err => {
@@ -76,7 +74,4 @@ export class RegisterPage {
     }
   }
 
-  login() {
-    this.navCtrl.setRoot(LoginPage);
-  }
 }

@@ -25,11 +25,11 @@ View Resume
 <ion-list-header *ngIf="resumeUrl">
     Replace Resume
   </ion-list-header>
-  <ion-list-header *ngIf="resumeUrl === null" (click)="uploadResume()">
+  <ion-list-header *ngIf="!resumeUrl" (click)="uploadResume()">
       <ion-icon name="cloud-upload"></ion-icon>
       Upload Resume
     </ion-list-header>
-  <ion-item (click)="uploadResume()">
+  <ion-item (click)="uploadResume()" *ngIf="resumeUrl">
       <ion-icon name="cloud-upload"></ion-icon>
       Replace Resume
       </ion-item>

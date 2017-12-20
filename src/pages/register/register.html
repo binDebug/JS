@@ -1,49 +1,38 @@
-
 <ion-header>
-
-  <ion-navbar no-border>
-    <ion-title>Jobs App</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-  <ion-list no-lines>
-
-    <ion-item class="call heading-one" text-wrap><h1>Hello! Welcome.</h1></ion-item>
-    <ion-item class="call heading-two" text-wrap>Create your account below: </ion-item>
+    <ion-navbar>
+        <ion-title>SIGN UP</ion-title>
+            <ion-buttons start>
+                <button ion-button icon-only (click)="closeModal()">
+                <ion-icon name ="close" color="dark" >
+                </ion-icon>
+             </button>
+            </ion-buttons>
+        </ion-navbar>
+    
+  </ion-header>
   
 
+
+<ion-content >
+  <ion-list no-lines>
+
   <ion-item margin-bottom>
+      <ion-label icon-only><ion-icon name="mail"></ion-icon></ion-label>
     <ion-input type="text" name ="email" placeholder="Email" [(ngModel)]="email" ></ion-input>
   </ion-item>
 
   <ion-item margin-bottom>
+      <ion-label icon-only><ion-icon name="lock"></ion-icon></ion-label>
+     
     <ion-input type="password" name="password" placeholder="Password" [(ngModel)]="password" ></ion-input>
   </ion-item>
-  <button ion-button block color="secondary" margin-top (click)="register()" ><strong>Sign Up</strong></button>
+  <button ion-button block class="login-button" margin-top (click)="login()" ><strong>CONTINUE</strong></button>
+  <!-- <button ion-button block color="secondary" margin-top (click)="register()" ><strong>Sign Up</strong></button> -->
    <!-- <button ion-button block clear margin-top ><span class="line-through">&nbsp;Or continue with&nbsp;</span></button> -->
 </ion-list>
 
 
 
-<!-- <ion-grid>
-<ion-row>
-<ion-col>
-<ion-img width="50" height="50" src="assets/img/f.png"></ion-img>
-</ion-col>
-<ion-col>
-<ion-img width="50" height="50" src="assets/img/google.png"></ion-img>
-</ion-col>
-<ion-col>
-<ion-img width="50" height="50" src="assets/img/f.png"></ion-img>
-</ion-col>
-
-</ion-row>
-</ion-grid>
- -->
-
- <button ion-button block clear margin-top  (click)="login()" >Already have an account? <strong>Sign in.</strong></button>
+ <!-- <button ion-button block clear margin-top  (click)="login()" >Already have an account? <strong>Sign in.</strong></button> -->
 </ion-content>
 

@@ -8,6 +8,7 @@ import { FavoritesPage } from '../pages/favorites/favorites';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
+import { LandingPage } from '../pages/landing/landing';
 import { RegisterPage } from '../pages/register/register';
 import { MenuPage} from '../pages/menu/menu';
 import { EventsPage } from '../pages/events/events';
@@ -81,6 +82,7 @@ import { PayPal } from '@ionic-native/paypal';
     ChangePasswordPage,
     NotificationsSettingsPage,
     ReferencesPage,
+    LandingPage,
     FavoriteJobs,
     FavoriteEvents,
     HeaderComponent,
@@ -118,6 +120,7 @@ import { PayPal } from '@ionic-native/paypal';
     ChangePasswordPage,
     NotificationsSettingsPage,
     ReferencesPage,
+    LandingPage,
     NotificationsComponent,
     ResumeComponent
     

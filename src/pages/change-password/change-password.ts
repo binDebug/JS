@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
-import { LoginPage } from '../login/login';
+import { LandingPage } from '../landing/landing';
 
 @Component({
   selector: 'page-change-password',
@@ -45,7 +45,7 @@ export class ChangePasswordPage {
       .catch(err => {
         if(err.code === 'incorrect password') {
           this.auth.signOut();
-          this.navCtrl.setRoot(LoginPage);
+          this.navCtrl.setRoot(LandingPage);
         }
         this.showError(err.message);
       });

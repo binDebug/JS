@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
 import { ProfilePage } from '../profile/profile';
-import { LoginPage } from '../login/login';
+import { LandingPage } from '../landing/landing';
 import { AuthProvider } from '../../providers/auth';
 
 import { ChangePasswordPage } from '../change-password/change-password';
@@ -89,7 +89,7 @@ ionViewDidLoad() {
         
         window.localStorage.removeItem('userData');
         this.events.publish('logout');
-        this.navCtrl.setRoot(LoginPage);
+        this.navCtrl.setRoot(LandingPage);
       })
       .catch(err => this.showError(err.message));
     

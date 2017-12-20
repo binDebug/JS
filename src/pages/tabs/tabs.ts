@@ -6,7 +6,7 @@ import { EventsPage } from '../events/events';
 
 import { AuthProvider } from '../../providers/auth';
 import { NavController } from 'ionic-angular';
-import { LoginPage } from '../login/login';
+import { LandingPage } from '../landing/landing';
 import { AppliedPage } from '../applied/applied';
 
 
@@ -48,7 +48,7 @@ export class TabsPage implements OnInit {
     if(this.uid && user)
       return true;
     else {
-      this.navCtrl.setRoot(LoginPage);
+      this.navCtrl.setRoot(LandingPage);
       return true;
     }
   }
