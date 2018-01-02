@@ -108,4 +108,8 @@ public signOut() {
     return this.afAuth.auth.signOut();
     
 }
+
+public forgotPassword(email: string) {
+    return this.afAuth.auth.sendPasswordResetEmail(email);
+}
 }

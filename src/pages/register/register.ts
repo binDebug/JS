@@ -32,7 +32,7 @@ export class RegisterPage {
   }
 
     register() {
-
+   
     this.invitees.getInvitee(this.email).snapshotChanges().subscribe(res => {
        if (res && (res.length == 1)) {
          this.afAuth.signUp(this.email, this.password)
