@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
-import { RegisterPage } from "../register/register";
 
 import { TabsPage } from "../tabs/tabs";
 import { AuthProvider } from '../../providers/auth';
 import { Events } from 'ionic-angular/util/events';
-import { AWSStorageProvider } from '../../providers/awsStorage';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 
 
@@ -26,7 +24,6 @@ export class LoginPage{
       private viewCtrl: ViewController,
       private afAuth: AuthProvider,
       private toastCtrl: ToastController,
-      private storage: AWSStorageProvider,
       private events: Events) {
         
         

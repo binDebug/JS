@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { DateTime } from 'ionic-angular/components/datetime/datetime';
-
 
 @Injectable()
 export class JobsProvider {

@@ -3,11 +3,8 @@ import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { FBStorageProvider } from '../../providers/storage';
 import { FilePath } from '@ionic-native/file-path';
-import { Events } from 'ionic-angular';
 import { File } from '@ionic-native/file';
-import { AuthProvider } from '../../providers/auth';
 import { UsersProvider } from '../../providers/users';
 import { AWSStorageProvider } from '../../providers/awsStorage';
 
@@ -26,7 +23,6 @@ export class ResumeComponent implements OnInit {
   private fileChooser: FileChooser,
   private storage: AWSStorageProvider,
   private filePath: FilePath,
-  private events: Events,
   private file: File,
   private users: UsersProvider,
   private iab: InAppBrowser) {

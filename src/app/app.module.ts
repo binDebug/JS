@@ -45,7 +45,7 @@ import {InviteesProvider} from '../providers/invitees';
 import {JobsProvider} from '../providers/jobs';
 import {EventsProvider} from '../providers/events';
 import {AuthProvider} from '../providers/auth';
-import {FBStorageProvider} from '../providers/storage';
+
 import {UtilProvider} from '../providers/utils';
 import {FCMTokensProvider} from '../providers/fcmtokens';
 import {NotificationssProvider} from '../providers/notifications';
@@ -134,7 +134,7 @@ import { PayPal } from '@ionic-native/paypal';
     EventsProvider,
     JobsProvider,
     AuthProvider,
-    FBStorageProvider,
+    
     SettingsProvider,
     AWSStorageProvider,
     UtilProvider,

@@ -4,7 +4,6 @@ import { FavoritesPage } from '../favorites/favorites';
 import { HomePage } from '../home/home';
 import { EventsPage } from '../events/events';
 
-import { AuthProvider } from '../../providers/auth';
 import { NavController } from 'ionic-angular';
 import { LandingPage } from '../landing/landing';
 import { AppliedPage } from '../applied/applied';
@@ -22,8 +21,7 @@ export class TabsPage implements OnInit {
 
   userData: any;
   uid: string;
-  constructor(public navCtrl: NavController,
-              private auth: AuthProvider) {
+  constructor(public navCtrl: NavController) {
 
   }
 

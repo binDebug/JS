@@ -65,9 +65,6 @@ export class RegisterPage {
 
   addUser(email: string, uid: string) {
     if(this.userAdded == false) {
-    let id: number = 0;
-
-
         this.users.addUser(email, uid);
         this.userAdded = true;
 
