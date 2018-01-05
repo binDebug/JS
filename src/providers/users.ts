@@ -26,6 +26,10 @@ export class UsersProvider {
     
   }
 
+  updateName (id: string, name: string) {
+    return this.afDatabase.list("users").update(id, {displayName: name});
+  }
+
   updateEmail (id: string, email: string) {
     return this.afDatabase.list("users").update(id, {email: email});
   }

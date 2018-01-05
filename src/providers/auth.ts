@@ -97,6 +97,7 @@ public setPhoto(photoUrl: string) {
         displayName: name,
         photoURL: photoUrl};
     return this.afAuth.auth.currentUser.updateProfile(profile);
+    
 }
 
 public updatePassword(newPassword: string) {
