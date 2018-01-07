@@ -10,7 +10,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { LandingPage } from '../pages/landing/landing';
 import { RegisterPage } from '../pages/register/register';
-import { MenuPage} from '../pages/menu/menu';
+import { MenuPage } from '../pages/menu/menu';
 import { EventsPage } from '../pages/events/events';
 import { EventPage } from '../pages/event/event';
 import { JobPage } from '../pages/job/job';
@@ -19,41 +19,44 @@ import { AppliedPage } from '../pages/applied/applied';
 import { ChangePasswordPage } from '../pages/change-password/change-password';
 import { NotificationsSettingsPage } from '../pages/notifications-settings/notifications-settings';
 import { ReferencesPage } from '../pages/references/references';
+import { UsersPage } from '../pages/users/users';
+import { ContactsPage } from '../pages/contacts/contacts';
+import { ContactchatsPage } from '../pages/contactchats/contactchats';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 
-import {FIREBASE_CONFIG} from './app.firebase.config';
-import {AngularFireModule} from 'angularfire2';
-import {AngularFireAuthModule, AngularFireAuth} from 'angularfire2/auth';
-import {AngularFireDatabaseModule, AngularFireDatabase} from 'angularfire2/database';
+import { FIREBASE_CONFIG } from './app.firebase.config';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 
-import {HeaderComponent } from '../components/header/header';
-import {EventsComponent} from '../components/events/events';
-import {JobsComponent } from '../components/jobs/jobs';
-import {LoaderComponent} from '../components/loader/loader';
-import {AppliedJobsComponent} from '../components/applied-jobs/applied-jobs';
+import { HeaderComponent } from '../components/header/header';
+import { EventsComponent } from '../components/events/events';
+import { JobsComponent } from '../components/jobs/jobs';
+import { LoaderComponent } from '../components/loader/loader';
+import { AppliedJobsComponent } from '../components/applied-jobs/applied-jobs';
 import { FavoriteJobs } from '../components/favorite-jobs/favorite-jobs';
 import { FavoriteEvents } from '../components/favorite-events/favorite-events';
-import {NotificationsComponent} from '../components/notifications/notifications';
-import {ResumeComponent} from '../components/resume/resume';
+import { NotificationsComponent } from '../components/notifications/notifications';
+import { ResumeComponent } from '../components/resume/resume';
 
-import {UsersProvider} from '../providers/users';
-import {InviteesProvider} from '../providers/invitees';
-import {JobsProvider} from '../providers/jobs';
-import {EventsProvider} from '../providers/events';
-import {AuthProvider} from '../providers/auth';
-import {FBStorageProvider} from '../providers/storage';
-import {UtilProvider} from '../providers/utils';
-import {FCMTokensProvider} from '../providers/fcmtokens';
-import {NotificationssProvider} from '../providers/notifications';
-import {SettingsProvider} from '../providers/settings';
-import {AWSStorageProvider} from '../providers/awsStorage';
+import { UsersProvider } from '../providers/users';
+import { InviteesProvider } from '../providers/invitees';
+import { JobsProvider } from '../providers/jobs';
+import { EventsProvider } from '../providers/events';
+import { AuthProvider } from '../providers/auth';
+import { FBStorageProvider } from '../providers/storage';
+import { UtilProvider } from '../providers/utils';
+import { FCMTokensProvider } from '../providers/fcmtokens';
+import { NotificationssProvider } from '../providers/notifications';
+import { SettingsProvider } from '../providers/settings';
+import { AWSStorageProvider } from '../providers/awsStorage';
 
 
-import { FeaturedPipe} from '../pipes/featured';
+import { FeaturedPipe } from '../pipes/featured';
 
 import { FileChooser } from '@ionic-native/file-chooser';
 import { FilePath } from '@ionic-native/file-path';
@@ -63,6 +66,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Camera } from '@ionic-native/camera';
 
 import { PayPal } from '@ionic-native/paypal';
+import { RequestsProvider } from '../providers/requests/requests';
+import { ChatProvider } from '../providers/chat/chat';
 
 @NgModule({
   declarations: [
@@ -92,7 +97,10 @@ import { PayPal } from '@ionic-native/paypal';
     AppliedJobsComponent,
     NotificationsComponent,
     ResumeComponent,
-    FeaturedPipe
+    FeaturedPipe,
+    UsersPage,
+    ContactsPage,
+    ContactchatsPage
   ],
   imports: [
     BrowserModule,
@@ -100,7 +108,7 @@ import { PayPal } from '@ionic-native/paypal';
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     AngularFireAuthModule,
     AngularFireDatabaseModule
-    
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -114,7 +122,7 @@ import { PayPal } from '@ionic-native/paypal';
     RegisterPage,
     EventsPage,
     EventPage,
-    ProfilePage, 
+    ProfilePage,
     JobPage,
     AppliedPage,
     ChangePasswordPage,
@@ -122,13 +130,15 @@ import { PayPal } from '@ionic-native/paypal';
     ReferencesPage,
     LandingPage,
     NotificationsComponent,
-    ResumeComponent
-    
+    ResumeComponent,
+    UsersPage,
+    ContactsPage,
+    ContactchatsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     UsersProvider,
     InviteesProvider,
     EventsProvider,
@@ -150,7 +160,9 @@ import { PayPal } from '@ionic-native/paypal';
     FCM,
     InAppBrowser,
     Camera,
-    UniqueDeviceID
+    UniqueDeviceID,
+    RequestsProvider,
+    ChatProvider
   ]
 })
-export class AppModule {}
+export class AppModule { }

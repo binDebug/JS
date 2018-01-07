@@ -8,6 +8,7 @@ import { AuthProvider } from '../../providers/auth';
 import { NavController } from 'ionic-angular';
 import { LandingPage } from '../landing/landing';
 import { AppliedPage } from '../applied/applied';
+import {ContactsPage} from '../contacts/contacts';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class TabsPage implements OnInit {
   tab2Root = EventsPage;
   tab3Root = FavoritesPage;
   tab4Root = AppliedPage;
+  tab5Root = ContactsPage;
 
   userData: any;
   uid: string;
