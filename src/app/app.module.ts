@@ -42,18 +42,18 @@ import { FavoriteJobs } from '../components/favorite-jobs/favorite-jobs';
 import { FavoriteEvents } from '../components/favorite-events/favorite-events';
 import { NotificationsComponent } from '../components/notifications/notifications';
 import { ResumeComponent } from '../components/resume/resume';
+//import { FBStorageProvider } from '../providers/storage';
+import {UsersProvider} from '../providers/users';
+import {InviteesProvider} from '../providers/invitees';
+import {JobsProvider} from '../providers/jobs';
+import {EventsProvider} from '../providers/events';
+import {AuthProvider} from '../providers/auth';
 
-import { UsersProvider } from '../providers/users';
-import { InviteesProvider } from '../providers/invitees';
-import { JobsProvider } from '../providers/jobs';
-import { EventsProvider } from '../providers/events';
-import { AuthProvider } from '../providers/auth';
-import { FBStorageProvider } from '../providers/storage';
-import { UtilProvider } from '../providers/utils';
-import { FCMTokensProvider } from '../providers/fcmtokens';
-import { NotificationssProvider } from '../providers/notifications';
-import { SettingsProvider } from '../providers/settings';
-import { AWSStorageProvider } from '../providers/awsStorage';
+import {UtilProvider} from '../providers/utils';
+import {FCMTokensProvider} from '../providers/fcmtokens';
+import {NotificationssProvider} from '../providers/notifications';
+import {SettingsProvider} from '../providers/settings';
+import {AWSStorageProvider} from '../providers/awsStorage';
 
 
 import { FeaturedPipe } from '../pipes/featured';
@@ -144,7 +144,7 @@ import { ChatProvider } from '../providers/chat/chat';
     EventsProvider,
     JobsProvider,
     AuthProvider,
-    FBStorageProvider,
+    
     SettingsProvider,
     AWSStorageProvider,
     UtilProvider,

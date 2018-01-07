@@ -15,14 +15,13 @@ export class LandingPage {
   }
 
   login() {
-    console.log('1');
     let modal = this.modalCtrl.create(LoginPage);
     modal.present();
   }
 
   register() {
-    console.log('2');
     let modal = this.modalCtrl.create(RegisterPage);
     modal.present();
+  
   }
 }

@@ -45,7 +45,7 @@
         <ion-list lines>
                 <ion-item (click)="profile()">
                     <ion-icon name="person" item-start></ion-icon>
-                    <span *ngIf="currentUser && currentUser.displayName" > {{currentUser.displayName}}</span>
+                    <span *ngIf="name" > {{name}}</span>
                     <br>
                     <span class="view-profile">View your profile</span>
                 </ion-item>

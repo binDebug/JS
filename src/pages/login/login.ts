@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
-import { RegisterPage } from "../register/register";
 
 import { TabsPage } from "../tabs/tabs";
 import { AuthProvider } from '../../providers/auth';
 import { Events } from 'ionic-angular/util/events';
-import { AWSStorageProvider } from '../../providers/awsStorage';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 
 
@@ -26,7 +24,6 @@ export class LoginPage{
       private viewCtrl: ViewController,
       private afAuth: AuthProvider,
       private toastCtrl: ToastController,
-      private storage: AWSStorageProvider,
       private events: Events) {
         
         
@@ -65,26 +62,36 @@ ionViewCanEnter() {
   }
 
   login() {
-    console.log('123');
-    //this.storage.list();
     this.afAuth.signIn(this.email, this.password)
      .then(res => {
       this.navCtrl.setRoot(TabsPage);
       this.events.publish('login');
-    }).catch(err => {
+    }).catch(err => this.showError(err.message));
 
-      let toast = this.toastCtrl.create({
-        message: err.message,
-        duration: 3000,
-        position: 'bottom'
-      });
-    toast.present();
+  }
+
+  showError(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'bottom'
     });
-
+  toast.present();
   }
   isAuthenticated() {
-  if(window.localStorage.getItem('userData')) {
-    return true
+    if(window.localStorage.getItem('userData')) {
+      return true
+    }
   }
-}
+
+  forgotPassword() {
+    if(!this.email) {
+      this.showError("Enter email");
+    }
+    else {
+      this.afAuth.forgotPassword(this.email)
+      .then(data => this.showError('An email has been sent to your email address. Use the link in the email to reset password.'))
+      .catch(err => this.showError(err.message));
+    }
+  }
 }

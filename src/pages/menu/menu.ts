@@ -31,6 +31,7 @@ export class MenuPage implements OnInit {
   currentUser: any;
   pictureUrl: string = null;
   isUploading: boolean = false;
+  name: string = '';
   options: CameraOptions = {
     quality: 100,
     destinationType: this.camera.DestinationType.DATA_URL,
@@ -63,6 +64,7 @@ export class MenuPage implements OnInit {
         let result : any[] = data;
         if(result && (result.length > 0)) {
           this.pictureUrl = result[0].pictureUrl;
+          this.name = result[0].displayName;
         }
       },
       err => this.showError(err.nessage));

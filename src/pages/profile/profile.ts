@@ -73,14 +73,12 @@ export class ProfilePage implements OnInit {
               this.twitterUrl = result[0].twitterUrl;
               this.facebookUrl = result[0].facebookUrl;
               this.zip = result[0].zip;
+              this.name = result[0].displayName;
             }
           },
           err => this.showError(err.message));
           this.currentUser = this.auth.getUser();
       
-          if(this.currentUser.displayName)
-            this.name = this.currentUser.displayName.trim();
-          
           if(this.currentUser.email)
             this.email = this.currentUser.email.trim();
           
@@ -110,7 +108,7 @@ export class ProfilePage implements OnInit {
       if(!this.name)
         this.name = '';
 
-      this.auth.updateName(this.name.trim())
+      this.users.updateName(this.uid, this.name.trim())
       .catch(err => this.showError(err.message)) ;
      
     }

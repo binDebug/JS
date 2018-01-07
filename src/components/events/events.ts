@@ -6,7 +6,6 @@ import { EventsProvider } from '../../providers/events';
 import "rxjs/add/operator/map";
 import { event } from "../../models/event";
 import { eventVM } from "../../models/eventVM";
-import { AngularFireList } from 'angularfire2/database/interfaces';
 import { Observable } from 'rxjs/Observable';
 import { EventPage } from '../../pages/event/event';
 
