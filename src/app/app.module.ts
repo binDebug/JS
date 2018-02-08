@@ -25,6 +25,7 @@ import { ContactchatsPage } from '../pages/contactchats/contactchats';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { HTTP } from '@ionic-native/http';
 import { FCM } from '@ionic-native/fcm';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 
@@ -48,6 +49,7 @@ import {InviteesProvider} from '../providers/invitees';
 import {JobsProvider} from '../providers/jobs';
 import {EventsProvider} from '../providers/events';
 import {AuthProvider} from '../providers/auth';
+import {MailProvider} from '../providers/mail';
 
 import {UtilProvider} from '../providers/utils';
 import {FCMTokensProvider} from '../providers/fcmtokens';
@@ -138,13 +140,14 @@ import { ChatProvider } from '../providers/chat/chat';
   providers: [
     StatusBar,
     SplashScreen,
+    HTTP,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     UsersProvider,
     InviteesProvider,
     EventsProvider,
     JobsProvider,
     AuthProvider,
-    
+    MailProvider,
     SettingsProvider,
     AWSStorageProvider,
     UtilProvider,

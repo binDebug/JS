@@ -53,10 +53,6 @@ ionViewCanEnter() {
   
 }
 
-//  goToRegister() {
-//     this.navCtrl.setRoot(RegisterPage)
-//   }
-
   closeModal() {
     this.viewCtrl.dismiss();
   }

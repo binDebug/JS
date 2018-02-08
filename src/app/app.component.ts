@@ -49,6 +49,9 @@ export class MyApp {
     if(this.userData) {
       this.uid = JSON.parse(this.userData).id;
       if(this.uid) {
+        this.users.updateDeviceId(this.uid, this.deviceId)
+        .catch(err => this.showError(err.message));
+
         this.users.getUser(this.uid).valueChanges()
         .subscribe(res => {
           if(res && (res.length > 0)) {
@@ -65,7 +68,10 @@ export class MyApp {
   }
 
   logout() {
-    
+    if(this.uid)
+      this.users.updateDeviceId(this.uid, "")
+      .catch(err => this.showError(err.message));
+
     this.tokens.removeTokenForDevice(this.deviceId)
     .then(data => { 
        this.uid = '';
@@ -125,11 +131,19 @@ export class MyApp {
     if(this.deviceId && this.token) 
       this.tokens.addTokenForDevice(this.deviceId, this.token)
       .catch(err => this.showError(err.message));
+      
+    if(this.uid)
+      this.users.updateDeviceId(this.uid, this.deviceId)
+      .catch(err => this.showError(err.message));
   }
 
   updateToken() {
     if(this.deviceId && this.token) 
       this.tokens.updateTokenForDevice(this.deviceId, this.token)
+      .catch(err => this.showError(err.message));
+
+    if(this.uid)
+      this.users.updateDeviceId(this.uid, this.deviceId)
       .catch(err => this.showError(err.message));
   }
 

@@ -3,6 +3,8 @@ import { NavController, NavParams,ToastController, Events } from 'ionic-angular'
 import { JobsProvider } from '../../providers/jobs';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { UsersProvider } from '../../providers/users';
+import { mailContent } from '../../models/mailContent';
+import { MailProvider } from '../../providers/mail';
 
 @Component({
   selector: 'page-job',
@@ -18,6 +20,7 @@ export class JobPage implements OnInit {
   isFavorite: boolean = false;
   isApplied: boolean = false;
 
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -26,6 +29,7 @@ export class JobPage implements OnInit {
     private events: Events,
     private eComposer: EmailComposer,
     private usersList: UsersProvider,
+    private mailer: MailProvider
     ) {
       this.job = this.navParams.get('jobsData');
   }
@@ -85,18 +89,27 @@ export class JobPage implements OnInit {
 
   emailEmployer() {
 
-    let emailOpts = {
-    to: 'shilpaprabhun@gmail.com',
-    cc: 'another@email.com',
-    bcc: ['john@doe.com', 'jane@doe.com'],
+    let emailOpts: mailContent = {
+    to: this.job.contact,
+    from: this.email,
     subject: 'Application for job opening: ' + this.job.jobTitle,
-    body: 'Sir, I would like to apply for a job at your company. <br/>' 
+    html: 'Sir, I would like to apply for a job at your company. <br/>' 
           + ' Please view my <a href="' +  this.resumeUrl +'"> resume </a> here: ' 
           + this.resumeUrl,
-    isHtml: true
-  };
-
-  this.eComposer.open(emailOpts);
+    };
+  
+    this.mailer.SendMail(emailOpts)
+    .then(data => {
+      console.log('data', data);
+      if(data && (data.data !== 'Sent')) {
+        this.showError('Error sending mail to the recruiter');
+      }
+      else if (!data) {
+        this.showError('Error sending mail to the recruiter');
+      }
+    })
+    .catch(err => this.showError(err.message));
+  
   }
 
   favorite(){
