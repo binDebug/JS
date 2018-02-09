@@ -22,6 +22,12 @@ import { ReferencesPage } from '../pages/references/references';
 import { UsersPage } from '../pages/users/users';
 import { ContactsPage } from '../pages/contacts/contacts';
 import { ContactchatsPage } from '../pages/contactchats/contactchats';
+import { GroupsPage } from '../pages/groups/groups';
+import { NewgroupPage } from '../pages/newgroup/newgroup';
+import { GroupchatPage } from '../pages/groupchat/groupchat';
+import { GroupcontactsPage } from '../pages/groupcontacts/groupcontacts';
+import { GroupinfoPage } from '../pages/groupinfo/groupinfo';
+import { GroupmembersPage } from '../pages/groupmembers/groupmembers';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -43,17 +49,17 @@ import { FavoriteEvents } from '../components/favorite-events/favorite-events';
 import { NotificationsComponent } from '../components/notifications/notifications';
 import { ResumeComponent } from '../components/resume/resume';
 //import { FBStorageProvider } from '../providers/storage';
-import {UsersProvider} from '../providers/users';
-import {InviteesProvider} from '../providers/invitees';
-import {JobsProvider} from '../providers/jobs';
-import {EventsProvider} from '../providers/events';
-import {AuthProvider} from '../providers/auth';
+import { UsersProvider } from '../providers/users';
+import { InviteesProvider } from '../providers/invitees';
+import { JobsProvider } from '../providers/jobs';
+import { EventsProvider } from '../providers/events';
+import { AuthProvider } from '../providers/auth';
 
-import {UtilProvider} from '../providers/utils';
-import {FCMTokensProvider} from '../providers/fcmtokens';
-import {NotificationssProvider} from '../providers/notifications';
-import {SettingsProvider} from '../providers/settings';
-import {AWSStorageProvider} from '../providers/awsStorage';
+import { UtilProvider } from '../providers/utils';
+import { FCMTokensProvider } from '../providers/fcmtokens';
+import { NotificationssProvider } from '../providers/notifications';
+import { SettingsProvider } from '../providers/settings';
+import { AWSStorageProvider } from '../providers/awsStorage';
 
 
 import { FeaturedPipe } from '../pipes/featured';
@@ -68,6 +74,8 @@ import { Camera } from '@ionic-native/camera';
 import { PayPal } from '@ionic-native/paypal';
 import { RequestsProvider } from '../providers/requests/requests';
 import { ChatProvider } from '../providers/chat/chat';
+import { MediahandlerProvider } from '../providers/mediahandler/mediahandler';
+import { GroupsProvider } from '../providers/groups/groups';
 
 @NgModule({
   declarations: [
@@ -100,7 +108,13 @@ import { ChatProvider } from '../providers/chat/chat';
     FeaturedPipe,
     UsersPage,
     ContactsPage,
-    ContactchatsPage
+    ContactchatsPage,
+    GroupsPage,
+    NewgroupPage,
+    GroupchatPage,
+    GroupcontactsPage,
+    GroupinfoPage,
+    GroupmembersPage
   ],
   imports: [
     BrowserModule,
@@ -133,7 +147,13 @@ import { ChatProvider } from '../providers/chat/chat';
     ResumeComponent,
     UsersPage,
     ContactsPage,
-    ContactchatsPage
+    ContactchatsPage,
+    GroupsPage,
+    NewgroupPage,
+    GroupchatPage,
+    GroupcontactsPage,
+    GroupinfoPage,
+    GroupmembersPage
   ],
   providers: [
     StatusBar,
@@ -144,7 +164,7 @@ import { ChatProvider } from '../providers/chat/chat';
     EventsProvider,
     JobsProvider,
     AuthProvider,
-    
+
     SettingsProvider,
     AWSStorageProvider,
     UtilProvider,
@@ -162,7 +182,9 @@ import { ChatProvider } from '../providers/chat/chat';
     Camera,
     UniqueDeviceID,
     RequestsProvider,
-    ChatProvider
+    ChatProvider,
+    MediahandlerProvider,
+    GroupsProvider
   ]
 })
 export class AppModule { }
