@@ -51,11 +51,11 @@ export class ResumeComponent implements OnInit {
     
     this.fileChooser.open()
     .then(uri =>  {
+      
       this.filePath.resolveNativePath(uri)
       .then(filePath => {
         this.file.resolveLocalFilesystemUrl(filePath)
         .then(resFile => {
-          
           let continueUpload: boolean = false;
 
           let filePath: string = this.getFilePath(resFile.nativeURL);
@@ -79,7 +79,6 @@ export class ResumeComponent implements OnInit {
 
                 this.storage.uploadFile( uploadFileName, 'application/pdf', blob)
                 .then(data => {
-                    
                     if(data) {
                       let url : string = <string>data;
                     this.users.saveResumeUrl(this.uid, url)
@@ -87,12 +86,12 @@ export class ResumeComponent implements OnInit {
                       this.resumeUrl = url;
                       this.showError("Resume uploaded successfully");
                     })
-                    .catch(err => this.showError(err.message));
+                    .catch(err => this.showError('1' + err.message));
                     }
                 })
-                .catch(err => this.showError(err.message));
+                .catch(err => this.showError('2' + err.message));
                 })
-              .catch(e => this.showError(e.message));
+              .catch(e => this.showError('3' + e.message));
             }
             else {
               this.showError('Invalid resume file');
@@ -104,7 +103,7 @@ export class ResumeComponent implements OnInit {
         });
         });
         })
-      .catch(err => this.showError(err.message));
+      .catch(err => this.showError('4' + err.message));
       }
       
       getFilePath(path: string){

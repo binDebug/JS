@@ -31,6 +31,7 @@ import { GroupmembersPage } from '../pages/groupmembers/groupmembers';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { HTTP } from '@ionic-native/http';
 import { FCM } from '@ionic-native/fcm';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 
@@ -49,11 +50,12 @@ import { FavoriteEvents } from '../components/favorite-events/favorite-events';
 import { NotificationsComponent } from '../components/notifications/notifications';
 import { ResumeComponent } from '../components/resume/resume';
 //import { FBStorageProvider } from '../providers/storage';
-import { UsersProvider } from '../providers/users';
-import { InviteesProvider } from '../providers/invitees';
-import { JobsProvider } from '../providers/jobs';
-import { EventsProvider } from '../providers/events';
-import { AuthProvider } from '../providers/auth';
+import {UsersProvider} from '../providers/users';
+import {InviteesProvider} from '../providers/invitees';
+import {JobsProvider} from '../providers/jobs';
+import {EventsProvider} from '../providers/events';
+import {AuthProvider} from '../providers/auth';
+import {MailProvider} from '../providers/mail';
 
 import { UtilProvider } from '../providers/utils';
 import { FCMTokensProvider } from '../providers/fcmtokens';
@@ -158,13 +160,14 @@ import { GroupsProvider } from '../providers/groups/groups';
   providers: [
     StatusBar,
     SplashScreen,
+    HTTP,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     UsersProvider,
     InviteesProvider,
     EventsProvider,
     JobsProvider,
     AuthProvider,
-
+    MailProvider,
     SettingsProvider,
     AWSStorageProvider,
     UtilProvider,

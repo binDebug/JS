@@ -86,6 +86,8 @@ ionViewDidLoad() {
   }
 
   logOut() {
+
+
     this.auth.signOut()
       .then(data => {
         
