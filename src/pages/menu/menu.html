@@ -60,11 +60,30 @@
                     </ion-item>
             </ion-list>
 
-            
+        <ion-list>
+            <ion-item (click)="friends()">
+                <ion-icon name="contacts" item-start></ion-icon>
+                Friends
+                <ion-icon name="arrow-forward" item-end></ion-icon>
+            </ion-item>
+
+            <ion-item (click)="groups()">
+                <ion-icon name="people" item-start></ion-icon>
+                Groups
+                <ion-icon name="arrow-forward" item-end></ion-icon>
+            </ion-item>
+
+        <ion-item (click)="chat()">
+            <ion-icon name="chatboxes" item-start></ion-icon>
+            Chat
+        </ion-item>
+        
+        </ion-list>    
     <ion-list >
-            
+        
+        
         <ion-item (click)="references()">
-            <ion-icon name="people" item-start></ion-icon>
+            <ion-icon name="clipboard" item-start></ion-icon>
             References
             <ion-icon name="arrow-forward" item-end></ion-icon>
         </ion-item>
@@ -75,11 +94,6 @@
                         <ion-icon name="arrow-forward" item-end></ion-icon>
                     </ion-item>
             
-        <ion-item (click)="chat()">
-            <ion-icon name="chatboxes" item-start></ion-icon>
-            Chat
-        </ion-item>
-        
         
     </ion-list>
 <ion-list>

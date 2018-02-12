@@ -39,7 +39,7 @@ export class ChangePasswordPage {
     if(this.newPassword === this.confirmNewPassword) {
       this.auth.changePassword(currentUser.email, this.currentPassword, this.newPassword )
       .then(data => {
-        console.log('data', data);
+        
         this.viewCtrl.dismiss();
       })
       .catch(err => {

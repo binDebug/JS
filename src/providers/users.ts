@@ -1,39 +1,37 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { user } from '../models/user';
-import firebase from 'firebase';
 
 @Injectable()
 export class UsersProvider {
-  firedata = firebase.database().ref('/users');
   constructor(private afDatabase: AngularFireDatabase) {
 
   }
 
-  getallusers() {
-    console.log("getallusers");
-    var promise = new Promise((resolve, reject) => {
-      this.firedata.orderByChild('uid').once('value', (snapshot) => {
-        let userdata = snapshot.val();
-        let temparr: user[] = [];
-        for (var key in userdata) {
-          console.log(key);
-          let tempuser: user = 
-          {displayName : userdata[key].displayName, pictureUrl : userdata[key].pictureUrl, 
-            email : userdata[key].email, uid : key}; 
-          temparr.push(tempuser);
-        }
-        resolve(temparr);
-      }).catch((err) => {
-        reject(err);
-      })
-    })
-    return promise;
-  }
+  // getallusers() {
+    
+  //   var promise = new Promise((resolve, reject) => {
+      
+  //     this.firedata.orderByChild('uid').once('value', (snapshot) => {
+  //       let userdata = snapshot.val();
+  //       let temparr: user[] = [];
+  //       for (var key in userdata) {
+  //         let tempuser: user = 
+  //         {displayName : userdata[key].displayName, pictureUrl : userdata[key].pictureUrl, 
+  //           email : userdata[key].email, uid : key}; 
+  //         temparr.push(tempuser);
+  //       }
+  //       resolve(temparr);
+  //     }).catch((err) => {
+  //       reject(err);
+  //     })
+  //   })
+  //   return promise;
+  // }
 
-  //  getAllUsers(){
-  //    return this.afDatabase.list("users");
-  //  }
+   getAllUsers(){
+     return this.afDatabase.list("users");
+   }
 
   getUser(uid: string) {
     return this.afDatabase.list("users", res => res.orderByKey().equalTo(uid));
@@ -42,7 +40,8 @@ export class UsersProvider {
   addUser(email: string, uid: string) {
 
     var user = {
-      email: email
+      email: email,
+      id: uid
     };
 
 

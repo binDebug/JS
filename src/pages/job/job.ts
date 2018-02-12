@@ -100,7 +100,7 @@ export class JobPage implements OnInit {
   
     this.mailer.SendMail(emailOpts)
     .then(data => {
-      console.log('data', data);
+      
       if(data && (data.data !== 'Sent')) {
         this.showError('Error sending mail to the recruiter');
       }

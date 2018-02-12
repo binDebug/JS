@@ -16,6 +16,7 @@ import { File } from '@ionic-native/file';
 import { UsersProvider } from '../../providers/users';
 import { AWSStorageProvider } from '../../providers/awsStorage';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { ContactsPage } from '../contacts/contacts';
 
 @Component({
   selector: 'page-menu',
@@ -72,10 +73,10 @@ export class MenuPage implements OnInit {
     }
   }
 
-ionViewDidLoad() {
-  this.currentUser = this.auth.getUser();
+  ionViewDidLoad() {
+    this.currentUser = this.auth.getUser();
 
-}
+  }
 
   closeModal() {
     this.viewCtrl.dismiss();
@@ -86,8 +87,6 @@ ionViewDidLoad() {
   }
 
   logOut() {
-
-
     this.auth.signOut()
       .then(data => {
         
@@ -120,6 +119,11 @@ ionViewDidLoad() {
  
   }
 
+
+  friends() {
+    this.navCtrl.push(ContactsPage);
+  }
+
   profile() {
     this.navCtrl.push(ProfilePage);
   }
@@ -136,16 +140,16 @@ ionViewDidLoad() {
       // If it's base64:
       this.isUploading = false;
       let base64Image = 'data:image/jpeg;base64,' + imageData;
-  //    console.log('imageData', imageData);
-
-  var binary_string =  window.atob(imageData);
-  var len = binary_string.length;
-  var bytes = new Uint8Array( len );
-  for (var i = 0; i < len; i++)        {
-      bytes[i] = binary_string.charCodeAt(i);
-  }
-  let data = bytes.buffer;
   
+
+    var binary_string =  window.atob(imageData);
+    var len = binary_string.length;
+    var bytes = new Uint8Array( len );
+    for (var i = 0; i < len; i++)        {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    let data = bytes.buffer;
+    
       this.storage.uploadFile(this.uid + '.jpeg', 'image/jpeg', data)
       .then(data => {
         if(data) {
@@ -153,7 +157,7 @@ ionViewDidLoad() {
         this.users.savePicture(this.uid, url)
         .then(data => {
           this.pictureUrl = url + "?random=" + Math.random().toString();
-          console.log('this.pictureUrl', this.pictureUrl);
+          
           this.showError("Picture uploaded successfully");
         })
         .catch(err => {
@@ -208,7 +212,7 @@ ionViewDidLoad() {
                     this.users.savePicture(this.uid, url)
                     .then(data => {
                       this.pictureUrl = url + "?random=" + Math.random().toString();
-                      console.log('this.pictureUrl', this.pictureUrl);
+                      
                       this.showError("Picture uploaded successfully");
                     })
                     .catch(err => {
@@ -232,38 +236,38 @@ ionViewDidLoad() {
             this.showError("File cannot be uploaded at this time. Please relogin.");
           }
         });
-        });
-        })
-      .catch(err => {
-        this.showError(err.message);
       });
-      }
-      
-      getFilePath(path: string){
-        let fileName: string;
-  
-        let index = path.lastIndexOf('/');
-        fileName = path.substring(0, index+1);
-  
-        return fileName;
-      }
-  
-      getFileName(path: string){
-        let fileName: string;
-  
-        let index = path.lastIndexOf('/');
-        fileName = path.substring(index+1);
-  
-        return fileName
-      }
+    })
+    .catch(err => {
+      this.showError(err.message);
+    });
+  }
     
-      getFileExt(path: string){
-        let fileName: string;
-  
-        let index = path.lastIndexOf('.');
-        fileName = path.substring(index+1);
-  
-        return fileName
-      }
+  getFilePath(path: string){
+    let fileName: string;
+
+    let index = path.lastIndexOf('/');
+    fileName = path.substring(0, index+1);
+
+    return fileName;
+  }
+
+  getFileName(path: string){
+    let fileName: string;
+
+    let index = path.lastIndexOf('/');
+    fileName = path.substring(index+1);
+
+    return fileName
+  }
+
+  getFileExt(path: string){
+    let fileName: string;
+
+    let index = path.lastIndexOf('.');
+    fileName = path.substring(index+1);
+
+    return fileName
+  }
 
 }

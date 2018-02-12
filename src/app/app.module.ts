@@ -70,6 +70,7 @@ import { Camera } from '@ionic-native/camera';
 import { PayPal } from '@ionic-native/paypal';
 import { RequestsProvider } from '../providers/requests/requests';
 import { ChatProvider } from '../providers/chat/chat';
+import { ContactsProvider } from '../providers/contacts';
 
 @NgModule({
   declarations: [
@@ -153,6 +154,8 @@ import { ChatProvider } from '../providers/chat/chat';
     UtilProvider,
     FCMTokensProvider,
     NotificationssProvider,
+    ContactsProvider,
+    
     AngularFireAuth,
     AngularFireDatabase,
     FileChooser,

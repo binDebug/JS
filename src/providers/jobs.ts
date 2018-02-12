@@ -45,7 +45,7 @@ export class JobsProvider {
   }
 
   unfavoriteJob(key: string) {
-    console.log('key', key);
+    
     return this.afDatabase.list("/favoritedjobs").remove(key);
   }
 

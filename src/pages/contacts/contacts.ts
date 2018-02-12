@@ -1,41 +1,106 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, AlertController } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { NavController, NavParams, Events, AlertController } from 'ionic-angular';
 import { RequestsProvider } from '../../providers/requests/requests';
 import { ChatProvider } from '../../providers/chat/chat';
 import { AppConstants } from '../../models/constants';
 import { UsersPage } from '../users/users';
 import { ContactchatsPage } from '../contactchats/contactchats';
+import { ToastController } from 'ionic-angular/components/toast/toast-controller';
+import { ContactsProvider } from '../../providers/contacts';
+import { UsersProvider } from '../../providers/users';
 
-/**
- * Generated class for the ContactsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
   selector: 'page-contacts',
   templateUrl: 'contacts.html',
 })
-export class ContactsPage {
+export class ContactsPage implements OnInit {
 
-  myRequests;
-  myContacts;
+  myRequests: any;
+  myContacts: any;
+  userData: any;
+  uid: string = null;
+  imgUrl: string = null;
 
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams,
+    private toastCtrl: ToastController,
     public requestservice: RequestsProvider,
-    public events: Events, public alertControl: AlertController,
-    public chatservice: ChatProvider) {
-    console.log('ionViewDidLoad Constructor');
+    private userService: UsersProvider,
+    private contactsService: ContactsProvider
+    //public events: Events, 
+    //public alertControl: AlertController,
+    //public chatservice: ChatProvider
+  ) {
+    
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ContactsPage');
+  ngOnInit() {
+    this.userData = window.localStorage.getItem('userData');
+    
+    if(this.userData) {
+      this.uid = JSON.parse(this.userData).id;
+
+      this.userService.getUser(this.uid)
+      .valueChanges().subscribe(data => {
+        if(data && (data.length > 0)) {
+          this.imgUrl = data[0]['pictureUrl'];
+        }
+      },
+    err => this.showError(err.message));
+
+      this.requestservice.getContactRequests(this.uid)
+      .valueChanges().subscribe(data => {
+        if(data) {
+          this.myRequests = data;
+        }
+      },
+      err => this.showError(err.message));
+  
+      this.contactsService.getContacts(this.uid)
+      .valueChanges().subscribe(data => {
+        if(data) {
+          this.myContacts = data;
+        }
+      },
+      err => this.showError(err.message));
+      
+    }
+
+    
   }
 
-  ionViewWillEnter() {
+  showError(message: string) {
+    let toast = this.toastCtrl.create({
+          message: message,
+          duration: 3000,
+          position: 'bottom'
+        });
+    toast.present();
+  }
+
+  addContact() {
+    
+    this.navCtrl.push(UsersPage);
+  }
+
+  accept(item) {
+    console.log('item', item);
+    this.contactsService.addContact(item, this.imgUrl).then(data => {
+      this.requestservice.deleteContactRequest(item).then(data => {
+        this.showError('Friend request accepted.');
+      })
+      .catch(err => this.showError(err.message));
+    })
+    .catch(err => this.showError(err.message));
+  }
+
+  ignore(item) {
+    this.requestservice.deleteContactRequest(item)
+    .catch(err => this.showError(err.message));
+  }
+
+  /*
+  ionViewDidEnter() {
     this.requestservice.getmyRequests();
     this.requestservice.getmyContacts();
     this.myContacts = [];
@@ -55,34 +120,11 @@ export class ContactsPage {
   }
 
 
-  addContact() {
-    console.log("addContact clicked.");
-    this.navCtrl.push(UsersPage);
-  }
 
-  accept(item) {
-    this.requestservice.acceptRequest(item).then(() => {
-
-      let newalert = this.alertControl.create({
-        title: 'Friend added',
-        subTitle: 'Tap on the friend to chat with him',
-        buttons: ['Okay']
-      });
-      newalert.present();
-    })
-  }
-
-  ignore(item) {
-    this.requestservice.deleteRequest(item).then(() => {
-
-    }).catch((err) => {
-      alert(err);
-    })
-  }
-
+  
   contactChat(contact) {
     this.chatservice.initializeContact(contact);
     this.navCtrl.push(ContactchatsPage);
   }
-
+*/
 }

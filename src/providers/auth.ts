@@ -47,12 +47,10 @@ signIn(email: string, password: string) {
 }
 
 changePassword(email: string, oldPassword: string, newPassword: string) {
-    console.log(email, oldPassword, newPassword);
+    
     let promise = new Promise((resolve, reject) => {
-        console.log('1');
         this.signIn(email, oldPassword)
         .then(data => {
-            console.log('2', data);
             this.afAuth.auth.currentUser.updatePassword(newPassword)
             .then(data => resolve(data))
             .catch(err => reject(err));

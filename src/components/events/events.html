@@ -10,7 +10,7 @@
 <ion-row>
                     <ion-col col-9 class="event-name">{{event.name}}</ion-col>
                     <ion-col col-3 >
-                        <span class="capacity">{{event.capacity - event.attendance}}</span>
+                        <span class="capacity">{{(event.capacity && event.attendance) ? event.capacity - event.attendance : 0}}</span>
                     </ion-col>
                 </ion-row>
                 

@@ -16,7 +16,7 @@ export class ChatProvider {
   contactmessages = [];
 
   constructor(public events: Events) {
-    console.log('Hello ChatProvider Provider');
+    
   }
 
   initializeContact(contact) {

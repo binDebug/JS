@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
   private events: Events,
   private notifications: NotificationssProvider,
   private toastCtrl: ToastController) {
-    this.text = 'Hello World';
+    
   }
 
   ngOnInit() {
@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getNotifications() {
-    console.log('reistered');
+    
     this.notifications.get(this.uid).valueChanges()
     .subscribe(data => {
         this.notificationsList = data;

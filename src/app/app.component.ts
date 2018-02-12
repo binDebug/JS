@@ -11,11 +11,15 @@ import { ToastController } from 'ionic-angular/components/toast/toast-controller
 import { NotificationssProvider } from '../providers/notifications';
 import { UsersProvider } from '../providers/users';
 
+import { UsersPage } from '../pages/users/users';
+import { ContactsPage } from '../pages/contacts/contacts';
+
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = TabsPage;
+ rootPage:any = TabsPage;
+  //rootPage:any = ContactsPage;
   deviceId: string = null;
   token: string = null;
   userData: any;
@@ -112,7 +116,7 @@ export class MyApp {
       .subscribe(notification => {
         // check notification contents and react accordingly
         this.notifications.add(this.uid, notification.notificationid,
-          notification.title, notification.body, notification.jobid, notification.eventid)
+          notification.title, notification.body, null, notification.jobid, notification.eventid)
         .then(data => {
           
           this.events.publish('notification:received');

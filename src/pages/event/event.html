@@ -42,7 +42,7 @@
         
       </ion-item>
       <ion-item>
-        <span>Seats available: {{event.capacity - event.attendance}}</span>
+        <span>Seats available: {{(event.capacity && event.attendance) ? event.capacity - event.attendance : 0}}</span>
         <span item-right>
             Fee: {{event.price | currency}}
           </span>

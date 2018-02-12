@@ -8,6 +8,7 @@ import { JobsProvider } from '../../providers/jobs';
 import { EventsProvider } from '../../providers/events';
 import { EventPage } from '../../pages/event/event';
 import { TabsPage } from '../../pages/tabs/tabs';
+import { ContactsPage } from '../../pages/contacts/contacts';
 
 @Component({
   selector: 'notifications',
@@ -81,6 +82,13 @@ export class NotificationsComponent implements OnInit {
       },
     err => this.showError(err.message));
     }
+    else if (item.type === 'contact') {
+      
+      this.dismiss(item);
+      this.navCtrl.setRoot(TabsPage);
+      this.navCtrl.push(ContactsPage);
+    }
+    
   }
 
   closeModal() {

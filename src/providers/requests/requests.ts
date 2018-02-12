@@ -1,50 +1,35 @@
 import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
-import firebase from 'firebase';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { UsersProvider } from '../users';
 import { contactRequest } from '../../models/contactRequest';
-import { AppConstants } from '../../models/constants';
+//import { AppConstants } from '../../models/constants';
 
-/*
-  Generated class for the RequestsProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class RequestsProvider {
-  firerequest = firebase.database().ref('/requests');
-  firecontacts = firebase.database().ref('/contacts');
 
-  contacts;
-  contactdetails;
-
-  constructor(public usersprovider: UsersProvider, public events: Events) {
-    console.log('Hello RequestsProvider Provider');
+  constructor(private afDatabase: AngularFireDatabase,
+              public usersprovider: UsersProvider, 
+              public events: Events) {
+    
   }
 
-  sendRequest(request: contactRequest) {
-    // var promise = new Promise((resolve, reject) => { 
-    //   this.firerequest.child(request.recipient).push().set(
-    //     { sender: request.sender }).
-    //     then(() => 
-    //     { resolve({ success: true }); }).
-    //     catch((err) => { reject(err); }) }) 
-    //     return promise;
-
-    let promise = new Promise((resolve, reject) => {
-      this.firerequest.child(request.recipient).push().set(
-        { sender: request.sender }
-      ).then(() => {
-        resolve({ success: true })
-      }).catch((error) => {
-        reject(error);
-      })
-    })
-
-    return promise;
+  sendContactRequest(request: contactRequest) {
+    let id = request.sender + '_' + request.recipient;
+    
+    return this.afDatabase.list("/contactRequests").set(id, request);
   }
 
+  getContactRequests(uid: string) {
+    return this.afDatabase.list("/contactRequests", res => res.orderByChild('recipient').equalTo(uid));
+  }
+  
+  deleteContactRequest(contact: any) {
+    var id=contact.sender + '_' + contact.recipient;
+    return this.afDatabase.list("/contactRequests/" + id).remove();
+  }
+
+  /*
   getmyRequests() {
     let allmyrequests;
     var myrequests = [];
@@ -68,49 +53,7 @@ export class RequestsProvider {
     })
   }
 
-  acceptRequest(contact: any) {
-    var promise = new Promise((resolve, reject) => {
-      this.contacts = [];
-      this.firecontacts.child(firebase.auth().currentUser.uid).push().set({
-        uid: contact.uid
-      }).then(() => {
-        this.firecontacts.child(contact.uid).push().set({
-          uid: firebase.auth().currentUser.uid
-        }).then(() => {
-          this.deleteRequest(contact).then(() => {
-            resolve(true);
-          })
-        }).catch((err) => {
-          reject(err);
-        })
-      }).catch((err) => {
-        reject(err);
-      })
-    })
-    return promise;
-  }
-
-  deleteRequest(contact: any) {
-    var promise = new Promise((resolve, reject) => {
-      this.firerequest.child(firebase.auth().currentUser.uid).orderByChild('sender').
-        equalTo(contact.uid).once('value', (snapshot) => {
-          let somekey;
-          for (var key in snapshot.val())
-            somekey = key;
-          this.firerequest.child(
-            firebase.auth().currentUser.uid).child(somekey).remove().then(() => {
-              resolve(true);
-            })
-        })
-        .then(() => {
-
-        }).catch((err) => {
-          reject(err);
-        })
-    })
-    return promise;
-  }
-
+  
   getmyContacts() {
     let contactsUid = [];
     this.firecontacts.child(firebase.auth().currentUser.uid).on('value', (snapshot) => {
@@ -135,5 +78,5 @@ export class RequestsProvider {
 
     })
   }
-
+*/
 }
