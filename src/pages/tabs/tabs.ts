@@ -7,7 +7,8 @@ import { EventsPage } from '../events/events';
 import { NavController } from 'ionic-angular';
 import { LandingPage } from '../landing/landing';
 import { AppliedPage } from '../applied/applied';
-import {ContactsPage} from '../contacts/contacts';
+import { ContactsPage } from '../contacts/contacts';
+import { GroupsPage } from '../groups/groups';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class TabsPage implements OnInit {
   tab3Root = FavoritesPage;
   tab4Root = AppliedPage;
   tab5Root = ContactsPage;
+  tab6Root = GroupsPage;
 
   userData: any;
   uid: string;
@@ -28,24 +30,23 @@ export class TabsPage implements OnInit {
   }
 
   ngOnInit() {
-    
   }
 
   ionViewCanEnter() {
     let user: any = null;
     this.userData = window.localStorage.getItem('userData');
-    
-    for(let i = 0; i < window.localStorage.length; i++) {
-      if(window.localStorage.key(i).startsWith('firebase:authUser')) {
-          user = window.localStorage.getItem(window.localStorage.key(i));
-          break;
+
+    for (let i = 0; i < window.localStorage.length; i++) {
+      if (window.localStorage.key(i).startsWith('firebase:authUser')) {
+        user = window.localStorage.getItem(window.localStorage.key(i));
+        break;
       }
     }
-    if(this.userData) {
+    if (this.userData) {
       this.uid = JSON.parse(this.userData).id;
     }
-    
-    if(this.uid && user)
+
+    if (this.uid && user)
       return true;
     else {
       this.navCtrl.setRoot(LandingPage);

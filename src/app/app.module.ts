@@ -22,6 +22,12 @@ import { ReferencesPage } from '../pages/references/references';
 import { UsersPage } from '../pages/users/users';
 import { ContactsPage } from '../pages/contacts/contacts';
 import { ContactchatsPage } from '../pages/contactchats/contactchats';
+import { GroupsPage } from '../pages/groups/groups';
+import { NewgroupPage } from '../pages/newgroup/newgroup';
+import { GroupchatPage } from '../pages/groupchat/groupchat';
+import { GroupcontactsPage } from '../pages/groupcontacts/groupcontacts';
+import { GroupinfoPage } from '../pages/groupinfo/groupinfo';
+import { GroupmembersPage } from '../pages/groupmembers/groupmembers';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -51,11 +57,11 @@ import {EventsProvider} from '../providers/events';
 import {AuthProvider} from '../providers/auth';
 import {MailProvider} from '../providers/mail';
 
-import {UtilProvider} from '../providers/utils';
-import {FCMTokensProvider} from '../providers/fcmtokens';
-import {NotificationssProvider} from '../providers/notifications';
-import {SettingsProvider} from '../providers/settings';
-import {AWSStorageProvider} from '../providers/awsStorage';
+import { UtilProvider } from '../providers/utils';
+import { FCMTokensProvider } from '../providers/fcmtokens';
+import { NotificationssProvider } from '../providers/notifications';
+import { SettingsProvider } from '../providers/settings';
+import { AWSStorageProvider } from '../providers/awsStorage';
 
 
 import { FeaturedPipe } from '../pipes/featured';
@@ -70,7 +76,12 @@ import { Camera } from '@ionic-native/camera';
 import { PayPal } from '@ionic-native/paypal';
 import { RequestsProvider } from '../providers/requests/requests';
 import { ChatProvider } from '../providers/chat/chat';
+<<<<<<< HEAD
 import { ContactsProvider } from '../providers/contacts';
+=======
+import { MediahandlerProvider } from '../providers/mediahandler/mediahandler';
+import { GroupsProvider } from '../providers/groups/groups';
+>>>>>>> db40258393d1dc4efdb07850060c04e09d345cdb
 
 @NgModule({
   declarations: [
@@ -103,7 +114,13 @@ import { ContactsProvider } from '../providers/contacts';
     FeaturedPipe,
     UsersPage,
     ContactsPage,
-    ContactchatsPage
+    ContactchatsPage,
+    GroupsPage,
+    NewgroupPage,
+    GroupchatPage,
+    GroupcontactsPage,
+    GroupinfoPage,
+    GroupmembersPage
   ],
   imports: [
     BrowserModule,
@@ -136,7 +153,13 @@ import { ContactsProvider } from '../providers/contacts';
     ResumeComponent,
     UsersPage,
     ContactsPage,
-    ContactchatsPage
+    ContactchatsPage,
+    GroupsPage,
+    NewgroupPage,
+    GroupchatPage,
+    GroupcontactsPage,
+    GroupinfoPage,
+    GroupmembersPage
   ],
   providers: [
     StatusBar,
@@ -168,7 +191,9 @@ import { ContactsProvider } from '../providers/contacts';
     Camera,
     UniqueDeviceID,
     RequestsProvider,
-    ChatProvider
+    ChatProvider,
+    MediahandlerProvider,
+    GroupsProvider
   ]
 })
 export class AppModule { }
