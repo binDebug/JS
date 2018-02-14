@@ -1,64 +1,40 @@
 import { Injectable } from '@angular/core';
-import { Events } from 'ionic-angular';
-import firebase from 'firebase';
-import { AppConstants } from '../../models/constants';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { message } from '../../models/message';
 
-/*
-  Generated class for the ChatProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class ChatProvider {
-  firecontactchats = firebase.database().ref('/contactchats');
-  contact: any;
-  contactmessages = [];
+  constructor(private afDatabase: AngularFireDatabase) {
+  }
 
-  constructor(public events: Events) {
+  getMessages (id1: string, id2: string) {
+    let id = '';
+
+    if(id1 < id2)
+      id = id1 + '_' + id2;
+    else 
+      id = id2 + '_' + id1;
     
+      return this.afDatabase.list("/contactChats", res => res.orderByKey().equalTo(id));
   }
 
-  initializeContact(contact) {
-    this.contact = contact;
-  }
+  saveMessage(message: message) {
+    let id = '';
 
-  addNewMessage(message) {
-    if (this.contact) {
-      var promise = new Promise((resolve, reject) => {
-        this.firecontactchats.child(firebase.auth().currentUser.uid).
-        child(this.contact.uid).push().set({
-          sentby: firebase.auth().currentUser.uid,
-          message: message,
-          timestamp: firebase.database.ServerValue.TIMESTAMP
-        }).then(() => {
-          this.firecontactchats.child(this.contact.uid).
-          child(firebase.auth().currentUser.uid).push().set({
-            sentby: firebase.auth().currentUser.uid,
-            message: message,
-            timestamp: firebase.database.ServerValue.TIMESTAMP
-          }).then(() => {
-            resolve(true);
-          }).catch((err) => {
-            reject(err);
-          })
-        })
-      })
-      return promise;
-    }
-  }
+    if(message.id1 < message.id2)
+      id = message.id1 + '_' + message.id2;
+    else 
+      id = message.id2 + '_' + message.id1;
+    
+    let item = {
+      message: message.message,
+      id1: message.id1,
+      id2: message.id2,
+      attachment: message.attachment
+    }  
 
-  getContactMessages() {
-    let temp;
-    this.firecontactchats.child(firebase.auth().currentUser.uid).
-    child(this.contact.uid).on('value', (snapshot) => {
-      this.contactmessages = [];
-      temp = snapshot.val();
-      for (var tempkey in temp) {
-        this.contactmessages.push(temp[tempkey]);
-      }
-      this.events.publish(AppConstants.CONTACT_MESSAGES);
-    })
+    
+    return this.afDatabase.list("/contactChats/" + id).set(message.timeStamp.toString(), item);
   }
 
 }

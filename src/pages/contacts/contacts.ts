@@ -16,7 +16,7 @@ import { UsersProvider } from '../../providers/users';
 export class ContactsPage implements OnInit {
 
   myRequests: any;
-  myContacts: any;
+  myContacts = [];
   userData: any;
   uid: string = null;
   imgUrl: string = null;
@@ -59,13 +59,38 @@ export class ContactsPage implements OnInit {
       this.contactsService.getContacts(this.uid)
       .valueChanges().subscribe(data => {
         if(data) {
-          this.myContacts = data;
+          
+          this.parseContacts( data);
         }
       },
       err => this.showError(err.message));
       
     }
 
+    
+  }
+
+  parseContacts(data) {
+    
+    if(data && (data.length > 0)) {
+      Object.keys(data[0]).forEach((item, index) => {
+        let contactId = item;
+        this.userService.getUser(contactId)
+        .valueChanges().subscribe(res => {
+          if(res && (res.length > 0)) {
+            let contact = {
+              Id: contactId,
+              pictureUrl: res[0]['pictureUrl'],
+              displayName: res[0]['displayName']
+            };
+            this.myContacts.push(contact);
+            
+          }
+        },
+      err => this.showError(err.message));
+      });
+       
+    }
     
   }
 
@@ -84,7 +109,7 @@ export class ContactsPage implements OnInit {
   }
 
   accept(item) {
-    console.log('item', item);
+    
     this.contactsService.addContact(item, this.imgUrl).then(data => {
       this.requestservice.deleteContactRequest(item).then(data => {
         this.showError('Friend request accepted.');
@@ -97,6 +122,18 @@ export class ContactsPage implements OnInit {
   ignore(item) {
     this.requestservice.deleteContactRequest(item)
     .catch(err => this.showError(err.message));
+  }
+
+  
+  contactChat(contact) {
+  //  this.chatservice.initializeContact(contact);
+  let data = {
+    contactData: {
+      id1: this.uid,
+      id2: contact.Id
+    }
+  };
+    this.navCtrl.push(ContactchatsPage, data);
   }
 
   /*

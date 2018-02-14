@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { GroupsProvider } from '../../providers/groups/groups';
-import { MediahandlerProvider } from '../../providers/mediahandler/mediahandler';
+//import { MediahandlerProvider } from '../../providers/mediahandler/mediahandler';
 
 /**
  * Generated class for the NewgroupPage page.
@@ -23,7 +23,8 @@ export class NewgroupPage {
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController,
-    public groupservice: GroupsProvider, public imghandler: MediahandlerProvider,
+    public groupservice: GroupsProvider, 
+    //public imghandler: MediahandlerProvider,
     public loadingCtrl: LoadingController) {
   }
 
@@ -44,13 +45,13 @@ export class NewgroupPage {
         content: 'Loading, please wait..'
       });
       loader.present();
-      this.imghandler.grouppicstore(this.newgroup.groupName).then((res: any) => {
-        loader.dismiss();
-        if(res)
-          this.newgroup.groupPic = res;  
-      }).catch((err) => {
-        alert(err);
-      })
+      // this.imghandler.grouppicstore(this.newgroup.groupName).then((res: any) => {
+      //   loader.dismiss();
+      //   if(res)
+      //     this.newgroup.groupPic = res;  
+      // }).catch((err) => {
+      //   alert(err);
+      // })
     }
     
   }

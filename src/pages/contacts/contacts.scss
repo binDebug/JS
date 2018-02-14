@@ -4,4 +4,11 @@ page-contacts {
          transform: none !important; 
     }
 
+    
+    ion-avatar {
+        img {
+            height: 40px !important;
+            width: 40px !important;
+        }
+    }
 }

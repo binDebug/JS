@@ -1,4 +1,21 @@
 page-contactchats {
+    button.back-button {
+        -webkit-transform: none !important; 
+         transform: none !important; 
+    }
+
+    ion-avatar {
+        img {
+            height: 30px !important;
+            width: 30px !important;
+        }
+    }
+
+    .date {
+        color: #B2B2B2;
+        font-size: 8px;
+    }
+
     .chat {
         width: 320px;
     }
@@ -11,28 +28,28 @@ page-contactchats {
         position: relative;
         vertical-align: top;
     }
-    .bubble::before {
-        background-color: #F2F2F2;
-        content: "\00a0";
-        display: block;
-        height: 16px;
-        position: absolute;
-        top: 11px;
-        transform: rotate( 29deg) skew( -35deg);
-        -moz-transform: rotate( 29deg) skew( -35deg);
-        -ms-transform: rotate( 29deg) skew( -35deg);
-        -o-transform: rotate( 29deg) skew( -35deg);
-        -webkit-transform: rotate( 29deg) skew( -35deg);
-        width: 20px;
-    }
-    .me {
-        float: left;
-        margin: 5px 45px 5px 20px;
-    }
-    .me::before {
-        box-shadow: -2px 2px 2px 0 rgba( 178, 178, 178, .4);
-        left: -9px;
-    }
+    // .bubble::before {
+    //     background-color: #F2F2F2;
+    //     content: "\00a0";
+    //     display: block;
+    //     height: 16px;
+    //     position: absolute;
+    //     top: 11px;
+    //     transform: rotate( 29deg) skew( -35deg);
+    //     -moz-transform: rotate( 29deg) skew( -35deg);
+    //     -ms-transform: rotate( 29deg) skew( -35deg);
+    //     -o-transform: rotate( 29deg) skew( -35deg);
+    //     -webkit-transform: rotate( 29deg) skew( -35deg);
+    //     width: 20px;
+    // }
+    // .me {
+    //     float: left;
+    //     margin: 5px 45px 5px 20px;
+    // }
+    // .me::before {
+    //     box-shadow: -2px 2px 2px 0 rgba( 178, 178, 178, .4);
+    //     left: -9px;
+    // }
     .you {
         float: right;
         margin: 5px 20px 5px 45px;

@@ -94,9 +94,7 @@ displayName: string;
     if (this.newrequest.sender === this.newrequest.recipient)
       this.showError('You cannot add yourself to your contact list.');
     else {
-      console.log('1');
       this.requestService.sendContactRequest(this.newrequest).then((res: any) => {
-        console.log('2');
           this.showError('Your request was sent to ' + recipient.displayName);
       
           let sentuser = this.filteredusers.indexOf(recipient);

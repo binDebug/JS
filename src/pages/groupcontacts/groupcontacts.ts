@@ -27,23 +27,23 @@ export class GroupcontactsPage {
   }
 
   ionViewWillEnter() {
-    this.requestservice.getmyContacts();
-    this.events.subscribe('gotintogroup', () => {
-      this.mycontacts.splice(this.mycontacts.indexOf(this.newcontact.uid), 1);
-      this.tempmycontacts = this.mycontacts;
-    })
-    this.events.subscribe('friends', () => {
+    // this.requestservice.getmyContacts();
+    // this.events.subscribe('gotintogroup', () => {
+    //   this.mycontacts.splice(this.mycontacts.indexOf(this.newcontact.uid), 1);
+    //   this.tempmycontacts = this.mycontacts;
+    // })
+    // this.events.subscribe('friends', () => {
       
-      this.mycontacts = [];
-      this.mycontacts = this.requestservice.contacts;
-      this.groupmembers = this.groupservice.currentgroup;
-      for (var key in this.groupmembers)
-        for (var friend in this.mycontacts) {
-          if (this.groupmembers[key].uid === this.mycontacts[friend].uid)
-            this.mycontacts.splice(this.mycontacts.indexOf(this.mycontacts[friend]), 1);
-        }
-      this.tempmycontacts = this.mycontacts;
-    })
+    //   this.mycontacts = [];
+    //   this.mycontacts = this.requestservice.contacts;
+    //   this.groupmembers = this.groupservice.currentgroup;
+    //   for (var key in this.groupmembers)
+    //     for (var friend in this.mycontacts) {
+    //       if (this.groupmembers[key].uid === this.mycontacts[friend].uid)
+    //         this.mycontacts.splice(this.mycontacts.indexOf(this.mycontacts[friend]), 1);
+    //     }
+    //   this.tempmycontacts = this.mycontacts;
+    // })
   }
 
   searchuser(searchbar) {

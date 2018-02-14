@@ -76,12 +76,9 @@ import { Camera } from '@ionic-native/camera';
 import { PayPal } from '@ionic-native/paypal';
 import { RequestsProvider } from '../providers/requests/requests';
 import { ChatProvider } from '../providers/chat/chat';
-<<<<<<< HEAD
 import { ContactsProvider } from '../providers/contacts';
-=======
-import { MediahandlerProvider } from '../providers/mediahandler/mediahandler';
+//import { MediahandlerProvider } from '../providers/mediahandler/mediahandler';
 import { GroupsProvider } from '../providers/groups/groups';
->>>>>>> db40258393d1dc4efdb07850060c04e09d345cdb
 
 @NgModule({
   declarations: [
@@ -192,7 +189,7 @@ import { GroupsProvider } from '../providers/groups/groups';
     UniqueDeviceID,
     RequestsProvider,
     ChatProvider,
-    MediahandlerProvider,
+    //MediahandlerProvider,
     GroupsProvider
   ]
 })
