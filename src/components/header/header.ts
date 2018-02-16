@@ -52,7 +52,21 @@ export class HeaderComponent implements OnInit {
     .subscribe(data => {
         this.notificationsList = data;
         this.unreadnotificationsList = this.notificationsList.filter(p => p.isViewed === false);
-        this.unreadNotificationCount = this.unreadnotificationsList.length;
+        this.unreadNotificationCount = 0; 
+        let uniqueChats = [];
+        this.unreadnotificationsList.forEach(element => {
+          if(element.chatid) {
+            let item = uniqueChats.find(p => p.chatid === element.chatid);
+            if(!item) {
+              uniqueChats.push(element);
+            }
+          }
+          else {
+            uniqueChats.push(element);
+          }
+        });
+        this.unreadNotificationCount = uniqueChats.length;
+        //this.unreadnotificationsList.length;
     }
     ,err => this.showError(err.message));
   }

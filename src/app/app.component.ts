@@ -116,7 +116,8 @@ export class MyApp {
       .subscribe(notification => {
         // check notification contents and react accordingly
         this.notifications.add(this.uid, notification.notificationid,
-          notification.title, notification.body, null, notification.jobid, notification.eventid)
+          notification.title, notification.body, notification.type, 
+          notification.jobid, notification.eventid, notification.chatid)
         .then(data => {
           
           this.events.publish('notification:received');

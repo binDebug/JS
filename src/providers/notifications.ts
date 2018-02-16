@@ -7,7 +7,7 @@ export class NotificationssProvider {
     constructor(private afDatabase: AngularFireDatabase) {
     }
 
-    public add(userid: string, notificationid: string, title: string, body: string, type: string, jobid: string, eventid: string) {
+    public add(userid: string, notificationid: string, title: string, body: string, type: string, jobid: string, eventid: string, chatid: string) {
       let key = userid + "_" + notificationid;
       let notification = {
         userid: userid,
@@ -18,6 +18,7 @@ export class NotificationssProvider {
         type: type,
         jobid: jobid,
         eventid: eventid,
+        chatid: chatid,
         isViewed: false,
         isVisited: false
       };

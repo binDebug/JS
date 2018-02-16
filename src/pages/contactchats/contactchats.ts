@@ -11,6 +11,7 @@ import { AWSStorageProvider } from '../../providers/awsStorage';
 import firebase from 'firebase';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { message } from '../../models/message';
+import { NotificationssProvider } from '../../providers/notifications';
 
 
 @IonicPage()
@@ -38,6 +39,7 @@ export class ContactchatsPage {
     private toastCtrl: ToastController,
     public chatservice: ChatProvider,
     public userService: UsersProvider,
+    private notificationService: NotificationssProvider,
     public events: Events, 
     public zone: NgZone, 
     public loadingControl: LoadingController,
@@ -48,7 +50,7 @@ export class ContactchatsPage {
     private file: File) {
       this.contact = this.navParams.get('contactData');
         
-    // this.scrollTo();
+    this.scrollTo();
     // this.events.subscribe(AppConstants.CONTACT_MESSAGES, () => {
     //   this.allmessages = [];
     //   this.imgornot = [];
@@ -77,15 +79,20 @@ export class ContactchatsPage {
 
     this.chatservice.saveMessage(item)
     .then(data => {
-        //this.allmessages = [];
+      let chatid = (item.id1 < item.id2) ? item.id1 + '_' + item.id2 : item.id2 + '_' + item.id1;
+      
+      let toid = item.id1 === this.uid ? item.id2 : item.id1
+      let displayName = item.id1 === this.uid ? this.displayName1: this.displayName2;
+
+        this.notificationService.add(toid, Math.random().toString().replace('.',''), 'Chat message',
+              'New message from ' + displayName, 'chat', null, null, chatid
+            )
+            .catch(err => this.showError(err.message));
         this.newmessage = '';
-        //this.getMessages();
+        
     })
     .catch(err => this.showError(err.message));
-    // this.chatservice.addNewMessage(this.newmessage).then(() => {
-    //   this.content.scrollToBottom();
-    //   this.newmessage = '';
-    // })
+    
   }
 
   ionViewDidEnter() {
@@ -127,6 +134,8 @@ export class ContactchatsPage {
            this.allmessages.push(item);
         });
       }
+
+    //  this.content.scrollToBottom();
     },
      err => this.showError(err.message))
 

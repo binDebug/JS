@@ -101,7 +101,7 @@ displayName: string;
           this.filteredusers.splice(sentuser, 1);
  
           this.notificationsService.add(recipient.id, Math.random().toString().replace('.', ''), 'New contact request', 
-          'You have a friend request from: ' + this.displayName, 'contact', null, null)
+          'You have a friend request from: ' + this.displayName, 'contact', null, null, null)
           .catch(err =>  this.showError(err.message));
       })
       .catch((err) => this.showError(err.message));

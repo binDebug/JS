@@ -1,8 +1,8 @@
 
 <ion-header>
     <ion-navbar color="hcolor">
-        <ion-title *ngIf="uid === contact.id1">{{displayName1}}</ion-title>
-        
+        <ion-title *ngIf="uid === contact.id1">{{displayName2}}</ion-title>
+        <ion-title *ngIf="uid === contact.id2">{{displayName1}}</ion-title>
         
     </ion-navbar>
 </ion-header>
@@ -29,6 +29,7 @@
 </ion-content>
 <ion-footer ion-fixed>
     <ion-toolbar class="no-border" color="white">
+
         <ion-input [(ngModel)]="newmessage" placeholder="Write your message ..."></ion-input>              
         <ion-buttons end>
             <button ion-button (click)="addMessage()">

@@ -9,6 +9,7 @@ import { EventsProvider } from '../../providers/events';
 import { EventPage } from '../../pages/event/event';
 import { TabsPage } from '../../pages/tabs/tabs';
 import { ContactsPage } from '../../pages/contacts/contacts';
+import { ContactchatsPage } from '../../pages/contactchats/contactchats';
 
 @Component({
   selector: 'notifications',
@@ -16,7 +17,7 @@ import { ContactsPage } from '../../pages/contacts/contacts';
 })
 export class NotificationsComponent implements OnInit {
 
-  notifsList : any[];
+  notifsList = [];
   userData: any;
   uid: string = null;
 
@@ -36,11 +37,32 @@ export class NotificationsComponent implements OnInit {
       this.uid = JSON.parse(this.userData).id;
       if(this.uid)
       this.notifs.get(this.uid).valueChanges()
-      .subscribe(data => this.notifsList = data,
+      .subscribe(data => this.processNotifications(data),
       err => this.showError(err.message));
       
     }
 
+  }
+
+  processNotifications(notifs) {
+    
+    if (notifs && (notifs.length > 0)) {
+      notifs.forEach(element => {
+        if (element.type === 'chat') {
+          let item = this.notifsList.find(p => p.chatid === element.chatid);
+          
+          if(!item) {
+            this.notifsList.push(element);
+          } else {
+            this.dismiss(element);
+          }
+        } else {
+          this.notifsList.push(element);
+        }  
+      }); 
+        
+      
+    }
   }
 
   dismiss(item : any) {
@@ -50,10 +72,25 @@ export class NotificationsComponent implements OnInit {
 
 
   navigate(item : any) {
-    if(item.jobid) {
+    
+    if(item.chatid) {
+      if (item.type === 'chat') {
+        this.dismiss(item);
+    
+        let ids = item.chatid.split('_');
+        let data = {
+          contactData: {
+            id1: ids[0],
+            id2: ids[1]
+          }
+        }; 
+        this.navCtrl.push(ContactchatsPage, data);
+      }
+    }
+    else if(item.jobid) {
       let jobData: any;
 
-      this.viewCtrl.dismiss();
+      this.dismiss(item);
       this.jobs.getJob(item.jobid).valueChanges()
       .subscribe(data => {
         
@@ -70,7 +107,7 @@ export class NotificationsComponent implements OnInit {
     else if(item.eventid) {
       let eventData : any;
 
-      this.viewCtrl.dismiss();
+      this.dismiss(item);
       this.events.getEvent(item.eventid).valueChanges()
       .subscribe(data => {
         if(data && (data.length > 0)) {
