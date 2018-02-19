@@ -1,18 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { GroupsProvider } from '../../providers/groups/groups';
 import { GroupinfoPage } from '../groupinfo/groupinfo';
 import { GroupmembersPage } from '../groupmembers/groupmembers';
 import { GroupcontactsPage } from '../groupcontacts/groupcontacts';
 
-/**
- * Generated class for the GroupchatPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
   selector: 'page-groupchat',
   templateUrl: 'groupchat.html',
@@ -24,12 +16,12 @@ export class GroupchatPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public groupservice: GroupsProvider,
     public actionSheet: ActionSheetController) {
     this.groupName = this.navParams.get('groupName');
-    this.groupservice.getownership(this.groupName).then((res) => {
-      if (res)
-        this.owner = true;
-    }).catch((err) => {
-      alert(err);
-    })
+    // this.groupservice.getownership(this.groupName).then((res) => {
+    //   if (res)
+    //     this.owner = true;
+    // }).catch((err) => {
+    //   alert(err);
+    // })
   }
 
   ionViewDidLoad() {

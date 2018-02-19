@@ -29,54 +29,5 @@ export class RequestsProvider {
     return this.afDatabase.list("/contactRequests/" + id).remove();
   }
 
-  /*
-  getmyRequests() {
-    let allmyrequests;
-    var myrequests = [];
-    this.firerequest.child(firebase.auth().currentUser.uid).on('value', (snapshot) => {
-      allmyrequests = snapshot.val();
-      myrequests = [];
-      for (var i in allmyrequests) {
-        myrequests.push(allmyrequests[i].sender);
-      }
-      this.usersprovider.getallusers().then((res) => {
-        var allusers = res;
-        this.contactdetails = [];
-        for (var j in myrequests)
-          for (var key in allusers) {
-            if (myrequests[j] === allusers[key].uid) {
-              this.contactdetails.push(allusers[key]);
-            }
-          }
-        this.events.publish(AppConstants.GOT_REQUESTS);
-      })
-    })
-  }
-
   
-  getmyContacts() {
-    let contactsUid = [];
-    this.firecontacts.child(firebase.auth().currentUser.uid).on('value', (snapshot) => {
-      let allContacts = snapshot.val();
-      this.contacts = [];
-      for (var i in allContacts) {
-        contactsUid.push(allContacts[i].uid);
-      }
-
-      this.usersprovider.getallusers().then((users) => {
-        this.contacts = [];
-        for (var j in contactsUid)
-          for (var key in users) {
-            if (contactsUid[j] === users[key].uid) {
-              this.contacts.push(users[key]);
-            }
-          }
-        this.events.publish(AppConstants.CONTACTS_FETCHED);
-      }).catch((err) => {
-        alert(err);
-      })
-
-    })
-  }
-*/
 }

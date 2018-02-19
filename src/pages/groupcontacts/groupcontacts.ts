@@ -1,16 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { RequestsProvider } from '../../providers/requests/requests';
 import { GroupsProvider } from '../../providers/groups/groups';
 
-/**
- * Generated class for the GroupcontactsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
   selector: 'page-groupcontacts',
   templateUrl: 'groupcontacts.html',
@@ -27,23 +19,7 @@ export class GroupcontactsPage {
   }
 
   ionViewWillEnter() {
-    // this.requestservice.getmyContacts();
-    // this.events.subscribe('gotintogroup', () => {
-    //   this.mycontacts.splice(this.mycontacts.indexOf(this.newcontact.uid), 1);
-    //   this.tempmycontacts = this.mycontacts;
-    // })
-    // this.events.subscribe('friends', () => {
-      
-    //   this.mycontacts = [];
-    //   this.mycontacts = this.requestservice.contacts;
-    //   this.groupmembers = this.groupservice.currentgroup;
-    //   for (var key in this.groupmembers)
-    //     for (var friend in this.mycontacts) {
-    //       if (this.groupmembers[key].uid === this.mycontacts[friend].uid)
-    //         this.mycontacts.splice(this.mycontacts.indexOf(this.mycontacts[friend]), 1);
-    //     }
-    //   this.tempmycontacts = this.mycontacts;
-    // })
+    
   }
 
   searchuser(searchbar) {
@@ -69,7 +45,7 @@ export class GroupcontactsPage {
 
   addContact(contact) {
     this.newcontact = contact;
-    this.groupservice.addmember(contact);
+    //this.groupservice.addmember(contact);
   }
 
 }

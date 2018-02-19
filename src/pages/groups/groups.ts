@@ -1,56 +1,77 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, LoadingController } from 'ionic-angular';
+import {  NavController, NavParams, Events, LoadingController } from 'ionic-angular';
 import { GroupsProvider } from '../../providers/groups/groups';
 import { NewgroupPage } from '../newgroup/newgroup';
 import { GroupchatPage } from '../groupchat/groupchat';
+import { ToastController } from 'ionic-angular/components/toast/toast-controller';
+import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { Group } from '../../models/group';
 
-/**
- * Generated class for the GroupsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
   selector: 'page-groups',
   templateUrl: 'groups.html',
 })
-export class GroupsPage {
-  allMyGroups;
+export class GroupsPage implements OnInit {
+  allMyGroups: Group[] = [];
+  userData: any;
+  uid: string = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events,
-    public loadingCtrl: LoadingController, public groupservice: GroupsProvider) {
-    console.log('Initialized');
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams, 
+    public events: Events,
+    public toastCtrl: ToastController, 
+    public groupservice: GroupsProvider) {
   }
 
-  ionViewDidLoad() {
-    console.log('Page Loaded GroupsPage');
+  ngOnInit() {
+    this.userData = window.localStorage.getItem('userData');
+    if(this.userData) {
+      this.uid = JSON.parse(this.userData).id;
+      
+      this.groupservice.getMyGroups(this.uid).valueChanges()
+      .subscribe(data => {
+        if(data && (data.length > 0)) {
+          this.allMyGroups = [];
+          data.forEach(item => {
+            this.groupservice.getGroup(item['groupid']).valueChanges()
+            .subscribe(data1 => {
+              if(data1 && data1.length > 0) {
+                let item = this.allMyGroups.find(p => p.id === data1[0]['id']);
+                if(item) {
+                  item.name = data1[0]['name'];
+                }
+                else {
+                  this.allMyGroups.push(data1[0] as Group);
+                }
+              }
+            },
+            err => this.showError(err.message));
+          });
+        }
+      },
+    err => this.showError(err.message));
+
+    }
   }
 
-  ionViewWillEnter() {
-    let loader = this.loadingCtrl.create({
-      content: 'Getting your groups, Please wait...'
-    });
-    loader.present();
-    this.groupservice.getMyGroups();
-    loader.dismiss();
-    this.events.subscribe('newgroup', () => {
-      this.allMyGroups = this.groupservice.mygroups;
-    })
-  }
-
-  ionViewDidLeave() {
-    this.events.unsubscribe('newgroup');
+  showError(message: string) {
+    let toast = this.toastCtrl.create({
+          message: message,
+          duration: 3000,
+          position: 'bottom'
+        });
+    toast.present();
   }
 
   addgroup() {
     this.navCtrl.push(NewgroupPage);
   }
 
-  openchat(group) {
-    this.groupservice.getintogroup(group.groupName);
-    this.navCtrl.push(GroupchatPage, { groupName: group.groupName });
-  }
+  settings(item: Group) {
+    let data = {
+      groupId: item.id
+    };
 
+    this.navCtrl.push(NewgroupPage, data);
+  }
 }

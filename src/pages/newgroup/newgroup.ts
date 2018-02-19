@@ -1,98 +1,125 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { GroupsProvider } from '../../providers/groups/groups';
-//import { MediahandlerProvider } from '../../providers/mediahandler/mediahandler';
-
-/**
- * Generated class for the NewgroupPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Group } from '../../models/group';
+import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { ToastController } from 'ionic-angular/components/toast/toast-controller';
+import { user } from '../../models/user';
+import { UsersProvider } from '../../providers/users';
 
 @IonicPage()
 @Component({
   selector: 'page-newgroup',
   templateUrl: 'newgroup.html',
 })
-export class NewgroupPage {
+export class NewgroupPage implements OnInit {
 
-  newgroup = {
-    groupName: 'GroupName',
-    groupPic: 'https://firebasestorage.googleapis.com/v0/b/myapp-4eadd.appspot.com/o/chatterplace.png?alt=media&token=e51fa887-bfc6-48ff-87c6-e2c61976534e'
+  groupId: string = null;
+  group = {  } as Group;
+  userData: any;
+  uid: string = null;
+  isUploading: boolean = false;
+  members: user[] = [];
+
+  constructor(public navCtrl: NavController, 
+      public navParams: NavParams, 
+      public groupservice: GroupsProvider, 
+      public userService: UsersProvider,
+      public toastCtrl: ToastController,
+      public loadingCtrl: LoadingController) {
+
+        this.groupId = this.navParams.get('groupId');
   }
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController,
-    public groupservice: GroupsProvider, 
-    //public imghandler: MediahandlerProvider,
-    public loadingCtrl: LoadingController) {
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad NewgroupPage');
-  }
-
-  chooseimage() {
-    if (this.newgroup.groupName == 'GroupName') {
-      let namealert = this.alertCtrl.create({
-        buttons: ['okay'],
-        message: 'Please enter the groupname first. Thanks'
-      });
-      namealert.present();
+  ngOnInit() {
+    this.userData = window.localStorage.getItem('userData');
+    if(this.userData) {
+      this.uid = JSON.parse(this.userData).id;
     }
-    else {
-      let loader = this.loadingCtrl.create({
-        content: 'Loading, please wait..'
-      });
-      loader.present();
-      // this.imghandler.grouppicstore(this.newgroup.groupName).then((res: any) => {
-      //   loader.dismiss();
-      //   if(res)
-      //     this.newgroup.groupPic = res;  
-      // }).catch((err) => {
-      //   alert(err);
-      // })
-    }
-    
-  }
 
-  creategroup() {
-    this.groupservice.addGroup(this.newgroup).then(() => {
-      this.navCtrl.pop();
-    }).catch((err) => {
-      alert(JSON.stringify(err));
-    })
-  }
-
-  editgroupname() {
-    let alert = this.alertCtrl.create({
-      title: 'Edit Group Name',
-      inputs: [{
-        name: 'groupname',
-        placeholder: 'Give a new groupname'
-      }],
-      buttons: [{
-        text: 'Cancel',
-        role: 'cancel',
-        handler: data => {
-
+    if(this.groupId && (this.groupId != null)) {
+      this.groupservice.getGroup(this.groupId).valueChanges()
+      .subscribe(data => {
+        if(data && (data.length > 0)) {
+          this.group = data[0] as Group;
         }
       },
-      {
-        text: 'Set',
-        handler: data => {
-          if (data.groupname) {
-            this.newgroup.groupName = data.groupname
-          }
+      err => this.showError(err.message));
 
-          else {
-            this.newgroup.groupName = 'groupName';
-          }
+      this.members = [];
+
+      this.groupservice.getGroupMembers(this.groupId).valueChanges()
+      .subscribe(data => {
+        console.log('data', data);
+        if(data && (data.length > 0)) {
+          this.userService.getUser(data[0]['uid']).valueChanges()
+          .subscribe(data1 => {
+            console.log('data1', data1);
+            if(data1 && (data1.length > 0)) {
+              let item = this.members.find(p => p['id'] === data1[0]['id']);
+              console.log('item', item);
+              if(item) {
+                console.log('1');
+                item.displayName = data1[0]['displayName'];
+              }
+              else {
+                this.members.push(data1[0] as user);
+                console.log('2', this.members);
+              }
+            }
+          },
+          err => this.showError(err.message));
         }
       }
-      ]
-    });
-    alert.present();
+      , err => this.showError(err.message));
+    }
   }
 
+  showError(message: string) {
+    let toast = this.toastCtrl.create({
+          message: message,
+          duration: 3000,
+          position: 'bottom'
+        });
+    toast.present();
+  }
+
+  saveGroup() {
+    if(!this.groupId) {
+      this.group.ownerId = this.uid;
+      
+      this.groupservice.addGroup(this.group)
+      .then(data => {
+        this.groupId = data.key;
+        this.groupservice.updateGroupId(this.groupId)
+        .then(data => {})
+        .catch(err => this.showError(err.message));
+
+        this.groupservice.addGroupMember(this.groupId, this.uid)
+        .then(data => {})
+        .catch(err => this.showError(err.message));
+      }
+      , err => this.showError(err.message));
+     
+    }
+    else {
+      this.groupservice.updateName(this.groupId, this.group.name)
+      .then(data => {})
+      .catch(err => this.showError(err.message));
+    }
+  }
+
+  UpdatedDesc() {
+    this.groupservice.updateDescription(this.groupId, this.group.description)
+    .then(data => {})
+    .catch(err => this.showError(err.message));
+
+  }
+
+  removeMember(item: user) {
+    this.groupservice.removeGroupMember(this.groupId, item.uid)
+    .then(data => {})
+    .catch(err => this.showError(err.message));
+  }
+  
 }

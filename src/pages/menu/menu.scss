@@ -1,4 +1,16 @@
 page-menu {
+    
+    img {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        border: solid 1px black;
+    }
+    button.back-button {
+        -webkit-transform: none !important; 
+         transform: none !important; 
+    }
+
     .profile-picture-buttons {
         button {
             font-size: 24px;
@@ -9,17 +21,6 @@ page-menu {
                 font-size: 24px;
             }
         }
-    }
-
-    img {
-        border-radius: 50%;
-        width: 150px;
-        height: 150px;
-        border: solid 1px black;
-    }
-    button.back-button {
-        -webkit-transform: none !important; 
-         transform: none !important; 
     }
 
     .hyper-link {

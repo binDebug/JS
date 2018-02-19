@@ -25,9 +25,11 @@
         </ion-list-header>
         <ion-item *ngFor="let item of allMyGroups">
             <ion-avatar item-left>
-                <img src="{{item.groupimage}}">
+                <img src="{{item.pictureUrl}}">
             </ion-avatar>
-            <h3 (click)="openchat(item)">{{item.groupName}}</h3>
+            <h3>{{item.name}}</h3>
+            <ion-icon name="chatboxes" (click)="openchat(item)" item-right></ion-icon>
+            <ion-icon name="settings" (click)="settings(item)" item-right></ion-icon>
         </ion-item>
     </ion-list>
 </ion-content>

@@ -1,30 +1,63 @@
-<!--
-  Generated template for the NewgroupPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
     <ion-navbar color="hcolor">
-        <ion-title>Add a New Group</ion-title>
+        <ion-title *ngIf="groupId">{{group.name}}</ion-title>
+        <ion-title *ngIf="!groupId">New Group</ion-title>
     </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-    <div class="profile-image" (click)="chooseimage()">
-        <img src="{{newgroup.groupPic}}">
-    </div>
-    <div>
-        <h2 (click)="editgroupname()">{{newgroup.groupName}}</h2>
-    </div>
-    <div>
-        Tap on the pic or group name to change it.
-    </div>
-    <div class="spacer" style="height: 10px;"></div>
-    <div>
-        <button ion-button round outline (click)="creategroup()">Create</button>
-    </div>
+    <ion-list>
+    <ion-item class="profile-image" (click)="chooseimage()" *ngIf="groupId">
+        <img src="{{group.pictureUrl}}">
+        <span class="hyper-link" (click)="isUploading = true">Update group photo</span>
+    </ion-item>
+    <ion-item text-center class="profile-picture-buttons" *ngIf="isUploading === true">
+        <button ion-button (click)="shoot()">
+            <ion-icon name="camera"></ion-icon>
+            Click
+        </button>
+        <button ion-button (click)="picture()">
+                <ion-icon name="image"></ion-icon>
+            Upload
+        </button>
+        <button ion-button (click)="isUploading = false">
+                <ion-icon name="close"></ion-icon>
+            Cancel
+        </button>
+    </ion-item>
+    
+        <ion-item >
+            <ion-input  type="text" placeholder="Group Name" [(ngModel)]="group.name" (ionBlur)="saveGroup()" *ngIf="!groupdId || (group.ownerId === uid)"> </ion-input>
+            <!-- <ion-label *ngIf="groupdId && (group.ownerId !== uid)">{{group.name}}</ion-label> -->
+            <ion-icon name="checkmark-circle" *ngIf="group.name" 
+                class="correct" item-end></ion-icon>
+            <ion-icon name="close-circle" *ngIf="!group.name" 
+                class="incorrect" item-end></ion-icon>
+        </ion-item>
+
+        <ion-item *ngIf="groupId">
+            <ion-textarea placeholder="Description" 
+            *ngIf="group.ownerId === uid"
+            [(ngModel)]="group.description" (ionBlur)="UpdatedDesc()"> </ion-textarea> 
+            <ion-label 
+            *ngIf="group.ownerId !== uid">{{group.description}}</ion-label>
+             
+        </ion-item>
+
+        <ion-list-header *ngIf="groupId">
+            Members
+            <ion-icon name="person-add" style="float:right"></ion-icon>
+        </ion-list-header>
+        
+        <ion-item *ngFor="let item of members">
+            <ion-avatar item-left>
+                <img src="{{item.pictureUrl}}">
+            </ion-avatar>
+            <h3>{{item.displayName}}</h3>
+            <ion-icon name="remove-circle" (click)="removeMember(item)"></ion-icon>
+        </ion-item>
+    </ion-list>
 </ion-content>

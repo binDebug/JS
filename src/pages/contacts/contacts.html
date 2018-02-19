@@ -39,11 +39,12 @@
         <ion-list-header>
             Friends
         </ion-list-header>
-        <ion-item *ngFor="let item of myContacts" (click)="contactChat(item)">
+        <ion-item *ngFor="let item of myContacts" >
             <ion-avatar item-left>
                 <img src={{item.pictureUrl}}>
             </ion-avatar>
             <h3>{{item.displayName}}</h3>
+            <ion-icon name="chatboxes" (click)="contactChat(item)" item-right></ion-icon>
         </ion-item>
     </ion-list> 
 

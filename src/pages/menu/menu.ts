@@ -17,6 +17,7 @@ import { UsersProvider } from '../../providers/users';
 import { AWSStorageProvider } from '../../providers/awsStorage';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ContactsPage } from '../contacts/contacts';
+import { GroupsPage } from '../groups/groups';
 
 @Component({
   selector: 'page-menu',
@@ -124,6 +125,10 @@ export class MenuPage implements OnInit {
     this.navCtrl.push(ContactsPage);
   }
 
+  groups() {
+    this.navCtrl.push(GroupsPage);
+  }
+  
   profile() {
     this.navCtrl.push(ProfilePage);
   }

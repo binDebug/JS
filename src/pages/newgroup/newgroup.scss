@@ -1,3 +1,50 @@
 page-newgroup {
+    button.back-button {
+        -webkit-transform: none !important; 
+         transform: none !important; 
+    }
+
+    .place-holder {
+        color: #778899;
+    }
+
+    .correct {
+        color: #5fce39;
+    }
+
+    .incorrect {
+        color: red;
+    }
+
+    .profile-picture-buttons {
+        button {
+            font-size: 24px;
+            padding: 10px;
+
+            ion-icon {
+                margin-right: 10px;
+                font-size: 24px;
+            }
+        }
+    }
+
+    .hyper-link {
+        color: #3232ff;
+        font-size: 12px;
+    }
+
+    ion-avatar {
+        img {
+            height: 30px !important;
+            width: 30px !important;
+        }
+    }
+
+    ion-item {
+        h3 {
+            display: inline;
+            
+        }
+    }
 
 }
