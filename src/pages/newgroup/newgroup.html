@@ -30,8 +30,10 @@
     </ion-item>
     
         <ion-item >
-            <ion-input  type="text" placeholder="Group Name" [(ngModel)]="group.name" (ionBlur)="saveGroup()" *ngIf="!groupdId || (group.ownerId === uid)"> </ion-input>
-            <!-- <ion-label *ngIf="groupdId && (group.ownerId !== uid)">{{group.name}}</ion-label> -->
+            
+            <ion-input  type="text" placeholder="Group Name" [(ngModel)]="group.name" (ionBlur)="saveGroup()" *ngIf="!groupId"> </ion-input>
+            <ion-input  type="text" placeholder="Group Name" [(ngModel)]="group.name" (ionBlur)="saveGroup()" *ngIf="group.ownerId === uid"> </ion-input>
+            <ion-label *ngIf="groupId && (group.ownerId !== uid)">{{group.name}}</ion-label>
             <ion-icon name="checkmark-circle" *ngIf="group.name" 
                 class="correct" item-end></ion-icon>
             <ion-icon name="close-circle" *ngIf="!group.name" 
@@ -49,7 +51,7 @@
 
         <ion-list-header *ngIf="groupId">
             Members
-            <ion-icon name="person-add" style="float:right"></ion-icon>
+            <ion-icon name="person-add" style="float:right" (click)="addMember()" *ngIf="group.ownerId === uid"></ion-icon>
         </ion-list-header>
         
         <ion-item *ngFor="let item of members">
@@ -57,7 +59,7 @@
                 <img src="{{item.pictureUrl}}">
             </ion-avatar>
             <h3>{{item.displayName}}</h3>
-            <ion-icon name="remove-circle" (click)="removeMember(item)"></ion-icon>
+            <ion-icon item-right name="remove-circle" (click)="removeMember(item)" *ngIf="(group.ownerId === uid) && (item.id !== uid)"></ion-icon>
         </ion-item>
     </ion-list>
 </ion-content>

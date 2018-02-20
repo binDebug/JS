@@ -56,6 +56,8 @@ import {JobsProvider} from '../providers/jobs';
 import {EventsProvider} from '../providers/events';
 import {AuthProvider} from '../providers/auth';
 import {MailProvider} from '../providers/mail';
+import {GroupChatProvider} from '../providers/groupChat';
+
 
 import { UtilProvider } from '../providers/utils';
 import { FCMTokensProvider } from '../providers/fcmtokens';
@@ -189,6 +191,7 @@ import { GroupsProvider } from '../providers/groups/groups';
     UniqueDeviceID,
     RequestsProvider,
     ChatProvider,
+    GroupChatProvider,
     //MediahandlerProvider,
     GroupsProvider
   ]

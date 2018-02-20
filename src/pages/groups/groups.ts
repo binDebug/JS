@@ -74,4 +74,12 @@ export class GroupsPage implements OnInit {
 
     this.navCtrl.push(NewgroupPage, data);
   }
+
+  openchat(item: Group) {
+    let data = {
+      groupName: item.name,
+      groupId: item.id
+    };
+this.navCtrl.push(GroupchatPage);
+  }
 }

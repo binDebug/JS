@@ -6,6 +6,7 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { user } from '../../models/user';
 import { UsersProvider } from '../../providers/users';
+import { GroupcontactsPage } from '../groupcontacts/groupcontacts';
 
 @IonicPage()
 @Component({
@@ -46,33 +47,44 @@ export class NewgroupPage implements OnInit {
       },
       err => this.showError(err.message));
 
-      this.members = [];
-
-      this.groupservice.getGroupMembers(this.groupId).valueChanges()
-      .subscribe(data => {
-        console.log('data', data);
-        if(data && (data.length > 0)) {
-          this.userService.getUser(data[0]['uid']).valueChanges()
-          .subscribe(data1 => {
-            console.log('data1', data1);
-            if(data1 && (data1.length > 0)) {
-              let item = this.members.find(p => p['id'] === data1[0]['id']);
-              console.log('item', item);
-              if(item) {
-                console.log('1');
-                item.displayName = data1[0]['displayName'];
-              }
-              else {
-                this.members.push(data1[0] as user);
-                console.log('2', this.members);
-              }
-            }
-          },
-          err => this.showError(err.message));
-        }
-      }
-      , err => this.showError(err.message));
+      this.getMembers();
     }
+  }
+
+  getMembers() {
+    
+    this.members = [];
+
+    this.groupservice.getGroupMembers(this.groupId).valueChanges()
+    .subscribe(data => {
+      
+      if(data && (data.length > 0)) {
+        data.forEach(element => {
+        this.userService.getUser(element['uid']).valueChanges()
+        .subscribe(data1 => {
+          if(data1 && (data1.length > 0)) {
+            let item = this.members.find(p => p['id'] === data1[0]['id']);
+            if(item) {
+              item.displayName = data1[0]['displayName'];
+            }
+            else {
+              this.members.push(data1[0] as user);
+            }
+          }
+        },
+        err => this.showError(err.message));
+      });
+      }
+      
+    }
+    , err => this.showError(err.message));
+  }
+
+  addMember() {
+    let data = {
+      groupId: this.groupId
+    };
+    this.navCtrl.push(GroupcontactsPage, data);
   }
 
   showError(message: string) {
@@ -117,8 +129,8 @@ export class NewgroupPage implements OnInit {
   }
 
   removeMember(item: user) {
-    this.groupservice.removeGroupMember(this.groupId, item.uid)
-    .then(data => {})
+    this.groupservice.removeGroupMember(this.groupId, item['id'])
+    .then(data => {this.getMembers();})
     .catch(err => this.showError(err.message));
   }
   

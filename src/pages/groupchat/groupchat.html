@@ -8,19 +8,54 @@
 
     <ion-navbar color="hcolor">
         <ion-title>{{groupName}}</ion-title>
-        <ion-buttons end>
+        <!-- <ion-buttons end>
             <button *ngIf="owner" ion-button icon-only (click)="presentOwnerSheet()">
         <ion-icon name="menu"></ion-icon>
       </button>
             <button *ngIf="!owner" ion-button icon-only (click)="presentMemberSheet()">
         <ion-icon name="menu"></ion-icon>
       </button>
-        </ion-buttons>
+        </ion-buttons> -->
     </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content padding #content>
+    <div class="chatwindow">
+        <ion-list no-lines>
+            <ion-item *ngFor="let item of allmessages" text-wrap>
+                <ion-avatar item-right *ngIf="item.sender === uid">
+                    <img src="{{item.senderUrl}}">
+                </ion-avatar>
+                <ion-avatar item-left *ngIf="item.sender === uid">
+                        <img src="{{item.senderUrl}}">
+                    </ion-avatar>
+                <div class="bubble" >
+                    <h3 *ngIf="item.attachment === false">{{item.message}}</h3>
+                    <img src="{{item.message}}" *ngIf="item.attachment === true">
+                    <span class="date">{{item.timeStamp | date:'medium'}}</span>
+                </div> 
+            </ion-item>
+        </ion-list>
+    </div>
+        
 </ion-content>
+
+<ion-footer ion-fixed>
+        <ion-toolbar class="no-border" color="white">
+    
+            <ion-input [(ngModel)]="newmessage" placeholder="Write your message ..."></ion-input>              
+            <ion-buttons end>
+                <button ion-button (click)="addMessage()">
+                    <ion-icon name="send" color="primary"></ion-icon>
+                </button>
+                <button ion-button (click)="sendPicMsg()">
+                    <ion-icon name="camera"></ion-icon>
+                </button>
+                <button ion-button (click)="attachment()">
+                    <ion-icon name="attach" ></ion-icon>
+                </button>      
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-footer>
