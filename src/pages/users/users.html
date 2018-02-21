@@ -17,21 +17,15 @@
     <ion-searchbar [(ngModel)]="searchstring" (input)="searchUser($event)" placeholder="Search"></ion-searchbar>
     <ion-list no-lines>
         <ion-list>
-            <ion-item-sliding *ngFor="let key of filteredusers">
-                <ion-item>
+            <ion-item *ngFor="let key of filteredusers">
                     <ion-avatar item-left>
                         <img src="{{key.pictureUrl}}">
                     </ion-avatar>
                     <h2>{{key.displayName}}</h2>
+                    <ion-icon name="person-add" color="primary" (click)="sendRequest(key)"
+                    item-right></ion-icon>
                 </ion-item>
-                <ion-item-options slide="left">
-                    <button ion-button color="primary" (click)="sendRequest(key)">
-          <ion-icon name="person-add"></ion-icon>
-          
-        </button>
-                </ion-item-options>
-
-            </ion-item-sliding>
+                
         </ion-list>
     </ion-list>
 </ion-content>

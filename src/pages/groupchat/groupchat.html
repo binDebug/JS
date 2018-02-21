@@ -25,12 +25,14 @@
     <div class="chatwindow">
         <ion-list no-lines>
             <ion-item *ngFor="let item of allmessages" text-wrap>
-                <ion-avatar item-right *ngIf="item.sender === uid">
+                <ion-avatar item-right *ngIf="item.sender === uid" class="ion-avatar-right">
                     <img src="{{item.senderUrl}}">
+                    <div class="sender-name">{{item.senderName}}</div>
                 </ion-avatar>
-                <ion-avatar item-left *ngIf="item.sender === uid">
-                        <img src="{{item.senderUrl}}">
-                    </ion-avatar>
+                <ion-avatar item-left *ngIf="item.sender !== uid" class="ion-avatar-left">
+                    <img src="{{item.senderUrl}}">
+                    <div class="sender-name">{{item.senderName}}</div>
+                </ion-avatar>
                 <div class="bubble" >
                     <h3 *ngIf="item.attachment === false">{{item.message}}</h3>
                     <img src="{{item.message}}" *ngIf="item.attachment === true">

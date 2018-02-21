@@ -50,7 +50,7 @@ export class ContactchatsPage {
     private file: File) {
       this.contact = this.navParams.get('contactData');
         
-    this.scrollTo();
+    
     // this.events.subscribe(AppConstants.CONTACT_MESSAGES, () => {
     //   this.allmessages = [];
     //   this.imgornot = [];
@@ -65,6 +65,12 @@ export class ContactchatsPage {
     //     }
     //   })
     // })
+  }
+
+  sort() {
+    this.allmessages.sort(function(a,b) {
+      return b.timeStamp - a.timeStamp;
+    } ); 
   }
 
   addMessage() {
@@ -132,6 +138,8 @@ export class ContactchatsPage {
            let item = data[0][element];
            item.timeStamp = element;
            this.allmessages.push(item);
+           this.sort();
+           
         });
       }
 
@@ -150,11 +158,6 @@ export class ContactchatsPage {
     toast.present();
   }
 
-  scrollTo() {
-    setTimeout(() => {
-      this.content.scrollToBottom();
-    }, 1000);
-  }
 
   sendPicMsg() {
     // let loader = this.loadingControl.create({

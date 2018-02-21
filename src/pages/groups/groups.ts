@@ -80,6 +80,7 @@ export class GroupsPage implements OnInit {
       groupName: item.name,
       groupId: item.id
     };
-this.navCtrl.push(GroupchatPage);
+
+    this.navCtrl.push(GroupchatPage, data);
   }
 }

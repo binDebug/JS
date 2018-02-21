@@ -10,6 +10,8 @@ import { EventPage } from '../../pages/event/event';
 import { TabsPage } from '../../pages/tabs/tabs';
 import { ContactsPage } from '../../pages/contacts/contacts';
 import { ContactchatsPage } from '../../pages/contactchats/contactchats';
+import { GroupsProvider } from '../../providers/groups/groups';
+import { GroupchatPage } from '../../pages/groupchat/groupchat';
 
 @Component({
   selector: 'notifications',
@@ -25,6 +27,7 @@ export class NotificationsComponent implements OnInit {
             private navCtrl: NavController,
             private viewCtrl: ViewController,
             private jobs: JobsProvider,
+            private groupService: GroupsProvider,
             private events: EventsProvider,
             private toastCtrl: ToastController) {
    
@@ -36,9 +39,9 @@ export class NotificationsComponent implements OnInit {
     if(this.userData) {
       this.uid = JSON.parse(this.userData).id;
       if(this.uid)
-      this.notifs.get(this.uid).valueChanges()
-      .subscribe(data => this.processNotifications(data),
-      err => this.showError(err.message));
+        this.notifs.get(this.uid).valueChanges()
+        .subscribe(data => this.processNotifications(data),
+        err => this.showError(err.message));
       
     }
 
@@ -48,7 +51,7 @@ export class NotificationsComponent implements OnInit {
     
     if (notifs && (notifs.length > 0)) {
       notifs.forEach(element => {
-        if (element.type === 'chat') {
+        if ((element.type === 'chat') || (element.type === 'group')) {
           let item = this.notifsList.find(p => p.chatid === element.chatid);
           
           if(!item) {
@@ -66,7 +69,15 @@ export class NotificationsComponent implements OnInit {
   }
 
   dismiss(item : any) {
+    
     this.notifs.remove(this.uid, item.notificationid)
+        .then(data => {
+          let index = this.notifsList.indexOf(item);
+    
+          if(index >= 0) {
+            this.notifsList.splice(index, 1);
+          }
+        })
        .catch(err => this.showError(err.message));
   }
 
@@ -85,6 +96,26 @@ export class NotificationsComponent implements OnInit {
           }
         }; 
         this.navCtrl.push(ContactchatsPage, data);
+      }
+
+      else if (item.type === 'group') {
+        this.dismiss(item);
+    
+        let groupId = item.chatid;
+        this.groupService.getGroup(groupId).valueChanges()
+        .subscribe(data1 => {
+          if(data1 && (data1.length > 0)) {
+            let data = {
+              groupName: data1[0]['name'],
+              groupId: groupId
+        
+            };
+            
+            this.navCtrl.push(GroupchatPage, data);
+          }
+        }, err => this.showError(err.message));
+
+
       }
     }
     else if(item.jobid) {

@@ -1,3 +1,72 @@
 page-groupchat {
+    button.back-button {
+        -webkit-transform: none !important; 
+         transform: none !important; 
+    }
 
+    ion-avatar-right {
+        img {
+            height: 30px !important;
+            width: 30px !important;
+            display: block !important;
+            position: absolute;
+            right: 0 !important;
+            margin-bottom: 10px;
+        }
+        div {
+            margin-top: 35px !important;
+            position: absolute;
+            right: 0 !important;
+            display: block !important;
+            word-wrap: break-word;
+        }
+    }
+    ion-avatar-left {
+        img {
+            height: 30px !important;
+            width: 30px !important;
+            display: block !important;
+            margin-bottom: 10px;
+        }
+        div {
+            margin-top: 35px !important;
+            display: block !important;
+            word-wrap: break-word;
+        }
+    }
+
+    .date {
+        color: #B2B2B2;
+        font-size: 8px;
+    }
+
+    .chat {
+        width: 320px;
+    }
+    .bubble {
+        background-color: #F2F2F2;
+        border-radius: 5px;
+        box-shadow: 0 0 6px #B2B2B2;
+        display: inline-block;
+        padding: 10px 18px;
+        position: relative;
+        vertical-align: top;
+    }
+    
+    .you {
+        float: right;
+        margin: 5px 20px 5px 45px;
+    }
+    .you::before {
+        box-shadow: 2px -2px 2px 0 rgba( 178, 178, 178, .4);
+        right: -9px;
+    }
+    .chatwindow {
+        padding-bottom: 70px;
+    }
+
+    .sender-name {
+        font-size:10px;
+        color: gray;
+    }
 }

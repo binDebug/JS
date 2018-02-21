@@ -17,24 +17,16 @@
         <ion-list-header>
             Requests
         </ion-list-header>
-        <ion-item-sliding *ngFor="let item of myRequests">
-            <ion-item>
+        <ion-item *ngFor="let item of myRequests">
                 <ion-avatar item-left>
                     <img src="{{item.senderImgUrl}}">
                 </ion-avatar>
                 <h4>{{item.senderName}}</h4>
-            </ion-item>
-            <ion-item-options>
-                <button ion-button color="secondary" (click)="accept(item)">
-          <ion-icon name="checkmark"></ion-icon>
-          ADD
-        </button>
-                <button ion-button color="danger" (click)="ignore(item)">
-          <ion-icon name="trash"></ion-icon>
-          NOPE
-        </button>
-            </ion-item-options>
-        </ion-item-sliding>
+                <ion-icon name="checkmark" color="secondary" (click)="accept(item)" item-right></ion-icon>
+        
+                <ion-icon name="trash" color="danger" (click)="ignore(item)" item-right></ion-icon>
+            
+        </ion-item>
 
         <ion-list-header>
             Friends
