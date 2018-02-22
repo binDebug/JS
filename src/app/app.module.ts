@@ -74,6 +74,7 @@ import { File } from '@ionic-native/file';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Camera } from '@ionic-native/camera';
+import { Network } from '@ionic-native/network';
 
 import { PayPal } from '@ionic-native/paypal';
 import { RequestsProvider } from '../providers/requests/requests';
@@ -188,6 +189,8 @@ import { GroupsProvider } from '../providers/groups/groups';
     FCM,
     InAppBrowser,
     Camera,
+    
+    Network,
     UniqueDeviceID,
     RequestsProvider,
     ChatProvider,

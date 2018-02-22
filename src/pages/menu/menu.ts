@@ -47,11 +47,11 @@ export class MenuPage implements OnInit {
       private auth: AuthProvider,
       private events: Events,
       private modalCtrl: ModalController,
+      private filePath: FilePath,
+      private users: UsersProvider,
       private fileChooser: FileChooser,
       private storage: AWSStorageProvider,
-      private filePath: FilePath,
       private file: File,
-      private users: UsersProvider,
       private camera: Camera
       ) {}
 
@@ -144,7 +144,7 @@ export class MenuPage implements OnInit {
       // imageData is either a base64 encoded string or a file URI
       // If it's base64:
       this.isUploading = false;
-      let base64Image = 'data:image/jpeg;base64,' + imageData;
+    //  let base64Image = 'data:image/jpeg;base64,' + imageData;
   
 
     var binary_string =  window.atob(imageData);
@@ -155,7 +155,7 @@ export class MenuPage implements OnInit {
     }
     let data = bytes.buffer;
     
-      this.storage.uploadFile(this.uid + '.jpeg', 'image/jpeg', data)
+      this.storage.uploadFile(this.uid + '.jpeg', 'image/jpeg', 'profile', data)
       .then(data => {
         if(data) {
           let url : string = <string>data;
@@ -185,7 +185,6 @@ export class MenuPage implements OnInit {
       .then(filePath => {
         this.file.resolveLocalFilesystemUrl(filePath)
         .then(resFile => {
-          
           let continueUpload: boolean = false;
 
           let filePath: string = this.getFilePath(resFile.nativeURL);
@@ -193,7 +192,6 @@ export class MenuPage implements OnInit {
           let fileExt: string = this.getFileExt(resFile.nativeURL);
    
           let uploadFileName: string = '';
-          
           
           if(this.uid) {
             continueUpload = true;
@@ -207,15 +205,13 @@ export class MenuPage implements OnInit {
                   var blob = new Blob([data], {
                     type: 'image/' + fileExt
                 });
-
-                this.storage.uploadFile( uploadFileName, 'image/' + fileExt, blob)
+                this.storage.uploadFile( uploadFileName, 'image/' + fileExt, 'profile', blob)
                 .then(data => {
                     this.isUploading = false;
-                  
                     if(data) {
                       let url : string = <string>data;
                     this.users.savePicture(this.uid, url)
-                    .then(data => {
+                    .then(data1 => {
                       this.pictureUrl = url + "?random=" + Math.random().toString();
                       
                       this.showError("Picture uploaded successfully");
@@ -262,8 +258,10 @@ export class MenuPage implements OnInit {
 
     let index = path.lastIndexOf('/');
     fileName = path.substring(index+1);
-
-    return fileName
+    while(fileName.indexOf('%20') < 0) {
+      fileName = fileName.replace('%20', ' ');
+    }
+    return fileName;
   }
 
   getFileExt(path: string){
@@ -272,7 +270,7 @@ export class MenuPage implements OnInit {
     let index = path.lastIndexOf('.');
     fileName = path.substring(index+1);
 
-    return fileName
+    return fileName;
   }
 
 }

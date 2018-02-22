@@ -12,6 +12,7 @@
     <ion-list>
     <ion-item class="profile-image" (click)="chooseimage()" *ngIf="groupId">
         <img src="{{group.pictureUrl}}">
+        <br>
         <span class="hyper-link" (click)="isUploading = true">Update group photo</span>
     </ion-item>
     <ion-item text-center class="profile-picture-buttons" *ngIf="isUploading === true">

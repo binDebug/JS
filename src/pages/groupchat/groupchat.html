@@ -35,7 +35,13 @@
                 </ion-avatar>
                 <div class="bubble" >
                     <h3 *ngIf="item.attachment === false">{{item.message}}</h3>
-                    <img src="{{item.message}}" *ngIf="item.attachment === true">
+                    <img src="{{item.message}}" *ngIf="(item.attachment === true) && ((item.message.indexOf('.jpg') >= 0) || (item.message.indexOf('.jpeg') >= 0) || (item.message.indexOf('.png') >= 0) || (item.message.indexOf('.gif') >= 0))">
+                    <a href="{{item.message}}" (click)="download(item)" 
+                    *ngIf="(item.attachment === true) && (item.message.indexOf('.jpg') < 0) && (item.message.indexOf('.jpeg') < 0) && (item.message.indexOf('.png') < 0) && (item.message.indexOf('.gif') < 0)">
+                        {{item.message}}
+                    </a>
+                    
+                    <br>
                     <span class="date">{{item.timeStamp | date:'medium'}}</span>
                 </div> 
             </ion-item>
@@ -49,13 +55,13 @@
     
             <ion-input [(ngModel)]="newmessage" placeholder="Write your message ..."></ion-input>              
             <ion-buttons end>
-                <button ion-button (click)="addMessage()">
+                <button ion-button (click)="addMessage(false)">
                     <ion-icon name="send" color="primary"></ion-icon>
                 </button>
-                <button ion-button (click)="sendPicMsg()">
+                <button ion-button (click)="shoot()">
                     <ion-icon name="camera"></ion-icon>
                 </button>
-                <button ion-button (click)="attachment()">
+                <button ion-button (click)="picture()">
                     <ion-icon name="attach" ></ion-icon>
                 </button>      
             </ion-buttons>

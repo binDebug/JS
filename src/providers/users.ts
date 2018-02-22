@@ -64,6 +64,10 @@ export class UsersProvider {
     return this.afDatabase.list("users").update(id, {deviceid: deviceId});
   }
 
+  removeDeviceId (id: string) {
+    return this.afDatabase.list("users/"+id).remove('deviceid');
+  }
+
   updatePhone(id: string, phone: string) {
     return this.afDatabase.list("users").update(id, { phone: phone });
   }

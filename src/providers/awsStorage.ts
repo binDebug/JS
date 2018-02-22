@@ -8,6 +8,8 @@ export class AWSStorageProvider {
 
     resumeBucket: string;
     profileBucket: string;
+    groupBucket: string;
+    chatBucket: string;
     region: string;
     access_id: string;
     secret: string;
@@ -18,7 +20,7 @@ export class AWSStorageProvider {
 
     }
 
-    uploadFile(fileName: string, fileType: string, body: any)  {
+    uploadFile(fileName: string, fileType: string, type: string, body: any)  {
         let promise = new Promise((resolve, reject) => {
         this.settings.aws().valueChanges()
         .subscribe(data => {
@@ -29,6 +31,8 @@ export class AWSStorageProvider {
             this.secret = result[0].SecretAccessKey;
             this.resumeBucket = result[0].resumeBucket;
             this.profileBucket = result[0].profileBucket;
+            this.groupBucket = result[0].groupBucket;
+            this.chatBucket = result[0].chatBucket;
             this.region = result[0].region;
             
             this.configureAWS();
@@ -43,10 +47,16 @@ export class AWSStorageProvider {
                 ContentType: fileType
             };
 
-            if(fileType === 'application/pdf') {
+            if(type === 'resume') {
                 params.Bucket = this.resumeBucket;
-                
             }
+            else if (type === 'group') {
+                params.Bucket = this.groupBucket;
+            }
+            else if (type === 'chat') {
+                params.Bucket = this.chatBucket;
+            }
+
             
             s3.putObject(params, function (err, res) {
                 if (err) {

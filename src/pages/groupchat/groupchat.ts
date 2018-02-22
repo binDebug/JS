@@ -6,6 +6,12 @@ import { GroupChatProvider } from '../../providers/groupChat';
 import { UsersProvider } from '../../providers/users';
 import { NotificationssProvider } from '../../providers/notifications';
 import { GroupsProvider } from '../../providers/groups/groups';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { AWSStorageProvider } from '../../providers/awsStorage';
+import { FileChooser } from '@ionic-native/file-chooser';
+import { FilePath } from '@ionic-native/file-path';
+import { File } from '@ionic-native/file';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 @Component({
   selector: 'page-groupchat',
@@ -24,6 +30,13 @@ export class GroupchatPage implements OnInit{
   public pictureUrl: string;
   public name: string;
   @ViewChild('content') content: Content;
+  options: CameraOptions = {
+    quality: 100,
+    destinationType: this.camera.DestinationType.DATA_URL,
+    encodingType: this.camera.EncodingType.JPEG,
+    mediaType: this.camera.MediaType.PICTURE,
+    correctOrientation: true
+  }
 
   constructor(public navCtrl: NavController, 
     private notificationsService: NotificationssProvider,
@@ -31,6 +44,12 @@ export class GroupchatPage implements OnInit{
     private groupChatService: GroupChatProvider,
     private groupService: GroupsProvider,
     private userService: UsersProvider,
+    private fileChooser: FileChooser,
+    private storage: AWSStorageProvider,
+    private file: File,
+    private camera: Camera,
+    private filePath: FilePath,
+    private iab: InAppBrowser,
     private toastCtrl: ToastController) {
       this.groupName = this.navParams.get('groupName');
       this.groupId = this.navParams.get('groupId');
@@ -136,7 +155,7 @@ export class GroupchatPage implements OnInit{
     } ); 
   }
 
-  addMessage() {
+  addMessage(attachment: boolean) {
     if(this.newmessage.trim() === '')
       return;
 
@@ -145,7 +164,7 @@ export class GroupchatPage implements OnInit{
       message: this.newmessage,
       timeStamp: Date.now(),
       groupId: this.groupId,
-      attachment: false
+      attachment: attachment
     } as groupMessage;
 
     this.groupChatService.saveMessage(message)
@@ -170,4 +189,133 @@ export class GroupchatPage implements OnInit{
         });
     toast.present();
   }
+
+  shoot() {
+
+    this.camera.getPicture(this.options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64:
+      
+    //  let base64Image = 'data:image/jpeg;base64,' + imageData;
+  
+
+    var binary_string =  window.atob(imageData);
+    var len = binary_string.length;
+    var bytes = new Uint8Array( len );
+    for (var i = 0; i < len; i++)        {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    let data = bytes.buffer;
+    
+      this.storage.uploadFile(this.groupId + '_' + Math.random().toString().replace('.', '') + '.jpeg', 
+        'image/jpeg', 'chat', data)
+      .then(data => {
+        if(data) {
+          let url : string = <string>data;
+          this.newmessage = url;
+          this.addMessage(true);
+        }
+      })
+      .catch(err => {
+        this.showError(err.message);
+      });
+     }, (err) => {
+        this.showError(err.message);
+     });
+  }
+
+  picture() {
+    
+    this.fileChooser.open()
+    .then(uri =>  {
+      console.log('uri', uri);
+      this.filePath.resolveNativePath(uri)
+      .then(filePath => {
+        console.log('filePath', filePath);
+        this.file.resolveLocalFilesystemUrl(filePath)
+        .then(resFile => {
+          console.log('resFile', resFile);
+          let continueUpload: boolean = false;
+
+          let filePath: string = this.getFilePath(resFile.nativeURL);
+          let fileName: string = this.getFileName(resFile.nativeURL);
+          let fileExt: string = this.getFileExt(resFile.nativeURL);
+          console.log('resFile', filePath, fileName, fileExt, resFile);
+          let uploadFileName: string = '';
+          
+          if(this.uid) {
+            continueUpload = true;
+            uploadFileName = this.groupId + '_' + Math.random().toString().replace('.', '') + '.' + fileExt ;
+          }
+          
+          if(continueUpload == true) {
+            console.log('222', filePath,  fileName);
+              this.file.readAsArrayBuffer(filePath,  fileName).then(
+                (data) => {
+                  var blob = new Blob([data], {
+                    type: 'image/' + fileExt
+                });
+                this.storage.uploadFile( uploadFileName, 'image/' + fileExt, 'chat', blob)
+                .then(data => {
+                    
+                    if(data) {
+                      let url : string = <string>data;
+                      this.newmessage = url;
+                      this.addMessage(true);
+                    }
+                })
+                .catch(err => {
+                  this.showError('1 ' + err.message);
+                });
+                })
+              .catch(e => {
+                this.showError('2 ' + e.message);
+              });
+           
+            }
+          else {
+            this.showError("File cannot be uploaded at this time. Please relogin.");
+          }
+        });
+      });
+    })
+    .catch(err => {
+      this.showError(err.message);
+    });
+  }
+    
+  getFilePath(path: string){
+    let fileName: string;
+
+    let index = path.lastIndexOf('/');
+    fileName = path.substring(0, index+1);
+
+    return fileName;
+  }
+
+  getFileName(path: string){
+    let fileName: string;
+
+    let index = path.lastIndexOf('/');
+    fileName = path.substring(index+1);
+    while(fileName.indexOf('%20') >= 0) {
+      fileName = fileName.replace('%20', ' ');
+    }
+    return fileName;
+  }
+
+  getFileExt(path: string){
+    let fileName: string;
+
+    let index = path.lastIndexOf('.');
+    fileName = path.substring(index+1);
+
+    return fileName;
+  }
+
+  download(item: groupMessage) {
+      let url = item.message;
+      let options = 'location=yes';
+      const browser = this.iab.create(url, "_system", options);
+    }
 }

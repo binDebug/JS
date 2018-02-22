@@ -48,10 +48,8 @@ export class ResumeComponent implements OnInit {
 
   uploadResume() {
     
-    
     this.fileChooser.open()
     .then(uri =>  {
-      
       this.filePath.resolveNativePath(uri)
       .then(filePath => {
         this.file.resolveLocalFilesystemUrl(filePath)
@@ -63,12 +61,10 @@ export class ResumeComponent implements OnInit {
           let fileExt: string = this.getFileExt(resFile.nativeURL);
    
           let uploadFileName: string = '';
-          
           if(this.uid) {
             continueUpload = true;
             uploadFileName = this.uid + '.pdf' ;
           }
-          
           if(continueUpload == true) {
             if(fileExt.toLowerCase() === 'pdf') {  
               this.file.readAsArrayBuffer(filePath,  fileName).then(
@@ -77,7 +73,7 @@ export class ResumeComponent implements OnInit {
                     type: 'application/pdf'
                 });
 
-                this.storage.uploadFile( uploadFileName, 'application/pdf', blob)
+                this.storage.uploadFile( uploadFileName, 'application/pdf', 'resume', blob)
                 .then(data => {
                     if(data) {
                       let url : string = <string>data;
@@ -86,12 +82,12 @@ export class ResumeComponent implements OnInit {
                       this.resumeUrl = url;
                       this.showError("Resume uploaded successfully");
                     })
-                    .catch(err => this.showError('1' + err.message));
+                    .catch(err => this.showError(err.message));
                     }
                 })
-                .catch(err => this.showError('2' + err.message));
+                .catch(err => this.showError(err.message));
                 })
-              .catch(e => this.showError('3' + e.message));
+              .catch(e => this.showError(e.message));
             }
             else {
               this.showError('Invalid resume file');
@@ -120,8 +116,11 @@ export class ResumeComponent implements OnInit {
   
         let index = path.lastIndexOf('/');
         fileName = path.substring(index+1);
-  
-        return fileName
+
+        while(fileName.indexOf('%20') >= 0) {
+          fileName = fileName.replace('%20', ' ');
+        }
+        return fileName;
       }
     
       getFileExt(path: string){
@@ -130,7 +129,7 @@ export class ResumeComponent implements OnInit {
         let index = path.lastIndexOf('.');
         fileName = path.substring(index+1);
   
-        return fileName
+        return fileName;
       }
 
       openResume() {

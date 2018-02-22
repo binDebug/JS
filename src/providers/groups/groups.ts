@@ -45,6 +45,10 @@ export class GroupsProvider {
     return this.afDatabase.list('groups/' + groupId).set('name', name);
   }
 
+  updatePictureUrl(groupId: string, pictureUrl: string) {
+    return this.afDatabase.list('groups/' + groupId).set('pictureUrl', pictureUrl);
+  }
+  
   updateDescription(groupId: string, description: string) {
     return this.afDatabase.list('groups/' + groupId).set('description', description);
   }

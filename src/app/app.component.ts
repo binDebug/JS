@@ -4,15 +4,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id';
+import { Network } from '@ionic-native/network';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { FCMTokensProvider } from '../providers/fcmtokens';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { NotificationssProvider } from '../providers/notifications';
 import { UsersProvider } from '../providers/users';
-
-import { UsersPage } from '../pages/users/users';
-import { ContactsPage } from '../pages/contacts/contacts';
 
 @Component({
   templateUrl: 'app.html'
@@ -27,6 +25,7 @@ export class MyApp {
   allowJobNotification: boolean = false;
   
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
+    private network: Network,
     private tokens: FCMTokensProvider,
     private toastCtrl: ToastController,
     private notifications: NotificationssProvider,
@@ -35,15 +34,26 @@ export class MyApp {
     private events: Events,
     private uuid: UniqueDeviceID) {
     platform.ready().then(() => {
+
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+      
+      console.log('network', network.type);
       this.events.subscribe('login', () => this.setUserId() );
       this.events.subscribe('logout', () => this.logout() );
       
       this.setUserId();
+
+      let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+        this.showError('Network was disconnected :-(');
+      });
       
+      let connectSubscription = this.network.onConnect().subscribe(() => {
+        this.showError('Network connected!');
+        
+      });
   })
   .catch(err => this.showError(err.message));
   }
@@ -73,7 +83,7 @@ export class MyApp {
 
   logout() {
     if(this.uid)
-      this.users.updateDeviceId(this.uid, "")
+      this.users.removeDeviceId(this.uid)
       .catch(err => this.showError(err.message));
 
     this.tokens.removeTokenForDevice(this.deviceId)

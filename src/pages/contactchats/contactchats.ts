@@ -12,7 +12,8 @@ import firebase from 'firebase';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { message } from '../../models/message';
 import { NotificationssProvider } from '../../providers/notifications';
-
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 @IonicPage()
 @Component({
@@ -31,8 +32,13 @@ export class ContactchatsPage {
   imgornot;
   userData: any;
   uid: string = null;
- 
-
+  options: CameraOptions = {
+    quality: 100,
+    destinationType: this.camera.DestinationType.DATA_URL,
+    encodingType: this.camera.EncodingType.JPEG,
+    mediaType: this.camera.MediaType.PICTURE,
+    correctOrientation: true
+  }
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -43,28 +49,14 @@ export class ContactchatsPage {
     public events: Events, 
     public zone: NgZone, 
     public loadingControl: LoadingController,
-  //  public imgstore: MediahandlerProvider,
     private fileChooser: FileChooser,
     private storage: AWSStorageProvider,
-    private filePath: FilePath,
-    private file: File) {
+    private file: File,
+    private camera: Camera,
+    private iab: InAppBrowser,
+    private filePath: FilePath) {
       this.contact = this.navParams.get('contactData');
         
-    
-    // this.events.subscribe(AppConstants.CONTACT_MESSAGES, () => {
-    //   this.allmessages = [];
-    //   this.imgornot = [];
-    //   this.zone.run(() => {
-    //     this.allmessages = this.chatservice.contactmessages;
-    //     for (var key in this.allmessages) {
-    //       //if (this.allmessages[key].message.substring(0, 4) == 'http')
-    //       if (this.allmessages[key].message.includes('http'))
-    //         this.imgornot.push(true);
-    //       else
-    //         this.imgornot.push(false);
-    //     }
-    //   })
-    // })
   }
 
   sort() {
@@ -73,13 +65,13 @@ export class ContactchatsPage {
     } ); 
   }
 
-  addMessage() {
+  addMessage(attachment: boolean) {
     let item: message = {
       id1: this.contact.id1,
       id2: this.contact.id2,
       timeStamp: Date.now(),
       message: this.newmessage,
-      attachment: false
+      attachment: attachment
     };
     
 
@@ -158,110 +150,126 @@ export class ContactchatsPage {
     toast.present();
   }
 
+  shoot() {
 
-  sendPicMsg() {
-    // let loader = this.loadingControl.create({
-    //   content: 'Please wait'
-    // });
-    // loader.present();
-    // this.imgstore.picMessageStore().then((imgurl) => {
-    //   loader.dismiss();
-    //   this.chatservice.addNewMessage(imgurl).then(() => {
-    //     this.scrollTo();
-    //     this.newmessage = '';
-    //   })
-    // }).catch((err) => {
-    //   alert(err);
-    //   loader.dismiss();
-    // })
+    this.camera.getPicture(this.options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      
+
+    var binary_string =  window.atob(imageData);
+    var len = binary_string.length;
+    var bytes = new Uint8Array( len );
+    for (var i = 0; i < len; i++)        {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    let data = bytes.buffer;
+    
+      this.storage.uploadFile(this.uid + '_' + Math.random().toString().replace('.', '') + '.jpeg', 
+        'image/jpeg', 'chat', data)
+      .then(data => {
+        if(data) {
+          let url : string = <string>data;
+          this.newmessage = url;
+          this.addMessage(true);
+        }
+      })
+      .catch(err => {
+        this.showError(err.message);
+      });
+     }, (err) => {
+        this.showError(err.message);
+     });
   }
 
-  getFilePath(path: string) {
+  picture() {
+    
+    this.fileChooser.open()
+    .then(uri =>  {
+      this.filePath.resolveNativePath(uri)
+      .then(filePath => {
+        this.file.resolveLocalFilesystemUrl(filePath)
+        .then(resFile => {
+          let continueUpload: boolean = false;
+
+          let filePath: string = this.getFilePath(resFile.nativeURL);
+          let fileName: string = this.getFileName(resFile.nativeURL);
+          let fileExt: string = this.getFileExt(resFile.nativeURL);
+          console.log('resFile', resFile);
+          let uploadFileName: string = '';
+          
+          if(this.uid) {
+            continueUpload = true;
+            uploadFileName = this.uid + '_' + Math.random().toString().replace('.', '') + '.' + fileExt ;
+          }
+          
+          if(continueUpload == true) {
+              this.file.readAsArrayBuffer(filePath,  fileName).then(
+                (data) => {
+                  var blob = new Blob([data], {
+                    type: 'image/' + fileExt
+                });
+                this.storage.uploadFile( uploadFileName, 'image/' + fileExt, 'chat', blob)
+                .then(data => {
+                    
+                    if(data) {
+                      let url : string = <string>data;
+                      this.newmessage = url;
+                      this.addMessage(true);
+                    }
+                })
+                .catch(err => {
+                  this.showError(err.message);
+                });
+                })
+              .catch(e => {
+                this.showError(e.message);
+              });
+           
+            }
+          else {
+            this.showError("File cannot be uploaded at this time. Please relogin.");
+          }
+        });
+      });
+    })
+    .catch(err => {
+      this.showError(err.message);
+    });
+  }
+    
+  getFilePath(path: string){
     let fileName: string;
 
     let index = path.lastIndexOf('/');
-    fileName = path.substring(0, index + 1);
+    fileName = path.substring(0, index+1);
 
     return fileName;
   }
 
-  getFileName(path: string) {
+  getFileName(path: string){
     let fileName: string;
 
     let index = path.lastIndexOf('/');
-    fileName = path.substring(index + 1);
-
-    return fileName
+    fileName = path.substring(index+1);
+    while(fileName.indexOf('%20') >= 0) {
+      fileName = fileName.replace('%20', ' ');
+    }
+    return fileName;
   }
 
-  getFileExt(path: string) {
+  getFileExt(path: string){
     let fileName: string;
 
     let index = path.lastIndexOf('.');
-    fileName = path.substring(index + 1);
+    fileName = path.substring(index+1);
 
-    return fileName
+    return fileName;
   }
 
-  sendPictureMessage() {
-    // let loader = this.loadingControl.create({
-    //   content: 'Please wait'
-    // });
-    // loader.present();
-    // this.fileChooser.open()
-    //   .then(uri => {
-    //     this.filePath.resolveNativePath(uri)
-    //       .then(filePath => {
-    //         this.file.resolveLocalFilesystemUrl(filePath)
-    //           .then(resFile => {
-
-    //             let filePath: string = this.getFilePath(resFile.nativeURL);
-    //             let fileName: string = this.getFileName(resFile.nativeURL);
-    //             let fileExt: string = this.getFileExt(resFile.nativeURL);
-
-    //             let uploadFileName: string = '';
-    //             uploadFileName = "Test" + '.' + fileExt;
-    //             console.log(uploadFileName);
-
-    //             if ((fileExt.toLowerCase() === 'jpg') || (fileExt.toLowerCase() === 'png') || (fileExt.toLowerCase() === 'gif')) {
-    //               this.file.readAsArrayBuffer(filePath, fileName).then(
-    //                 (data) => {
-    //                   var blob = new Blob([data], {
-    //                     type: 'image/' + fileExt
-    //                   });
-    //                   console.log("1");
-    //                   this.storage.uploadFile(uploadFileName, 'image/' + fileExt, blob)
-    //                     .then(data => {
-    //                       if (data) {
-    //                         console.log("2");
-    //                         loader.dismiss();
-    //                         let url: string = <string>data;
-    //                         this.chatservice.addNewMessage(url).then(() => {
-    //                           console.log("3");
-    //                           this.scrollTo();
-    //                           this.newmessage = '';
-    //                         })
-    //                       }
-    //                     })
-    //                     .catch(err => {
-    //                       console.log("4");
-    //                       alert(err);
-    //                       loader.dismiss();
-    //                     });
-    //                 })
-    //                 .catch(e => {
-    //                   console.log("5");
-    //                   alert(e);
-    //                   loader.dismiss();
-    //                 });
-    //             }
-    //           });
-    //       });
-    //   })
-    //   .catch(err => {
-    //     console.log("6");
-    //     alert(err);
-    //     loader.dismiss();
-    //   });
+  download(item: message) {
+    let url = item.message;
+    let options = 'location=yes';
+    const browser = this.iab.create(url, "_system", options);
+    
   }
 }

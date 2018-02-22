@@ -7,7 +7,11 @@ import { ToastController } from 'ionic-angular/components/toast/toast-controller
 import { user } from '../../models/user';
 import { UsersProvider } from '../../providers/users';
 import { GroupcontactsPage } from '../groupcontacts/groupcontacts';
-
+import { FileChooser } from '@ionic-native/file-chooser';
+import { AWSStorageProvider } from '../../providers/awsStorage';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { File } from '@ionic-native/file';
+import { FilePath } from '@ionic-native/file-path';
 @IonicPage()
 @Component({
   selector: 'page-newgroup',
@@ -21,13 +25,27 @@ export class NewgroupPage implements OnInit {
   uid: string = null;
   isUploading: boolean = false;
   members: user[] = [];
+  pictureUrl: string = null;
+  options: CameraOptions = {
+    quality: 100,
+    destinationType: this.camera.DestinationType.DATA_URL,
+    encodingType: this.camera.EncodingType.JPEG,
+    mediaType: this.camera.MediaType.PICTURE,
+    correctOrientation: true
+  };
 
   constructor(public navCtrl: NavController, 
       public navParams: NavParams, 
       public groupservice: GroupsProvider, 
       public userService: UsersProvider,
       public toastCtrl: ToastController,
-      public loadingCtrl: LoadingController) {
+      public loadingCtrl: LoadingController,
+      private fileChooser: FileChooser,
+      private filePath: FilePath,
+      private storage: AWSStorageProvider,
+      private file: File,
+      private camera: Camera
+  ) {
 
         this.groupId = this.navParams.get('groupId');
   }
@@ -133,5 +151,152 @@ export class NewgroupPage implements OnInit {
     .then(data => {this.getMembers();})
     .catch(err => this.showError(err.message));
   }
-  
+
+  shoot() {
+
+    this.camera.getPicture(this.options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64:
+      this.isUploading = false;
+      
+
+    var binary_string =  window.atob(imageData);
+    var len = binary_string.length;
+    var bytes = new Uint8Array( len );
+    for (var i = 0; i < len; i++)        {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    let data = bytes.buffer;
+    
+      this.storage.uploadFile(this.groupId + '.jpeg', 'image/jpeg', 'group', data)
+      .then(data => {
+        if(data) {
+          let url : string = <string>data;
+        this.groupservice.updatePictureUrl(this.groupId, url)
+        .then(data => {
+          this.pictureUrl = url + "?random=" + Math.random().toString();
+          this.isUploading = false;
+          this.showError("Picture uploaded successfully");
+        })
+        .catch(err => {
+          this.isUploading = false;
+          this.showError(err.message);
+        });
+        }
+      })
+      .catch(err => {
+        this.isUploading = false;
+        this.showError(err.message);
+      });
+     }, (err) => {
+        this.isUploading = false;
+        this.showError(err.message);
+     });
+  }
+
+  picture() {
+    this.fileChooser.open()
+    .then(uri =>  {
+      this.filePath.resolveNativePath(uri)
+      .then(filePath => {
+        this.file.resolveLocalFilesystemUrl(filePath)
+        .then(resFile => {
+          
+          let continueUpload: boolean = false;
+
+          let filePath: string = this.getFilePath(resFile.nativeURL);
+          let fileName: string = this.getFileName(resFile.nativeURL);
+          let fileExt: string = this.getFileExt(resFile.nativeURL);
+   
+          let uploadFileName: string = '';
+          
+          
+          if(this.groupId) {
+            continueUpload = true;
+            uploadFileName = this.groupId + '.' + fileExt ;
+          }
+          
+          if(continueUpload == true) {
+            if((fileExt.toLowerCase() === 'jpg') || (fileExt.toLowerCase() === 'png') || (fileExt.toLowerCase() === 'gif')) {  
+              this.file.readAsArrayBuffer(filePath,  fileName).then(
+                (data) => {
+                  var blob = new Blob([data], {
+                    type: 'image/' + fileExt
+                });
+
+                this.storage.uploadFile( uploadFileName, 'image/' + fileExt, 'group', blob)
+                .then(data => {
+                    this.isUploading = false;
+                  
+                    if(data) {
+                      let url : string = <string>data;
+                    this.groupservice.updatePictureUrl(this.groupId, url)
+                    .then(data => {
+                      this.pictureUrl = url + "?random=" + Math.random().toString();
+                      this.isUploading = false;
+                      this.showError("Picture uploaded successfully");
+                    })
+                    .catch(err => {
+                      this.isUploading = false;
+                      this.showError(err.message);
+                    });
+                    }
+                })
+                .catch(err => {
+                  this.isUploading = false;
+                  this.showError(err.message);
+                });
+                })
+              .catch(e => {
+                this.isUploading = false;
+                this.showError(e.message);
+              });
+            }
+            else {
+              this.isUploading = false;
+              this.showError('Invalid profile picture');
+            }
+            }
+          else {
+            this.isUploading = false;
+            this.showError("File cannot be uploaded at this time. Please relogin.");
+          }
+        });
+      });
+    })
+    .catch(err => {
+      this.isUploading = false;
+      this.showError(err.message);
+    });
+  }
+    
+  getFilePath(path: string){
+    let fileName: string;
+
+    let index = path.lastIndexOf('/');
+    fileName = path.substring(0, index+1);
+
+    return fileName;
+  }
+
+  getFileName(path: string){
+    let fileName: string;
+
+    let index = path.lastIndexOf('/');
+    fileName = path.substring(index+1);
+    while(fileName.indexOf('%20') >= 0) {
+      fileName = fileName.replace('%20', ' ');
+    }
+    return fileName;
+  }
+
+  getFileExt(path: string){
+    let fileName: string;
+
+    let index = path.lastIndexOf('.');
+    fileName = path.substring(index+1);
+
+    return fileName;
+  }
+
 }
