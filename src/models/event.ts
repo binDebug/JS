@@ -11,6 +11,6 @@ export class event {
     place: location;
     price: number;
     description: string;
-    capacity: number;
-    attendance: number;
+    capacity: number = 0;
+    attendance: number = 0;
 }

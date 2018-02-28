@@ -53,6 +53,11 @@ export class EventsComponent {
       this.eventVMList = [];
 
       this.eventList.forEach((item: event, index: number) => {
+        
+        if(!item.attendance) {
+          item.attendance = 0;
+        }
+
         if( (index % 2) === 0) {
             vm = new eventVM();
             vm.events = [];

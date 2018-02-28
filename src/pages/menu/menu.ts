@@ -258,7 +258,7 @@ export class MenuPage implements OnInit {
 
     let index = path.lastIndexOf('/');
     fileName = path.substring(index+1);
-    while(fileName.indexOf('%20') < 0) {
+    while(fileName.indexOf('%20') >= 0) {
       fileName = fileName.replace('%20', ' ');
     }
     return fileName;

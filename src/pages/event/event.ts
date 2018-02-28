@@ -22,6 +22,10 @@ export class EventPage implements OnInit {
               private events:Events,
               private payPal: PayPal) {
     this.event = this.navParams.get('eventData');
+    
+    if(this.event && (!this.event.attendance)) {
+      this.event.attendance = 0;
+    }
   }
 
   ngOnInit() {
@@ -39,30 +43,32 @@ export class EventPage implements OnInit {
       .valueChanges().subscribe(res => {
           if(res && (res.length === 1))
             this.isRegistered = true;
+            
       });
     }
   }
 
   register() {
     if(!this.isRegistered) {
-
       if(this.event.price > 0) {
       this.payPal.init({
         PayPalEnvironmentSandbox: 'AQI7H5SuJV8ydsaIMsrkRHAsTkzbTZu1dbiurDpLVJC0twun0Ky6aj7Jmmc4eBu8-YXSnL6olRpdIwPH',
         PayPalEnvironmentProduction: ''
-      }).then(() => {
+      }).then((data) => {
         // Environments: PayPalEnvironmentNoNetwork, PayPalEnvironmentSandbox, PayPalEnvironmentProduction
         this.payPal.prepareToRender('PayPalEnvironmentSandbox', new PayPalConfiguration({
           // Only needed if you get an "Internal Service Error" after PayPal login!
           //payPalShippingAddressOption: 2 // PayPalShippingAddressOptionPayPal
-        })).then(() => {
+        })).then((data1) => {
           let payment = new PayPalPayment(this.event.price.toString(), 'USD', 'Description', 'sale');
-          this.payPal.renderSinglePaymentUI(payment).then(() => {
+          this.payPal.renderSinglePaymentUI(payment).then((data4) => {
             this.eventList.applyEvent(this.uid, this.event.id)
-            .then(() => {
+            .then((data3) => {
               this.showError("You have successfully registered for the event.");
-            });
+            })
+            .catch(err => this.showError(err.message));
             this.isRegistered = true;
+            
             // Successfully paid
       
             // Example sandbox response
@@ -82,23 +88,26 @@ export class EventPage implements OnInit {
             //     "intent": "sale"
             //   }
             // }
-          }, () => {
+          }, (err) => {
             this.showError("Payment unsuccessful. Try again");
             // Error or render dialog closed without being successful
           });
-        }, () => {
+        }, (err) => {
           this.showError("Payment unsuccessful. Try again");
           // Error in configuration
         });
-      }, () => {
+      }, (err) => {
         this.showError("Payment unsuccessful. Try again");
         // Error in initialization, maybe PayPal isn't supported or something else
       });
     }
     else {
       this.eventList.applyEvent(this.uid, this.event.id)
-      .then(() => {
+      .then((data) => {
         this.showError("You have successfully registered for the event.");
+      })
+      .catch(err => {
+        this.showError(err.message);
       });
       this.isRegistered = true;
     }

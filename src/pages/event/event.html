@@ -42,7 +42,7 @@
         
       </ion-item>
       <ion-item>
-        <span>Seats available: {{(event.capacity && event.attendance) ? event.capacity - event.attendance : 0}}</span>
+        <span>Seats available: {{event.capacity - event.attendance}}</span>
         <span item-right>
             Fee: {{event.price | currency}}
           </span>
@@ -51,5 +51,7 @@
 
   <ion-list padding>
     <button ion-button block color="secondary" (click)="register()" *ngIf="(isRegistered === false) && ((event.capacity - event.attendance) > 0)">Register</button>
+    <span *ngIf="isRegistered === true">You have registered for this event</span>
+    <span *ngIf="(isRegistered === false) && ((event.capacity - event.attendance) === 0)">Sorry! The seats are full.</span>
   </ion-list>         
 </ion-content>    
