@@ -7,6 +7,8 @@ import { FilePath } from '@ionic-native/file-path';
 import { File } from '@ionic-native/file';
 import { UsersProvider } from '../../providers/users';
 import { AWSStorageProvider } from '../../providers/awsStorage';
+import { LoadingController } from 'ionic-angular';
+import { HTMLInputEvent } from '../../models/html-input-event';
 
 @Component({
   selector: 'resume',
@@ -19,13 +21,14 @@ export class ResumeComponent implements OnInit {
   resumeUrl: string = null;
 
   constructor(private viewCtrl: ViewController,
-  private toastCtrl: ToastController,
-  private fileChooser: FileChooser,
-  private storage: AWSStorageProvider,
-  private filePath: FilePath,
-  private file: File,
-  private users: UsersProvider,
-  private iab: InAppBrowser) {
+      private loadingCtrl: LoadingController,
+      private toastCtrl: ToastController,
+      private fileChooser: FileChooser,
+      private storage: AWSStorageProvider,
+      private filePath: FilePath,
+      private file: File,
+      private users: UsersProvider,
+      private iab: InAppBrowser) {
 
   }
 
@@ -45,6 +48,46 @@ export class ResumeComponent implements OnInit {
     
     }
   
+
+
+  selectPicture(event: HTMLInputEvent) {
+    let loading = this.loadingCtrl.create({
+      content: 'Uploading resume. Please wait...'
+    });
+
+    loading.present();
+
+    let file = event.target.files[0];
+    let fileExt: string = this.getFileExt(file.name);
+    let uploadFileName = this.uid + '.' + fileExt ;
+    if(fileExt.toLowerCase() === 'pdf') {  
+      this.storage.uploadFile( uploadFileName, 'application/pdf', 'resume', file)
+      .then(data => {
+          if(data) {
+            let url : string = <string>data;
+          this.users.saveResumeUrl(this.uid, url)
+          .then(data => {
+            this.resumeUrl = url;
+            loading.dismiss();
+            this.showError("Resume uploaded successfully");
+          })
+          .catch(err => {
+            loading.dismiss();
+            this.showError(err.message)
+          });
+          }
+      })
+      .catch(err => {
+        loading.dismiss();
+        this.showError(err.message)
+      });
+      
+    } else {
+      loading.dismiss();
+      this.showError("File type is incorrect. Select a pdf file.");
+    }
+    
+  }
 
   uploadResume() {
     

@@ -25,15 +25,18 @@ View Resume
 <ion-list-header *ngIf="resumeUrl">
     Replace Resume
   </ion-list-header>
-  <ion-list-header *ngIf="!resumeUrl" (click)="uploadResume()">
-      <ion-icon name="cloud-upload"></ion-icon>
-      Upload Resume
-      <div class="sub-text">The file name shouldn't contain space</div>
+  <ion-list-header *ngIf="!resumeUrl"> <!--  (click)="uploadResume()"> -->
+      <!-- <ion-icon name="cloud-upload"></ion-icon> -->
+      <input type="file" (change)="selectPicture($event)" accept="application/pdf" class="select-file">
+      <!-- <br><br>
+      Upload Resume -->
     </ion-list-header>
-  <ion-item (click)="uploadResume()" *ngIf="resumeUrl">
-      <ion-icon name="cloud-upload"></ion-icon>
-      Replace Resume
-      <div class="sub-text">The file name shouldn't contain space</div>
+  <ion-item *ngIf="resumeUrl">
+      <!-- (click)="uploadResume()" 
+        <ion-icon name="cloud-upload"></ion-icon> -->
+      <input type="file" (change)="selectPicture($event)" accept="application/pdf" class="select-file">
+      <!-- <br><br>
+      Replace Resume -->
       </ion-item>
 </ion-list>
 </ion-content>

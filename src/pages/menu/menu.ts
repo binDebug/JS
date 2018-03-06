@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, ToastController, LoadingController, Platform } from 'ionic-angular';
 import { ProfilePage } from '../profile/profile';
 import { LandingPage } from '../landing/landing';
 import { AuthProvider } from '../../providers/auth';
@@ -18,6 +18,7 @@ import { AWSStorageProvider } from '../../providers/awsStorage';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ContactsPage } from '../contacts/contacts';
 import { GroupsPage } from '../groups/groups';
+import { HTMLInputEvent } from '../../models/html-input-event';
 
 @Component({
   selector: 'page-menu',
@@ -43,7 +44,9 @@ export class MenuPage implements OnInit {
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
+      private platform: Platform,
       private toastCtrl: ToastController,
+      private loadingCtrl: LoadingController,
       private auth: AuthProvider,
       private events: Events,
       private modalCtrl: ModalController,
@@ -53,7 +56,9 @@ export class MenuPage implements OnInit {
       private storage: AWSStorageProvider,
       private file: File,
       private camera: Camera
-      ) {}
+      ) {
+        
+      }
 
   ngOnInit() {
     this.currentUser = this.auth.getUser();
@@ -140,9 +145,14 @@ export class MenuPage implements OnInit {
 
   shoot() {
 
+    let loading = this.loadingCtrl.create({
+      content: 'Uploading picture. Please wait...'
+    });
+
     this.camera.getPicture(this.options).then((imageData) => {
       // imageData is either a base64 encoded string or a file URI
       // If it's base64:
+      loading.present();
       this.isUploading = false;
     //  let base64Image = 'data:image/jpeg;base64,' + imageData;
   
@@ -162,18 +172,23 @@ export class MenuPage implements OnInit {
         this.users.savePicture(this.uid, url)
         .then(data => {
           this.pictureUrl = url + "?random=" + Math.random().toString();
-          
+          loading.dismiss();
           this.showError("Picture uploaded successfully");
         })
         .catch(err => {
+          loading.dismiss();
           this.showError(err.message);
         });
+        } else {
+          loading.dismiss();
         }
       })
       .catch(err => {
+        loading.dismiss();
         this.showError(err.message);
       });
      }, (err) => {
+        loading.dismiss();
         this.showError(err.message);
      });
   }
@@ -243,7 +258,49 @@ export class MenuPage implements OnInit {
       this.showError(err.message);
     });
   }
+  
+  selectPicture(event: HTMLInputEvent) {
+    let loading = this.loadingCtrl.create({
+      content: 'Uploading picture. Please wait...'
+    });
+
+    loading.present();
+
+    let file = event.target.files[0];
+    let fileExt: string = this.getFileExt(file.name);
+    let uploadFileName = this.uid + '.' + fileExt ;
+    if((fileExt.toLowerCase() === 'jpg') || (fileExt.toLowerCase() === 'png') || (fileExt.toLowerCase() === 'gif')) {  
+    this.storage.uploadFile( uploadFileName, 'image/' + fileExt, 'profile', file)
+    .then(data => {
+        this.isUploading = false;
+        if(data) {
+          let url : string = <string>data;
+        this.users.savePicture(this.uid, url)
+        .then(data1 => {
+          this.pictureUrl = url + "?random=" + Math.random().toString();
+          loading.dismiss();
+          this.showError("Picture uploaded successfully");
+        })
+        .catch(err => {
+          loading.dismiss();
+          this.showError(err.message);
+        });
+        } else {
+          loading.dismiss();
+        }
+    })
+    .catch(err => {
+      loading.dismiss();
+      this.showError(err.message);
+    });
+    } else {
+      this.isUploading = false;
+      loading.dismiss();
+      this.showError("File type is incorrect. Select an image file.");
+    }
     
+  }
+
   getFilePath(path: string){
     let fileName: string;
 

@@ -26,14 +26,18 @@
             </ion-item>
     <ion-item *ngIf="isUploading === true">
         <div text-center class="profile-picture-buttons">
-        <button ion-button (click)="shoot()">
-            <ion-icon name="camera"></ion-icon>
-            Click
-        </button>
+        <!-- 
         <button ion-button (click)="picture()">
                 <ion-icon name="image"></ion-icon>
             Upload
+        </button> -->
+        <input type="file" (change)="selectPicture($event)" accept="image/*" class="select-file">
+        <br>
+        <button ion-button (click)="shoot()" *ngIf="!this.platform.is('ios')">
+            <ion-icon name="camera"></ion-icon>
+            Click
         </button>
+
         <button ion-button (click)="isUploading = false">
                 <ion-icon name="close"></ion-icon>
             Cancel
@@ -72,12 +76,7 @@
                 Groups
                 <ion-icon name="arrow-forward" item-end></ion-icon>
             </ion-item>
-<!-- 
-        <ion-item (click)="chat()">
-            <ion-icon name="chatboxes" item-start></ion-icon>
-            Chat
-        </ion-item>
-         -->
+
         </ion-list>    
     <ion-list >
         

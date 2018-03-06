@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { GroupsProvider } from '../../providers/groups/groups';
 import { Group } from '../../models/group';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
@@ -12,6 +12,8 @@ import { AWSStorageProvider } from '../../providers/awsStorage';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
+import { HTMLInputEvent } from '../../models/html-input-event';
+
 @IonicPage()
 @Component({
   selector: 'page-newgroup',
@@ -35,6 +37,7 @@ export class NewgroupPage implements OnInit {
   };
 
   constructor(public navCtrl: NavController, 
+      private platform: Platform,
       public navParams: NavParams, 
       public groupservice: GroupsProvider, 
       public userService: UsersProvider,
@@ -154,11 +157,18 @@ export class NewgroupPage implements OnInit {
 
   shoot() {
 
+      
+    let loading = this.loadingCtrl.create({
+      content: 'Uploading picture. Please wait...'
+    });
+
     this.camera.getPicture(this.options).then((imageData) => {
       // imageData is either a base64 encoded string or a file URI
       // If it's base64:
       this.isUploading = false;
-      
+
+      loading.present();
+
 
     var binary_string =  window.atob(imageData);
     var len = binary_string.length;
@@ -176,20 +186,26 @@ export class NewgroupPage implements OnInit {
         .then(data => {
           this.pictureUrl = url + "?random=" + Math.random().toString();
           this.isUploading = false;
+          loading.dismiss();
           this.showError("Picture uploaded successfully");
         })
         .catch(err => {
           this.isUploading = false;
+          loading.dismiss();
           this.showError(err.message);
         });
+        } else {
+          loading.dismiss();
         }
       })
       .catch(err => {
         this.isUploading = false;
+        loading.dismiss();
         this.showError(err.message);
       });
      }, (err) => {
         this.isUploading = false;
+        loading.dismiss();
         this.showError(err.message);
      });
   }
@@ -269,7 +285,53 @@ export class NewgroupPage implements OnInit {
       this.showError(err.message);
     });
   }
+  
+  
+  selectPicture(event: HTMLInputEvent) {
+    let loading = this.loadingCtrl.create({
+      content: 'Uploading picture. Please wait...'
+    });
+
+    loading.present();
+
+    let file = event.target.files[0];
+    let fileExt: string = this.getFileExt(file.name);
+    let uploadFileName = this.groupId + '.' + fileExt ;
+    if((fileExt.toLowerCase() === 'jpg') || (fileExt.toLowerCase() === 'png') || (fileExt.toLowerCase() === 'gif')) {  
+      this.storage.uploadFile( uploadFileName, 'image/' + fileExt, 'group', file)
+      .then(data => {
+          this.isUploading = false;
+        
+          if(data) {
+            let url : string = <string>data;
+            this.groupservice.updatePictureUrl(this.groupId, url)
+            .then(data => {
+              this.pictureUrl = url + "?random=" + Math.random().toString();
+              this.isUploading = false;
+              this.showError("Picture uploaded successfully");
+          })
+          .catch(err => {
+            this.isUploading = false;
+            loading.dismiss();
+            this.showError(err.message);
+          });
+          } else {
+            loading.dismiss();
+          }
+      })
+      .catch(err => {
+        this.isUploading = false;
+        loading.dismiss();
+        this.showError(err.message);
+      });
+    } else {
+      this.isUploading = false;
+      loading.dismiss();
+      this.showError("File type is incorrect. Select an image file.");
+    }
     
+  }
+
   getFilePath(path: string){
     let fileName: string;
 

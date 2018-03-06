@@ -10,20 +10,24 @@
 
 <ion-content>
     <ion-list>
-    <ion-item class="profile-image" (click)="chooseimage()" *ngIf="groupId">
+    <ion-item class="profile-image" *ngIf="groupId">
         <img src="{{group.pictureUrl}}">
         <br>
         <span class="hyper-link" (click)="isUploading = true">Update group photo</span>
     </ion-item>
     <ion-item text-center class="profile-picture-buttons" *ngIf="isUploading === true">
-        <button ion-button (click)="shoot()">
-            <ion-icon name="camera"></ion-icon>
-            Click
-        </button>
+        <!-- 
         <button ion-button (click)="picture()">
                 <ion-icon name="image"></ion-icon>
             Upload
+        </button> -->
+        <input type="file" (change)="selectPicture($event)" accept="image/*" class="select-file">
+        <br>
+        <button ion-button (click)="shoot()" *ngIf="!this.platform.is('ios')">
+            <ion-icon name="camera"></ion-icon>
+            Click
         </button>
+        
         <button ion-button (click)="isUploading = false">
                 <ion-icon name="close"></ion-icon>
             Cancel
