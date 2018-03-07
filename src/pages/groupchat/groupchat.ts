@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { NavController, NavParams, Content } from 'ionic-angular';
+import { NavController, NavParams, Content, Platform, LoadingController } from 'ionic-angular';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { groupMessage } from '../../models/group-message';
 import { GroupChatProvider } from '../../providers/groupChat';
@@ -11,7 +11,8 @@ import { AWSStorageProvider } from '../../providers/awsStorage';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { FilePath } from '@ionic-native/file-path';
 import { File } from '@ionic-native/file';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
+import { HTMLInputEvent } from '../../models/html-input-event';
 
 @Component({
   selector: 'page-groupchat',
@@ -29,6 +30,8 @@ export class GroupchatPage implements OnInit{
   private members = [];
   public pictureUrl: string;
   public name: string;
+  browser: any;
+  showFileUpload = false;
   @ViewChild('content') content: Content;
   options: CameraOptions = {
     quality: 100,
@@ -40,7 +43,9 @@ export class GroupchatPage implements OnInit{
 
   constructor(public navCtrl: NavController, 
     private notificationsService: NotificationssProvider,
+    private platform: Platform,
     public navParams: NavParams, 
+    private loadingCtrl: LoadingController,
     private groupChatService: GroupChatProvider,
     private groupService: GroupsProvider,
     private userService: UsersProvider,
@@ -191,6 +196,9 @@ export class GroupchatPage implements OnInit{
   }
 
   shoot() {
+    let loading = this.loadingCtrl.create({
+      content: 'Uploading picture. Please wait...'
+    });
 
     this.camera.getPicture(this.options).then((imageData) => {
       // imageData is either a base64 encoded string or a file URI
@@ -198,6 +206,7 @@ export class GroupchatPage implements OnInit{
       
     //  let base64Image = 'data:image/jpeg;base64,' + imageData;
   
+    loading.present();
 
     var binary_string =  window.atob(imageData);
     var len = binary_string.length;
@@ -215,32 +224,68 @@ export class GroupchatPage implements OnInit{
           this.newmessage = url;
           this.addMessage(true);
         }
+        loading.dismiss();
       })
       .catch(err => {
+        loading.dismiss();
         this.showError(err.message);
       });
      }, (err) => {
+       loading.dismiss();
         this.showError(err.message);
      });
   }
 
+  selectPicture(event: HTMLInputEvent) {
+    let loading = this.loadingCtrl.create({
+      content: 'Uploading picture. Please wait...'
+    });
+
+    loading.present();
+
+    let file = event.target.files[0];
+    let fileExt: string = this.getFileExt(file.name);
+    let uploadFileName = this.uid + '.' + fileExt ;
+    let appType = 'application/' + fileExt;
+    if((fileExt.toLowerCase() === 'jpg') || (fileExt.toLowerCase() === 'png') || (fileExt.toLowerCase() === 'gif')) {  
+      appType = 'image/'+ fileExt;
+    }
+    this.storage.uploadFile( uploadFileName, appType, 'profile', file)
+    .then(data => {
+      if(data) {
+        let url : string = <string>data;
+        this.newmessage = url;
+        this.addMessage(true);
+      }
+      loading.dismiss();
+    })
+    .catch(err => {
+      this.showFileUpload = false;
+      loading.dismiss();
+      this.showError(err.message);
+    });
+     
+    
+  }
+
   picture() {
     
+    let loading = this.loadingCtrl.create({
+      content: 'Uploading file. Please wait...'
+    });
+
     this.fileChooser.open()
     .then(uri =>  {
-      console.log('uri', uri);
+      loading.present();
       this.filePath.resolveNativePath(uri)
       .then(filePath => {
-        console.log('filePath', filePath);
         this.file.resolveLocalFilesystemUrl(filePath)
         .then(resFile => {
-          console.log('resFile', resFile);
           let continueUpload: boolean = false;
 
           let filePath: string = this.getFilePath(resFile.nativeURL);
           let fileName: string = this.getFileName(resFile.nativeURL);
           let fileExt: string = this.getFileExt(resFile.nativeURL);
-          console.log('resFile', filePath, fileName, fileExt, resFile);
           let uploadFileName: string = '';
           
           if(this.uid) {
@@ -249,13 +294,12 @@ export class GroupchatPage implements OnInit{
           }
           
           if(continueUpload == true) {
-            console.log('222', filePath,  fileName);
               this.file.readAsArrayBuffer(filePath,  fileName).then(
                 (data) => {
                   var blob = new Blob([data], {
-                    type: 'image/' + fileExt
+                    type: 'application/' + fileExt
                 });
-                this.storage.uploadFile( uploadFileName, 'image/' + fileExt, 'chat', blob)
+                this.storage.uploadFile( uploadFileName, 'application/' + fileExt, 'chat', blob)
                 .then(data => {
                     
                     if(data) {
@@ -263,23 +307,36 @@ export class GroupchatPage implements OnInit{
                       this.newmessage = url;
                       this.addMessage(true);
                     }
+                    loading.dismiss();
                 })
                 .catch(err => {
-                  this.showError('1 ' + err.message);
+                  loading.dismiss();
+                  this.showError(err.message);
                 });
                 })
               .catch(e => {
-                this.showError('2 ' + e.message);
+                loading.dismiss();
+                this.showError(e.message);
               });
            
             }
           else {
+            loading.dismiss();
             this.showError("File cannot be uploaded at this time. Please relogin.");
           }
+        })
+        .catch(err => {
+          loading.dismiss();
+          this.showError(err.message);
         });
+      })
+      .catch(err => {
+        loading.dismiss();
+        this.showError(err.message);
       });
     })
     .catch(err => {
+      loading.dismiss();
       this.showError(err.message);
     });
   }
@@ -314,8 +371,10 @@ export class GroupchatPage implements OnInit{
   }
 
   download(item: groupMessage) {
-      let url = item.message;
+    
+    let url = item.message;
       let options = 'location=yes';
-      const browser = this.iab.create(url, "_system", options);
+
+      this.iab.create(url, "_system", options);
     }
 }

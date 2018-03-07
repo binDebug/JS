@@ -1,5 +1,5 @@
 import { Component, ViewChild, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, Content, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, Content, LoadingController, Platform } from 'ionic-angular';
 import { ChatProvider } from '../../providers/chat/chat';
 import { AppConstants } from '../../models/constants';
 import { FileChooser } from '@ionic-native/file-chooser';
@@ -13,7 +13,8 @@ import { ToastController } from 'ionic-angular/components/toast/toast-controller
 import { message } from '../../models/message';
 import { NotificationssProvider } from '../../providers/notifications';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
+import { HTMLInputEvent } from '../../models/html-input-event';
 
 @IonicPage()
 @Component({
@@ -30,7 +31,9 @@ export class ContactchatsPage {
   displayName1: string;
   displayName2: string;
   imgornot;
+  browser: any;
   userData: any;
+  showFileUpload = false;
   uid: string = null;
   options: CameraOptions = {
     quality: 100,
@@ -42,7 +45,9 @@ export class ContactchatsPage {
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
+    private platform: Platform,
     private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
     public chatservice: ChatProvider,
     public userService: UsersProvider,
     private notificationService: NotificationssProvider,
@@ -152,10 +157,14 @@ export class ContactchatsPage {
 
   shoot() {
 
+    let loading = this.loadingCtrl.create({
+      content: 'Uploading picture. Please wait...'
+    });
+
     this.camera.getPicture(this.options).then((imageData) => {
       // imageData is either a base64 encoded string or a file URI
       
-
+    loading.present();
     var binary_string =  window.atob(imageData);
     var len = binary_string.length;
     var bytes = new Uint8Array( len );
@@ -172,19 +181,58 @@ export class ContactchatsPage {
           this.newmessage = url;
           this.addMessage(true);
         }
+        loading.dismiss();
       })
       .catch(err => {
+        loading.dismiss();
         this.showError(err.message);
       });
      }, (err) => {
+        loading.dismiss();
         this.showError(err.message);
      });
   }
 
+  
+  selectPicture(event: HTMLInputEvent) {
+    let loading = this.loadingCtrl.create({
+      content: 'Uploading picture. Please wait...'
+    });
+
+    loading.present();
+
+    let file = event.target.files[0];
+    let fileExt: string = this.getFileExt(file.name);
+    let uploadFileName = this.uid + '.' + fileExt ;
+    let appType = 'application/' + fileExt;
+    if((fileExt.toLowerCase() === 'jpg') || (fileExt.toLowerCase() === 'png') || (fileExt.toLowerCase() === 'gif')) {  
+      appType = 'image/'+ fileExt;
+    }
+    this.storage.uploadFile( uploadFileName, appType, 'profile', file)
+    .then(data => {
+      if(data) {
+        let url : string = <string>data;
+        this.newmessage = url;
+        this.addMessage(true);
+      }
+      loading.dismiss();
+    })
+    .catch(err => {
+      this.showFileUpload = false;
+      loading.dismiss();
+      this.showError(err.message);
+    });
+  }
+  
   picture() {
-    
+
+    let loading = this.loadingCtrl.create({
+      content: 'Uploading picture. Please wait...'
+    });
+
     this.fileChooser.open()
     .then(uri =>  {
+      loading.present();
       this.filePath.resolveNativePath(uri)
       .then(filePath => {
         this.file.resolveLocalFilesystemUrl(filePath)
@@ -194,7 +242,7 @@ export class ContactchatsPage {
           let filePath: string = this.getFilePath(resFile.nativeURL);
           let fileName: string = this.getFileName(resFile.nativeURL);
           let fileExt: string = this.getFileExt(resFile.nativeURL);
-          console.log('resFile', resFile);
+          
           let uploadFileName: string = '';
           
           if(this.uid) {
@@ -206,9 +254,9 @@ export class ContactchatsPage {
               this.file.readAsArrayBuffer(filePath,  fileName).then(
                 (data) => {
                   var blob = new Blob([data], {
-                    type: 'image/' + fileExt
+                    type: 'application/' + fileExt
                 });
-                this.storage.uploadFile( uploadFileName, 'image/' + fileExt, 'chat', blob)
+                this.storage.uploadFile( uploadFileName, 'application/' + fileExt, 'chat', blob)
                 .then(data => {
                     
                     if(data) {
@@ -216,23 +264,36 @@ export class ContactchatsPage {
                       this.newmessage = url;
                       this.addMessage(true);
                     }
+                    loading.dismiss();
                 })
                 .catch(err => {
+                  loading.dismiss();
                   this.showError(err.message);
                 });
                 })
               .catch(e => {
+                loading.dismiss();
                 this.showError(e.message);
               });
            
             }
           else {
+            loading.dismiss();
             this.showError("File cannot be uploaded at this time. Please relogin.");
           }
+        })
+        .catch(err => {
+          loading.dismiss();
+          this.showError(err.message);
         });
+      })
+      .catch(err => {
+        loading.dismiss();
+        this.showError(err.message);
       });
     })
     .catch(err => {
+      loading.dismiss();
       this.showError(err.message);
     });
   }
@@ -267,9 +328,10 @@ export class ContactchatsPage {
   }
 
   download(item: message) {
-    let url = item.message;
-    let options = 'location=yes';
-    const browser = this.iab.create(url, "_system", options);
     
+    let url = item.message;
+      let options = 'location=yes';
+
+      this.iab.create(url, "_system", options);
   }
 }

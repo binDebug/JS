@@ -36,10 +36,10 @@
                 <div class="bubble" >
                     <h3 *ngIf="item.attachment === false">{{item.message}}</h3>
                     <img src="{{item.message}}" *ngIf="(item.attachment === true) && ((item.message.indexOf('.jpg') >= 0) || (item.message.indexOf('.jpeg') >= 0) || (item.message.indexOf('.png') >= 0) || (item.message.indexOf('.gif') >= 0))">
-                    <a href="{{item.message}}" (click)="download(item)" 
+                    <button ion-button (click)="download(item)" 
                     *ngIf="(item.attachment === true) && (item.message.indexOf('.jpg') < 0) && (item.message.indexOf('.jpeg') < 0) && (item.message.indexOf('.png') < 0) && (item.message.indexOf('.gif') < 0)">
-                        {{item.message}}
-                    </a>
+                    <ion-icon name="attach" ></ion-icon>
+                    </button>
                     
                     <br>
                     <span class="date">{{item.timeStamp | date:'medium'}}</span>
@@ -58,12 +58,19 @@
                 <button ion-button (click)="addMessage(false)">
                     <ion-icon name="send" color="primary"></ion-icon>
                 </button>
-                <button ion-button (click)="shoot()">
+                <button ion-button (click)="shoot()" *ngIf="!platform.is('ios')">
                     <ion-icon name="camera"></ion-icon>
                 </button>
-                <button ion-button (click)="picture()">
+                <button ion-button (click)="picture()" *ngIf="!platform.is('ios')">
                     <ion-icon name="attach" ></ion-icon>
                 </button>      
+                
+            <button ion-button (click)="showFileUpload = !showFileUpload" *ngIf="platform.is('ios')">
+                <ion-icon name="attach" ></ion-icon>
+            </button>      
             </ion-buttons>
+            <div *ngIf="showFileUpload">
+                <input type="file" (change)="selectPicture($event)" class="select-file">
+            </div>
         </ion-toolbar>
     </ion-footer>

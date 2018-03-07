@@ -4,6 +4,15 @@ page-groupchat {
          transform: none !important; 
     }
 
+
+    .select-file {
+        border-radius: 4px;
+        background-color: #387ef5;
+        color: #fff;
+        margin: 0.4rem 0.2rem;
+        font-size: 1.3rem;
+    }
+    
     ion-avatar-right {
         img {
             height: 30px !important;

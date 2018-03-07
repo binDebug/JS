@@ -308,6 +308,7 @@ export class NewgroupPage implements OnInit {
             .then(data => {
               this.pictureUrl = url + "?random=" + Math.random().toString();
               this.isUploading = false;
+              loading.dismiss();
               this.showError("Picture uploaded successfully");
           })
           .catch(err => {
