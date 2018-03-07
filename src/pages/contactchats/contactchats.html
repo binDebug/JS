@@ -20,9 +20,9 @@
                     </ion-avatar>
                 <div class="bubble" >
                     <h3 *ngIf="item.attachment === false">{{item.message}}</h3>
-                    <img src="{{item.message}}" *ngIf="(item.attachment === true) && ((item.message.indexOf('.jpg') >= 0) || (item.message.indexOf('.jpeg') >= 0) || (item.message.indexOf('.png') >= 0) || (item.message.indexOf('.gif') >= 0))">
+                    <img src="{{item.message}}" *ngIf="(item.attachment === true) && ((item.message.toLowerCase().indexOf('.jpg') >= 0) || (item.message.toLowerCase().indexOf('.jpeg') >= 0) || (item.message.toLowerCase().indexOf('.png') >= 0) || (item.message.toLowerCase().indexOf('.gif') >= 0))">
                     <button ion-button (click)="download(item)" 
-                    *ngIf="(item.attachment === true) && (item.message.indexOf('.jpg') < 0) && (item.message.indexOf('.jpeg') < 0) && (item.message.indexOf('.png') < 0) && (item.message.indexOf('.gif') < 0)">
+                    *ngIf="(item.attachment === true) && (item.message.toLowerCase().indexOf('.jpg') < 0) && (item.message.toLowerCase().indexOf('.jpeg') < 0) && (item.message.toLowerCase().indexOf('.png') < 0) && (item.message.toLowerCase().indexOf('.gif') < 0)">
                     <ion-icon name="attach" ></ion-icon>
                 </button>
                     

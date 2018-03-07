@@ -203,12 +203,12 @@ export class ContactchatsPage {
 
     let file = event.target.files[0];
     let fileExt: string = this.getFileExt(file.name);
-    let uploadFileName = this.uid + '.' + fileExt ;
+    let uploadFileName = this.uid + '_' + Math.random().toString().replace('.', '') + '.' + fileExt ;
     let appType = 'application/' + fileExt;
     if((fileExt.toLowerCase() === 'jpg') || (fileExt.toLowerCase() === 'png') || (fileExt.toLowerCase() === 'gif')) {  
       appType = 'image/'+ fileExt;
     }
-    this.storage.uploadFile( uploadFileName, appType, 'profile', file)
+    this.storage.uploadFile( uploadFileName, appType, 'chat', file)
     .then(data => {
       if(data) {
         let url : string = <string>data;

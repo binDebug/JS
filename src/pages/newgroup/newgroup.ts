@@ -24,6 +24,7 @@ export class NewgroupPage implements OnInit {
   groupId: string = null;
   group = {  } as Group;
   userData: any;
+  
   uid: string = null;
   isUploading: boolean = false;
   members: user[] = [];
@@ -129,7 +130,7 @@ export class NewgroupPage implements OnInit {
         .catch(err => this.showError(err.message));
 
         this.groupservice.addGroupMember(this.groupId, this.uid)
-        .then(data => {})
+        .then(data => {this.getMembers();})
         .catch(err => this.showError(err.message));
       }
       , err => this.showError(err.message));
