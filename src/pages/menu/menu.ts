@@ -169,9 +169,10 @@ export class MenuPage implements OnInit {
       .then(data => {
         if(data) {
           let url : string = <string>data;
+          url = url + "?random=" + Math.random().toString();
         this.users.savePicture(this.uid, url)
         .then(data => {
-          this.pictureUrl = url + "?random=" + Math.random().toString();
+          this.pictureUrl = url; 
           loading.dismiss();
           this.showError("Picture uploaded successfully");
         })
@@ -224,10 +225,10 @@ export class MenuPage implements OnInit {
                 .then(data => {
                     this.isUploading = false;
                     if(data) {
-                      let url : string = <string>data;
+                      let url : string = <string>data + "?random=" + Math.random().toString();
                     this.users.savePicture(this.uid, url)
                     .then(data1 => {
-                      this.pictureUrl = url + "?random=" + Math.random().toString();
+                      this.pictureUrl = url; // + "?random=" + Math.random().toString();
                       
                       this.showError("Picture uploaded successfully");
                     })
@@ -274,10 +275,10 @@ export class MenuPage implements OnInit {
     .then(data => {
         this.isUploading = false;
         if(data) {
-          let url : string = <string>data;
+          let url : string = <string>data  + "?random=" + Math.random().toString();
         this.users.savePicture(this.uid, url)
         .then(data1 => {
-          this.pictureUrl = url + "?random=" + Math.random().toString();
+          this.pictureUrl = url;
           loading.dismiss();
           this.showError("Picture uploaded successfully");
         })

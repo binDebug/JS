@@ -182,10 +182,11 @@ export class NewgroupPage implements OnInit {
       this.storage.uploadFile(this.groupId + '.jpeg', 'image/jpeg', 'group', data)
       .then(data => {
         if(data) {
-          let url : string = <string>data;
+          let url : string = <string>data  + "?random=" + Math.random().toString();
         this.groupservice.updatePictureUrl(this.groupId, url)
         .then(data => {
-          this.pictureUrl = url + "?random=" + Math.random().toString();
+          this.pictureUrl = url; 
+          this.group.pictureUrl = this.pictureUrl;
           this.isUploading = false;
           loading.dismiss();
           this.showError("Picture uploaded successfully");
@@ -246,10 +247,11 @@ export class NewgroupPage implements OnInit {
                     this.isUploading = false;
                   
                     if(data) {
-                      let url : string = <string>data;
+                      let url : string = <string>data  + "?random=" + Math.random().toString();
                     this.groupservice.updatePictureUrl(this.groupId, url)
                     .then(data => {
-                      this.pictureUrl = url + "?random=" + Math.random().toString();
+                      this.pictureUrl = url;
+                      this.group.pictureUrl = this.pictureUrl;
                       this.isUploading = false;
                       this.showError("Picture uploaded successfully");
                     })
@@ -298,16 +300,18 @@ export class NewgroupPage implements OnInit {
     let file = event.target.files[0];
     let fileExt: string = this.getFileExt(file.name);
     let uploadFileName = this.groupId + '.' + fileExt ;
+    
     if((fileExt.toLowerCase() === 'jpg') || (fileExt.toLowerCase() === 'png') || (fileExt.toLowerCase() === 'gif')) {  
       this.storage.uploadFile( uploadFileName, 'image/' + fileExt, 'group', file)
       .then(data => {
           this.isUploading = false;
         
           if(data) {
-            let url : string = <string>data;
+            let url : string = <string>data  + "?random=" + Math.random().toString();
             this.groupservice.updatePictureUrl(this.groupId, url)
-            .then(data => {
-              this.pictureUrl = url + "?random=" + Math.random().toString();
+            .then(data1 => {
+              this.pictureUrl = url; 
+              this.group.pictureUrl = this.pictureUrl;
               this.isUploading = false;
               loading.dismiss();
               this.showError("Picture uploaded successfully");
